@@ -113,7 +113,7 @@ public class InventorySystem:MonoBehaviour
 		itemToAdd.transform.SetParent (whatSlotToEquip.transform);
 
 		itemList.Add (itemName);
-		Debug.Log ("added to inventory Inventory System Debug Log");
+		Debug.Log ("added to inventory System Debug Log");
 
 		TriggerPickupPopUp (itemName, itemToAdd.GetComponent<Image> ().sprite);
 
