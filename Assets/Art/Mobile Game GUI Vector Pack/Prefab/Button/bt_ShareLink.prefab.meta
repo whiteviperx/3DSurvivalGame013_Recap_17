@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 85a649567faa58b46b54fcf53a95503f
+timeCreated: 1452007422
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 53679
+  packageName: Mobile Game GUI Vector Pack
+  packageVersion: 1.2
+  assetPath: Assets/Mobile Game GUI Vector Pack/Prefab/Button/bt_ShareLink.prefab
+  uploadId: 204277

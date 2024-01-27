@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 22296e0ba1e8ae04cb8d29ecf8ff9048
+timeCreated: 1506540476
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 53679
+  packageName: Mobile Game GUI Vector Pack
+  packageVersion: 1.2
+  assetPath: Assets/Mobile Game GUI Vector Pack/Prefab/Button/triangle/4.prefab
+  uploadId: 204277

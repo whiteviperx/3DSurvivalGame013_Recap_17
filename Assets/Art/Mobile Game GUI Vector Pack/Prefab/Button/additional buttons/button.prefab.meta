@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 5dc7be88cfcab7f43b5a7b914f9cfa13
+timeCreated: 1506539895
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 53679
+  packageName: Mobile Game GUI Vector Pack
+  packageVersion: 1.2
+  assetPath: Assets/Mobile Game GUI Vector Pack/Prefab/Button/additional buttons/button.prefab
+  uploadId: 204277

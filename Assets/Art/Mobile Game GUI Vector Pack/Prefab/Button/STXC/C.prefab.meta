@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 6578da1163b0a644cb97d0e712d3ed19
+timeCreated: 1506540387
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 53679
+  packageName: Mobile Game GUI Vector Pack
+  packageVersion: 1.2
+  assetPath: Assets/Mobile Game GUI Vector Pack/Prefab/Button/STXC/C.prefab
+  uploadId: 204277

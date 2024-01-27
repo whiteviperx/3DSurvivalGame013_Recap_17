@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 854dd4029f3907e4499403b4f5387291
+timeCreated: 1506540963
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 53679
+  packageName: Mobile Game GUI Vector Pack
+  packageVersion: 1.2
+  assetPath: Assets/Mobile Game GUI Vector Pack/Prefab/Button/select.prefab
+  uploadId: 204277

@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 9b7a24a4d520c51439c30b8a06d83cb1
+timeCreated: 1507047280
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 53679
+  packageName: Mobile Game GUI Vector Pack
+  packageVersion: 1.2
+  assetPath: Assets/Mobile Game GUI Vector Pack/DEMO_Scripts/DEMO_SoundManager.cs
+  uploadId: 204277

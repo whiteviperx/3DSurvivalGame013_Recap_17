@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: ee6c516965298464f92de6f4fb1a8c50
+timeCreated: 1506540585
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 53679
+  packageName: Mobile Game GUI Vector Pack
+  packageVersion: 1.2
+  assetPath: Assets/Mobile Game GUI Vector Pack/Prefab/Button/XYAB_Color/y.prefab
+  uploadId: 204277

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: cbe8186deece1ff4db16f67c5e3e0eba
+timeCreated: 1452007512
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 53679
+  packageName: Mobile Game GUI Vector Pack
+  packageVersion: 1.2
+  assetPath: Assets/Mobile Game GUI Vector Pack/Prefab/Button/bt_Level_10.prefab
+  uploadId: 204277

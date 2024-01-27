@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 57bc43e0a6dcdd04ebbc611c7ae31b81
+timeCreated: 1452459647
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 53679
+  packageName: Mobile Game GUI Vector Pack
+  packageVersion: 1.2
+  assetPath: Assets/Mobile Game GUI Vector Pack/DEMO_Scripts/DEMO_DestroyWindow.cs
+  uploadId: 204277

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 6badadffe5f463549a73039c034540bc
+timeCreated: 1452459278
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 53679
+  packageName: Mobile Game GUI Vector Pack
+  packageVersion: 1.2
+  assetPath: Assets/Mobile Game GUI Vector Pack/Prefab/Button/bt_Close.prefab
+  uploadId: 204277

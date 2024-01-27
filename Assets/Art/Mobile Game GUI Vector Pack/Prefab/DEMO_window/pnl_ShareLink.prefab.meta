@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 6c642dd2243f25b4999c542a78ac4f51
+timeCreated: 1452459489
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 53679
+  packageName: Mobile Game GUI Vector Pack
+  packageVersion: 1.2
+  assetPath: Assets/Mobile Game GUI Vector Pack/Prefab/DEMO_window/pnl_ShareLink.prefab
+  uploadId: 204277
