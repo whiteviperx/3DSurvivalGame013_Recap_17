@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class CraftingSystem:MonoBehaviour
 	{
-	public GameObject craftingScreenUI, toolsScreenUI, survivalScreenUI, refineScreenUI;
+	public GameObject craftingScreenUI, toolsScreenUI, survivalScreenUI, refineScreenUI, constructionScreenUI;
 
 	// --- Get list from inventory --- //
 	public List<string> inventoryItemList = new ();
@@ -20,7 +20,9 @@ public class CraftingSystem:MonoBehaviour
 
 	private Button craftPlankBTN;
 
-	//private Button craftWallBTN, craftFoundationBTN, craftWindowBTN, craftDoorBTN;
+	private Button craftWallBTN, craftFoundationBTN; 
+	
+	// craftWindowBTN, craftDoorBTN;
 
 	// --- Requirement Text --- //
 	private Text AxeReq1, AxeReq2, PlankReq1;
