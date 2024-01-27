@@ -1,5 +1,7 @@
 // Ignore Spelling: Equipable
 
+using System.Collections;
+
 using UnityEngine;
 
 [RequireComponent (typeof (Animator))]
@@ -24,7 +26,7 @@ public class EquipableItem:MonoBehaviour
 
 			{
 
-
+			SoundManager.Instance.PlaySound (SoundManager.Instance.toolSwingSound);
 			animator.SetTrigger ("hit");
 
 			Debug.Log ("EquipableItem animator.SetTrigger hit");
@@ -39,6 +41,11 @@ public class EquipableItem:MonoBehaviour
 			{
 			selectedTree.GetComponent<ChoppableTree> ().GetHit ();
 			}
+		}
+	IEnumerator SwingSoundDelay()
+		{
+		yield return new WaitForSeconds (0.2f);
+		SoundManager.Instance.PlaySound (SoundManager.Instance.toolSwingSound);
 		}
 
 

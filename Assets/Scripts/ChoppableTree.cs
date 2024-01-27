@@ -45,7 +45,7 @@ public class ChoppableTree:MonoBehaviour
 		if (treeHealth <= 0) TreeIsDead ();
 		}
 
-	void TreeIsDead()
+	private void TreeIsDead()
 		{
 		var treePosition = transform.position;
 
@@ -60,7 +60,7 @@ public class ChoppableTree:MonoBehaviour
 		var brokenTree = Instantiate (Resources.Load<GameObject> ("ChoppedTree"), new Vector3 (treePosition.x, treePosition.y, treePosition.z), Quaternion.Euler (0, 0, 0));
 		}
 
-	void Update()
+	private void Update()
 		{
 		if (canBeChopped)
 			{

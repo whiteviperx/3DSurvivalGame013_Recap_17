@@ -7,7 +7,9 @@ public class InventorySystem:MonoBehaviour
 	{
 	// --- Singleton --- //
 	public static InventorySystem Instance
-		{ get; set; }
+		{
+		get; set;
+		}
 
 	// --- Inventory Screen UI --- //
 	public GameObject inventoryScreenUI;
@@ -112,6 +114,8 @@ public class InventorySystem:MonoBehaviour
 
 		itemToAdd.transform.SetParent (whatSlotToEquip.transform);
 
+
+
 		itemList.Add (itemName);
 		Debug.Log ("added to inventory System Debug Log");
 
@@ -142,16 +146,16 @@ public class InventorySystem:MonoBehaviour
 		return new ();
 		}
 
-	// --- Check if inventory is full --- //
-	public bool CheckIfFull()
+	// --- Check if slots available --- //
+	public bool CheckSlotsAvailable(int emptyNeeded)
 		{
-		var counter = 0;
+		var emptySlot = 0;
 
 		foreach (GameObject slot in slotList)
-			if (slot.transform.childCount > 0)
-				counter += 1;
+			if (slot.transform.childCount <= 0)
+				emptySlot += 1;
 
-		if (counter == 21)
+		if (emptySlot >= emptyNeeded)
 			return true;
 		else
 			return false;
