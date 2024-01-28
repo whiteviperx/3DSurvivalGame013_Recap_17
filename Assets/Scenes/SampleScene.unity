@@ -5891,6 +5891,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a28993bbe931f87439ac381d7e09f7b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 604880309}
   itemToBeConstructed: {fileID: 0}
   inConstructionMode: 0
   constructionHoldingSpot: {fileID: 6138505}
@@ -5899,7 +5900,6 @@ MonoBehaviour:
   selectingAGhost: 0
   selectedGhost: {fileID: 0}
   ghostSelectedMat: {fileID: 2100000, guid: 18ad59a1c37f82344b5ec271f339e029, type: 2}
-  ghostSemiTransparentMat: {fileID: 2100000, guid: ab345825e69694047af92dc5e7fa6944, type: 2}
   ghostFullTransparentMat: {fileID: 2100000, guid: be9431cc32ee86b4c924bd82c2ee1d43, type: 2}
   allGhostsInExistence: []
   itemToBeDestroyed: {fileID: 0}

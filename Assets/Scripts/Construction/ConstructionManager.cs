@@ -6,6 +6,8 @@ public class ConstructionManager:MonoBehaviour
 	{
 	public static ConstructionManager Instance { get; set; }
 
+	public GameObject player;
+
 	public GameObject itemToBeConstructed;
 
 	public bool inConstructionMode = false;
@@ -23,7 +25,7 @@ public class ConstructionManager:MonoBehaviour
 	// Materials we store as references for the ghosts
 	public Material ghostSelectedMat;
 
-	public Material ghostSemiTransparentMat;
+	//public Material ghostSemiTransparentMat;
 
 	public Material ghostFullTransparentMat;
 
@@ -233,7 +235,7 @@ public class ConstructionManager:MonoBehaviour
 
 		var randomOffset = UnityEngine.Random.Range (0.01f, 0.03f);
 
-		itemToBeConstructed.transform.position = new Vector3(ghostPosition.x, ghostPosition.y, ghostPosition.z + randomOffset);
+		itemToBeConstructed.transform.position = new Vector3 (ghostPosition.x, ghostPosition.y, ghostPosition.z + randomOffset);
 
 		itemToBeConstructed.transform.rotation = ghostRotation;
 
