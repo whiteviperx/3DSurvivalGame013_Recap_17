@@ -42,7 +42,7 @@ public class GhostItem:MonoBehaviour
 			}
 
 		// Triggering the material
-		if (ConstructionManager.Instance.selectedGhost == this.gameObject)
+		if (ConstructionManager.Instance.selectedGhost == gameObject)
 			{
 			mRenderer.material = selectedMaterial; // green
 			}

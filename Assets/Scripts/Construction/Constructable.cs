@@ -110,7 +110,7 @@ public class Constructable:MonoBehaviour
 			{
 			item.transform.SetParent (transform.parent, true);
 			// sets solid false when finished collide so player doesn't hit them
-			item.gameObject.GetComponent<GhostItem>().solidCollider.enabled = false;
+			item.GetComponent<GhostItem>().solidCollider.enabled = false;
 			item.GetComponent<GhostItem> ().isPlaced = true;
 			}
 		}
