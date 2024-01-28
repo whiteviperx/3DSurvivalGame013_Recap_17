@@ -2405,7 +2405,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &348504958
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7783,7 +7783,7 @@ MonoBehaviour:
   toolsScreenUI: {fileID: 396730607}
   survivalScreenUI: {fileID: 1292097438}
   refineScreenUI: {fileID: 707739834}
-  constructionScreenUI: {fileID: 0}
+  constructionScreenUI: {fileID: 348504957}
   inventoryItemList: []
   isOpen: 0
 --- !u!4 &941036104

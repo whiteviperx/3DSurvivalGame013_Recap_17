@@ -56,7 +56,7 @@ public class InventorySystem:MonoBehaviour
 		// --- Adding the slots to the inventory list (Calling it) --- //
 		PopulateSlotList ();
 
-		// --- Make cursor invisable when starting game --- //
+		// --- Make cursor invisible when starting game --- //
 		Cursor.visible = false;
 		}
 
@@ -113,8 +113,6 @@ public class InventorySystem:MonoBehaviour
 		itemToAdd = Instantiate (Resources.Load<GameObject> (itemName), whatSlotToEquip.transform.position, whatSlotToEquip.transform.rotation);
 
 		itemToAdd.transform.SetParent (whatSlotToEquip.transform);
-
-
 
 		itemList.Add (itemName);
 		Debug.Log ("added to inventory System Debug Log");

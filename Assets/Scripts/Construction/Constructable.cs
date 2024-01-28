@@ -16,16 +16,19 @@ public class Constructable:MonoBehaviour
 	// Material related
 	private Renderer mRenderer;
 
+	// --- Is it a valid place to be built? --- //
 	public Material redMaterial;
 	public Material greenMaterial;
 	public Material defaultMaterial;
 
+	// --- List of Ghosts of the specific item --- //
 	public List<GameObject> ghostList = new ();
 
-	public BoxCollider solidCollider; // We need to drag this collider manually into the inspector
+	public BoxCollider solidCollider;
 
 	private void Start()
 		{
+		// --- Renderer to change materials --- //
 		mRenderer = GetComponent<Renderer> ();
 
 		mRenderer.material = defaultMaterial;
