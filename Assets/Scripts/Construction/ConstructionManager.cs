@@ -231,7 +231,11 @@ public class ConstructionManager:MonoBehaviour
 		// Setting the parent to be the root of our scene
 		itemToBeConstructed.transform.SetParent (transform.parent.transform.parent, true);
 
-		itemToBeConstructed.transform.SetPositionAndRotation (ghostPosition, ghostRotation);
+		var randomOffset = UnityEngine.Random.Range (0.01f, 0.03f);
+
+		itemToBeConstructed.transform.position = new Vector3(ghostPosition.x, ghostPosition.y, ghostPosition.z + randomOffset);
+
+		itemToBeConstructed.transform.rotation = ghostRotation;
 
 		// Enabling back the solider collider that we disabled earlier
 		itemToBeConstructed.GetComponent<Constructable> ().solidCollider.enabled = true;
