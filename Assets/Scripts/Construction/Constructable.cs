@@ -16,16 +16,19 @@ public class Constructable:MonoBehaviour
 	// Material related
 	private Renderer mRenderer;
 
+	// --- Is it a valid place to be built? --- //
 	public Material redMaterial;
 	public Material greenMaterial;
 	public Material defaultMaterial;
 
+	// --- List of Ghosts of the specific item --- //
 	public List<GameObject> ghostList = new ();
 
-	public BoxCollider solidCollider; // We need to drag this collider manually into the inspector
+	public BoxCollider solidCollider;
 
 	private void Start()
 		{
+		// --- Renderer to change materials --- //
 		mRenderer = GetComponent<Renderer> ();
 
 		mRenderer.material = defaultMaterial;
@@ -54,7 +57,7 @@ public class Constructable:MonoBehaviour
 			isGrounded = true;
 			}
 
-		if (other.CompareTag ("Tree") || other.CompareTag ("pickable") && gameObject.CompareTag ("activeConstructable"))
+		if (other.CompareTag ("Tree") || other.CompareTag ("Pickable") && gameObject.CompareTag ("activeConstructable"))
 			{
 			isOverlappingItems = true;
 			}
@@ -72,7 +75,7 @@ public class Constructable:MonoBehaviour
 			isGrounded = false;
 			}
 
-		if (other.CompareTag ("Tree") || other.CompareTag ("pickable") && gameObject.CompareTag ("activeConstructable"))
+		if (other.CompareTag ("Tree") || other.CompareTag ("Pickable") && gameObject.CompareTag ("activeConstructable"))
 			{
 			isOverlappingItems = false;
 			}
@@ -106,7 +109,8 @@ public class Constructable:MonoBehaviour
 		foreach (GameObject item in ghostList)
 			{
 			item.transform.SetParent (transform.parent, true);
-			//  item.gameObject.GetComponent<GhostItem>().solidCollider.enabled = false;
+			// sets solid false when finished collide so player doesn't hit them
+			item.GetComponent<GhostItem>().solidCollider.enabled = false;
 			item.GetComponent<GhostItem> ().isPlaced = true;
 			}
 		}

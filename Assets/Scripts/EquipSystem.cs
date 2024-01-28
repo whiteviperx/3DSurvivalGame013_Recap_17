@@ -81,7 +81,7 @@ public class EquipSystem:MonoBehaviour
 				// --- Unselect previously selected item --- //
 				if (selectedItem != null)
 					{
-					selectedItem.gameObject.GetComponent<InventoryItem> ().isSelected = false;
+					selectedItem.GetComponent<InventoryItem> ().isSelected = false;
 					}
 
 				selectedItem = getSelectedItem (number);
@@ -112,7 +112,7 @@ public class EquipSystem:MonoBehaviour
 
 				if (selectedItemModel != null)
 					{
-					DestroyImmediate (selectedItemModel.gameObject);
+					DestroyImmediate (selectedItemModel);
 					selectedItemModel = null;
 					}
 

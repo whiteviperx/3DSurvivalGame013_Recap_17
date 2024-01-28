@@ -7,7 +7,9 @@ public class InventorySystem:MonoBehaviour
 	{
 	// --- Singleton --- //
 	public static InventorySystem Instance
-		{ get; set; }
+		{
+		get; set;
+		}
 
 	// --- Inventory Screen UI --- //
 	public GameObject inventoryScreenUI;
@@ -54,7 +56,7 @@ public class InventorySystem:MonoBehaviour
 		// --- Adding the slots to the inventory list (Calling it) --- //
 		PopulateSlotList ();
 
-		// --- Make cursor invisable when starting game --- //
+		// --- Make cursor invisible when starting game --- //
 		Cursor.visible = false;
 		}
 
@@ -73,7 +75,7 @@ public class InventorySystem:MonoBehaviour
 	private void Update()
 		{
 		// --- Pressing "I" opens & closes inventory screen --- //
-		if (Input.GetKeyDown (KeyCode.I) && !isOpen)
+		if (Input.GetKeyDown (KeyCode.I) && !isOpen && !ConstructionManager.Instance.inConstructionMode)
 			{
 			Debug.Log ("i is pressed");
 
@@ -113,7 +115,7 @@ public class InventorySystem:MonoBehaviour
 		itemToAdd.transform.SetParent (whatSlotToEquip.transform);
 
 		itemList.Add (itemName);
-		Debug.Log ("added to inventory Inventory System Debug Log");
+		Debug.Log ("added to inventory System Debug Log");
 
 		TriggerPickupPopUp (itemName, itemToAdd.GetComponent<Image> ().sprite);
 
@@ -142,16 +144,16 @@ public class InventorySystem:MonoBehaviour
 		return new ();
 		}
 
-	// --- Check if inventory is full --- //
-	public bool CheckIfFull()
+	// --- Check if slots available --- //
+	public bool CheckSlotsAvailable(int emptyNeeded)
 		{
-		var counter = 0;
+		var emptySlot = 0;
 
 		foreach (GameObject slot in slotList)
-			if (slot.transform.childCount > 0)
-				counter += 1;
+			if (slot.transform.childCount <= 0)
+				emptySlot += 1;
 
-		if (counter == 21)
+		if (emptySlot >= emptyNeeded)
 			return true;
 		else
 			return false;

@@ -1,0 +1,28 @@
+{
+    "notes": [
+        {
+            "noteText": "",
+            "show": false,
+            "typeName": "UnityEngine.GameObject",
+            "GlobalObjectSerialization": "GlobalObjectId_V1-2-9fc0d4010bbf28b4594072e72b8655ab-1218819550-0"
+        },
+        {
+            "noteText": "Universal Render Pipeline needs to be added to make more changes. Part 17 20min",
+            "show": true,
+            "typeName": "UnityEngine.Material",
+            "GlobalObjectSerialization": "GlobalObjectId_V1-3-be9431cc32ee86b4c924bd82c2ee1d43-2100000-0"
+        },
+        {
+            "noteText": "",
+            "show": false,
+            "typeName": "UnityEngine.Material",
+            "GlobalObjectSerialization": "GlobalObjectId_V1-3-c9b97eab185033842a441389ca89d1f6-2100000-0"
+        },
+        {
+            "noteText": "Axe Doesnt unload",
+            "show": false,
+            "typeName": "UnityEngine.GameObject",
+            "GlobalObjectSerialization": "GlobalObjectId_V1-2-9fc0d4010bbf28b4594072e72b8655ab-1116249224-0"
+        }
+    ]
+}

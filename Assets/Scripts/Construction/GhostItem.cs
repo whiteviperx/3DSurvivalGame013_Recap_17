@@ -6,7 +6,7 @@ public class GhostItem:MonoBehaviour
 
 	public Renderer mRenderer;
 	private Material semiTransparentMat; // Used for debug - instead of the full transparent
-	private Material fullTransparentnMat;
+	private Material fullTransparentMat;
 	private Material selectedMaterial;
 
 	public bool isPlaced;
@@ -19,7 +19,7 @@ public class GhostItem:MonoBehaviour
 		mRenderer = GetComponent<Renderer> ();
 		// We get them from the manager, because this way the reference always exists.
 		semiTransparentMat = ConstructionManager.Instance.ghostSemiTransparentMat;
-		fullTransparentnMat = ConstructionManager.Instance.ghostFullTransparentMat;
+		fullTransparentMat = ConstructionManager.Instance.ghostFullTransparentMat;
 		selectedMaterial = ConstructionManager.Instance.ghostSelectedMat;
 
 		mRenderer.material = semiTransparentMat; //change to semi if in debug else full
@@ -42,13 +42,13 @@ public class GhostItem:MonoBehaviour
 			}
 
 		// Triggering the material
-		if (ConstructionManager.Instance.selectedGhost == this.gameObject)
+		if (ConstructionManager.Instance.selectedGhost == gameObject)
 			{
-			mRenderer.material = selectedMaterial;
+			mRenderer.material = selectedMaterial; // green
 			}
 		else
 			{
-			mRenderer.material = semiTransparentMat; //change to semi if in debug else full
+			mRenderer.material = semiTransparentMat; //change to semi if in debug else full transparent
 			}
 		}
 	}

@@ -1,3 +1,5 @@
+// Ignore Spelling: Interactable
+
 using UnityEngine;
 
 public class InteractableObject:MonoBehaviour
@@ -15,7 +17,7 @@ public class InteractableObject:MonoBehaviour
 
 			{
 			// ---  If the inventory is NOT full --- //
-			if (!InventorySystem.Instance.CheckIfFull ())
+			if (InventorySystem.Instance.CheckSlotsAvailable (1))
 				{
 				InventorySystem.Instance.AddToInventory (ItemName);
 

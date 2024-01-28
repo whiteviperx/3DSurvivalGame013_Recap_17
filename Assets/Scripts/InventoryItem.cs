@@ -1,3 +1,5 @@
+// Ignore Spelling: Trashable Equippable
+
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -34,6 +36,8 @@ public class InventoryItem:MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 	public bool isInsideQuickSlot;
 
 	public bool isSelected;
+
+	public bool isUsable;
 
 	private void Start()
 		{
@@ -88,6 +92,14 @@ public class InventoryItem:MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 				EquipSystem.Instance.AddToQuickSlots (gameObject);
 				isInsideQuickSlot = true;
 				}
+			if (isUsable)
+				{
+				ConstructionManager.Instance.itemToBeDestroyed = gameObject;
+
+				gameObject.SetActive (false); // Even though we can't see the item
+
+				UseItem ();
+				}
 			}
 		}
 
@@ -102,6 +114,50 @@ public class InventoryItem:MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 				InventorySystem.Instance.ReCalculateList ();
 				CraftingSystem.Instance.RefreshNeededItems ();
 				}
+			}
+		}
+
+	private void UseItem()
+		{
+		itemInfoUI.SetActive (false);
+
+		InventorySystem.Instance.isOpen = false;
+		InventorySystem.Instance.inventoryScreenUI.SetActive (false);
+
+		CraftingSystem.Instance.isOpen = false;
+		CraftingSystem.Instance.craftingScreenUI.SetActive (false);
+		CraftingSystem.Instance.toolsScreenUI.SetActive (false);
+		CraftingSystem.Instance.survivalScreenUI.SetActive (false);
+		CraftingSystem.Instance.refineScreenUI.SetActive (false);
+		CraftingSystem.Instance.constructionScreenUI.SetActive (false);
+
+		Cursor.lockState = CursorLockMode.Locked;
+		Cursor.visible = false;
+
+		SelectionManager.Instance.EnableSelection ();
+		SelectionManager.Instance.enabled = true;
+
+		switch (gameObject.name)
+			{
+			case "Foundation(Clone)":
+				ConstructionManager.Instance.ActivateConstructionPlacement ("FoundationModel");
+				break;
+
+			case "Foundation":
+				ConstructionManager.Instance.ActivateConstructionPlacement ("FoundationModel"); // For testing
+				break;
+
+			case "Wall(Clone)":
+				ConstructionManager.Instance.ActivateConstructionPlacement ("WallModel");
+				break;
+
+			case "Wall":
+				ConstructionManager.Instance.ActivateConstructionPlacement ("WallModel"); // For testing
+				break;
+
+			default:
+				// do nothing
+				break;
 			}
 		}
 
