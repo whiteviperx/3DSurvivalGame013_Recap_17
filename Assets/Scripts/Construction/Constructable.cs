@@ -57,7 +57,7 @@ public class Constructable:MonoBehaviour
 			isGrounded = true;
 			}
 
-		if (other.CompareTag ("Tree") || other.CompareTag ("pickable") && gameObject.CompareTag ("activeConstructable"))
+		if (other.CompareTag ("Tree") || other.CompareTag ("Pickable") && gameObject.CompareTag ("activeConstructable"))
 			{
 			isOverlappingItems = true;
 			}
@@ -75,7 +75,7 @@ public class Constructable:MonoBehaviour
 			isGrounded = false;
 			}
 
-		if (other.CompareTag ("Tree") || other.CompareTag ("pickable") && gameObject.CompareTag ("activeConstructable"))
+		if (other.CompareTag ("Tree") || other.CompareTag ("Pickable") && gameObject.CompareTag ("activeConstructable"))
 			{
 			isOverlappingItems = false;
 			}
@@ -109,7 +109,8 @@ public class Constructable:MonoBehaviour
 		foreach (GameObject item in ghostList)
 			{
 			item.transform.SetParent (transform.parent, true);
-			//  item.gameObject.GetComponent<GhostItem>().solidCollider.enabled = false;
+			// sets solid false when finished collide so player doesn't hit them
+			item.gameObject.GetComponent<GhostItem>().solidCollider.enabled = false;
 			item.GetComponent<GhostItem> ().isPlaced = true;
 			}
 		}

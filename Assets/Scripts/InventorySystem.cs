@@ -75,7 +75,7 @@ public class InventorySystem:MonoBehaviour
 	private void Update()
 		{
 		// --- Pressing "I" opens & closes inventory screen --- //
-		if (Input.GetKeyDown (KeyCode.I) && !isOpen)
+		if (Input.GetKeyDown (KeyCode.I) && !isOpen && !ConstructionManager.Instance.inConstructionMode)
 			{
 			Debug.Log ("i is pressed");
 

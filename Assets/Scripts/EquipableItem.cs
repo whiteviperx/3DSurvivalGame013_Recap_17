@@ -21,7 +21,8 @@ public class EquipableItem:MonoBehaviour
 		if (Input.GetMouseButtonDown (0) && // --- Left Mouse Button --- //
 			InventorySystem.Instance.isOpen == false &&
 			CraftingSystem.Instance.isOpen == false &&
-			SelectionManager.Instance.handIsVisible == false
+			SelectionManager.Instance.handIsVisible == false &&
+			!ConstructionManager.Instance.inConstructionMode
 			)
 
 			{
@@ -44,7 +45,7 @@ public class EquipableItem:MonoBehaviour
 		}
 	IEnumerator SwingSoundDelay()
 		{
-		yield return new WaitForSeconds (0.2f);
+		yield return new WaitForSeconds (0.1f);
 		SoundManager.Instance.PlaySound (SoundManager.Instance.toolSwingSound);
 		}
 

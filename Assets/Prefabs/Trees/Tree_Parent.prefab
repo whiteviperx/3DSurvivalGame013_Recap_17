@@ -67,6 +67,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2229436272149972392, guid: 79ccd8a61edefd54095589e35e1b68d2, type: 3}
+      propertyPath: treeMaxHealth
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2699538157345301510, guid: 79ccd8a61edefd54095589e35e1b68d2, type: 3}
       propertyPath: m_Name
       value: Tree1

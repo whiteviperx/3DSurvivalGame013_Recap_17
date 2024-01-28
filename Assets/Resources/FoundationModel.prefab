@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 717316979125382356}
+  - component: {fileID: 8169981543956687947}
   - component: {fileID: 4703429389952046254}
   - component: {fileID: 1457049820841270280}
-  - component: {fileID: 8169981543956687947}
   - component: {fileID: 5962237308367909757}
   - component: {fileID: 7066979706196060132}
   m_Layer: 0
@@ -36,6 +36,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4880827846104405500}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8169981543956687947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 542223223190591397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4131729b086c7bc4584f411e108dd758, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  solidCollider: {fileID: 4703429389952046254}
+  mRenderer: {fileID: 0}
+  isPlaced: 0
+  hasSamePosition: 0
 --- !u!65 &4703429389952046254
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -78,22 +94,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8169981543956687947
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 542223223190591397}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4131729b086c7bc4584f411e108dd758, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  solidCollider: {fileID: 0}
-  mRenderer: {fileID: 0}
-  isPlaced: 0
-  hasSamePosition: 0
 --- !u!23 &5962237308367909757
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -237,7 +237,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4131729b086c7bc4584f411e108dd758, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  solidCollider: {fileID: 0}
+  solidCollider: {fileID: 7684123357979604814}
   mRenderer: {fileID: 0}
   isPlaced: 0
   hasSamePosition: 0
@@ -384,7 +384,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4131729b086c7bc4584f411e108dd758, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  solidCollider: {fileID: 0}
+  solidCollider: {fileID: 2630625008620124132}
   mRenderer: {fileID: 0}
   isPlaced: 0
   hasSamePosition: 0
@@ -531,7 +531,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4131729b086c7bc4584f411e108dd758, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  solidCollider: {fileID: 0}
+  solidCollider: {fileID: 5827912102099276472}
   mRenderer: {fileID: 0}
   isPlaced: 0
   hasSamePosition: 0
@@ -678,7 +678,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4131729b086c7bc4584f411e108dd758, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  solidCollider: {fileID: 0}
+  solidCollider: {fileID: 4457241908419075714}
   mRenderer: {fileID: 0}
   isPlaced: 0
   hasSamePosition: 0
@@ -751,7 +751,7 @@ GameObject:
   - component: {fileID: 8915684276885631394}
   - component: {fileID: 478606865230937759}
   m_Layer: 0
-  m_Name: Foundation_Model
+  m_Name: FoundationModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1013,7 +1013,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4131729b086c7bc4584f411e108dd758, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  solidCollider: {fileID: 0}
+  solidCollider: {fileID: 8034740622190990607}
   mRenderer: {fileID: 0}
   isPlaced: 0
   hasSamePosition: 0
@@ -1160,7 +1160,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4131729b086c7bc4584f411e108dd758, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  solidCollider: {fileID: 0}
+  solidCollider: {fileID: 5292390373283649543}
   mRenderer: {fileID: 0}
   isPlaced: 0
   hasSamePosition: 0
@@ -1307,7 +1307,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4131729b086c7bc4584f411e108dd758, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  solidCollider: {fileID: 0}
+  solidCollider: {fileID: 3430423817438987885}
   mRenderer: {fileID: 0}
   isPlaced: 0
   hasSamePosition: 0

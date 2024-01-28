@@ -44,11 +44,11 @@ public class GhostItem:MonoBehaviour
 		// Triggering the material
 		if (ConstructionManager.Instance.selectedGhost == this.gameObject)
 			{
-			mRenderer.material = selectedMaterial;
+			mRenderer.material = selectedMaterial; // green
 			}
 		else
 			{
-			mRenderer.material = semiTransparentMat; //change to semi if in debug else full
+			mRenderer.material = semiTransparentMat; //change to semi if in debug else full transparent
 			}
 		}
 	}

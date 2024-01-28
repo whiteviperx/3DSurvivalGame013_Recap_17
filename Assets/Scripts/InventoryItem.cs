@@ -38,7 +38,6 @@ public class InventoryItem:MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 	public bool isSelected;
 
 	public bool isUsable;
-	public GameObject itemPendingToBeUsed;
 
 	private void Start()
 		{
@@ -93,12 +92,27 @@ public class InventoryItem:MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 				EquipSystem.Instance.AddToQuickSlots (gameObject);
 				isInsideQuickSlot = true;
 				}
-
 			if (isUsable)
 				{
-				itemPendingToBeUsed = gameObject;
+				ConstructionManager.Instance.itemToBeDestroyed = gameObject;
+
+				gameObject.SetActive (false); // Even though we can't see the item
 
 				UseItem ();
+				}
+			}
+		}
+
+	// --- Triggered when the mouse button is released over the item that has this script --- //
+	public void OnPointerUp(PointerEventData eventData)
+		{
+		if (eventData.button == PointerEventData.InputButton.Right)
+			{
+			if (isConsumable && itemPendingConsumption == gameObject)
+				{
+				DestroyImmediate (gameObject);
+				InventorySystem.Instance.ReCalculateList ();
+				CraftingSystem.Instance.RefreshNeededItems ();
 				}
 			}
 		}
@@ -140,30 +154,10 @@ public class InventoryItem:MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 			case "Wall":
 				ConstructionManager.Instance.ActivateConstructionPlacement ("WallModel"); // For testing
 				break;
+
 			default:
 				// do nothing
 				break;
-			}
-		}
-
-	// --- Triggered when the mouse button is released over the item that has this script --- //
-	public void OnPointerUp(PointerEventData eventData)
-		{
-		if (eventData.button == PointerEventData.InputButton.Right)
-			{
-			if (isConsumable && itemPendingConsumption == gameObject)
-				{
-				DestroyImmediate (gameObject);
-				InventorySystem.Instance.ReCalculateList ();
-				CraftingSystem.Instance.RefreshNeededItems ();
-				}
-
-			if (isUsable && itemPendingToBeUsed == gameObject)
-				{
-				DestroyImmediate (gameObject);
-				InventorySystem.Instance.ReCalculateList ();
-				CraftingSystem.Instance.RefreshNeededItems ();
-				}
 			}
 		}
 

@@ -42,7 +42,6 @@ public class CraftingSystem:MonoBehaviour
 
 	public Blueprint FoundationBLP = new ("Foundation", 1, 1, "Plank", 4, "", 0);
 
-
 	//public ItemBluePrint WindowBLP;
 	//public ItemBluePrint DoorBLP;
 
@@ -210,7 +209,7 @@ public class CraftingSystem:MonoBehaviour
 		// --- Lock and unlock cursor if crafting window open or closed --- //
 
 		// --- Pressing "C" opens & closes crafting screen --- //
-		if (Input.GetKeyDown (KeyCode.C) && !isOpen)
+		if (Input.GetKeyDown (KeyCode.C) && !isOpen && !ConstructionManager.Instance.inConstructionMode)
 			{
 			Debug.Log ("C is pressed");
 

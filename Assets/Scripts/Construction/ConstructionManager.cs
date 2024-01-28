@@ -25,6 +25,8 @@ public class ConstructionManager:MonoBehaviour
 	// so the manager can monitor them for various operations
 	public List<GameObject> allGhostsInExistence = new ();
 
+	public GameObject itemToBeDestroyed;
+
 	private void Awake()
 		{
 		if (Instance != null && Instance != this)
@@ -172,6 +174,7 @@ public class ConstructionManager:MonoBehaviour
 			if (isValidPlacement && selectedGhost == false) // We don't want the freestyle to be triggered when we select a ghost.
 				{
 				PlaceItemFreeStyle ();
+				DestroyItem (itemToBeDestroyed);
 				}
 
 			if (selectingAGhost)
@@ -179,9 +182,15 @@ public class ConstructionManager:MonoBehaviour
 				PlaceItemInGhostPosition (selectedGhost);
 				}
 			}
-		// Right Mouse Click to Cancel                      //TODO - don't destroy the ui item until you actually placed it.
-		if (Input.GetMouseButtonDown (0) && isValidPlacement)
-			{     // Left Mouse Button
+		// Escape key to Cancel
+		if (Input.GetKeyDown(KeyCode.X))
+			{
+			Debug.Log ("Escape Construction Mode");
+			itemToBeDestroyed.SetActive (true);
+			itemToBeDestroyed = null;
+			DestroyItem (itemToBeConstructed);
+			itemToBeConstructed = null;
+			inConstructionMode = false;
 			}
 		}
 
@@ -238,6 +247,13 @@ public class ConstructionManager:MonoBehaviour
 		itemToBeConstructed = null;
 
 		inConstructionMode = false;
+		}
+
+	private void DestroyItem(GameObject item)
+		{
+		DestroyImmediate (item);
+		InventorySystem.Instance.ReCalculateList ();
+		CraftingSystem.Instance.RefreshNeededItems ();
 		}
 
 	private bool CheckValidConstructionPosition()
