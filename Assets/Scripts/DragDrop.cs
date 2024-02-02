@@ -6,10 +6,13 @@ public class DragDrop:MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHa
 	private RectTransform rectTransform;
 
 	private CanvasGroup canvasGroup;
+
 	// public Transform inventory;
 
 	public static GameObject itemBeingDragged;
+
 	private Vector3 startPosition;
+
 	private Transform startParent;
 
 	private void Awake()
@@ -22,6 +25,7 @@ public class DragDrop:MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHa
 		{
 		Debug.Log ("OnBeginDrag");
 		canvasGroup.alpha = .6f;
+
 		// --- So the ray cast will ignore the item itself --- //
 		canvasGroup.blocksRaycasts = false;
 		startPosition = transform.position;

@@ -10,7 +10,9 @@ public class Constructable:MonoBehaviour
 	public bool isGrounded;
 
 	public bool isOverlappingItems;
+
 	public bool isValidToBeBuilt;
+
 	public bool detectedGhostMember;
 
 	// Material related
@@ -18,7 +20,9 @@ public class Constructable:MonoBehaviour
 
 	// --- Is it a valid place to be built? --- //
 	public Material redMaterial;
+
 	public Material greenMaterial;
+
 	public Material defaultMaterial;
 
 	// --- List of Ghosts of the specific item --- //
@@ -109,8 +113,9 @@ public class Constructable:MonoBehaviour
 		foreach (GameObject item in ghostList)
 			{
 			item.transform.SetParent (transform.parent, true);
+
 			// sets solid false when finished collide so player doesn't hit them
-			item.GetComponent<GhostItem>().solidCollider.enabled = false;
+			item.GetComponent<GhostItem> ().solidCollider.enabled = false;
 			item.GetComponent<GhostItem> ().isPlaced = true;
 			}
 		}

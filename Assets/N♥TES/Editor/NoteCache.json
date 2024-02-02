@@ -23,6 +23,12 @@
             "show": false,
             "typeName": "UnityEngine.GameObject",
             "GlobalObjectSerialization": "GlobalObjectId_V1-2-9fc0d4010bbf28b4594072e72b8655ab-1116249224-0"
+        },
+        {
+            "noteText": "Window, Lighting, Rendering Takes at least 20 min",
+            "show": false,
+            "typeName": "UnityEditor.SceneAsset",
+            "GlobalObjectSerialization": "GlobalObjectId_V1-1-9fc0d4010bbf28b4594072e72b8655ab-102900000-0"
         }
     ]
 }

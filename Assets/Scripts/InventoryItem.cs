@@ -13,7 +13,9 @@ public class InventoryItem:MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 	private GameObject itemInfoUI;
 
 	private Text itemInfoUI_ItemName;
+
 	private Text itemInfoUI_ItemDescription;
+
 	private Text itemInfoUI_ItemFunctionality;
 
 	public string thisName, thisDescription, thisFunctionality;
@@ -27,12 +29,14 @@ public class InventoryItem:MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 	public float healthEffect;
 
 	public float foodEffect;
+
 	public float waterEffect;
 
 	// --- Equipping --- //
 	public bool isEquippable;
 
 	private GameObject itemPendingEquipping;
+
 	public bool isInsideQuickSlot;
 
 	public bool isSelected;
@@ -156,6 +160,7 @@ public class InventoryItem:MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 				break;
 
 			default:
+
 				// do nothing
 				break;
 			}

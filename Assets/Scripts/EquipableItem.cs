@@ -26,7 +26,6 @@ public class EquipableItem:MonoBehaviour
 			)
 
 			{
-
 			SoundManager.Instance.PlaySound (SoundManager.Instance.toolSwingSound);
 			animator.SetTrigger ("hit");
 
@@ -43,11 +42,10 @@ public class EquipableItem:MonoBehaviour
 			selectedTree.GetComponent<ChoppableTree> ().GetHit ();
 			}
 		}
-	IEnumerator SwingSoundDelay()
+
+	private IEnumerator SwingSoundDelay()
 		{
 		yield return new WaitForSeconds (0.1f);
 		SoundManager.Instance.PlaySound (SoundManager.Instance.toolSwingSound);
 		}
-
-
 	}

@@ -27,6 +27,7 @@ public class PlayerState:MonoBehaviour
 	public float currentWaterPercent;
 
 	public float maxWaterPercent;
+
 	public bool isWaterActive;
 
 	private void Awake()

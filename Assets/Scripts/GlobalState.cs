@@ -5,6 +5,7 @@ public class GlobalState:MonoBehaviour
 	public static GlobalState Instance { get; set; }
 
 	public float resourceHealth;
+
 	public float resourceMaxHealth;
 
 	public void Awake()

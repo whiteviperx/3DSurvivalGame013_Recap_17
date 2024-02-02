@@ -248,18 +248,18 @@ public class ConstructionManager:MonoBehaviour
 
 		if (itemToBeConstructed.name == "FoundationModel")
 			{
-				// Making the Ghost Children to no longer be children of this item
-				itemToBeConstructed.GetComponent<Constructable> ().ExtractGhostMembers ();
-				itemToBeConstructed.tag = "placedFoundation";
+			// Making the Ghost Children to no longer be children of this item
+			itemToBeConstructed.GetComponent<Constructable> ().ExtractGhostMembers ();
+			itemToBeConstructed.tag = "placedFoundation";
 
-				//Adding all the ghosts of this item into the manager's ghost bank
-				GetAllGhosts (itemToBeConstructed);
-				PerformGhostDeletionScan ();
+			//Adding all the ghosts of this item into the manager's ghost bank
+			GetAllGhosts (itemToBeConstructed);
+			PerformGhostDeletionScan ();
 			}
 		else
 			{
-				itemToBeConstructed.tag = "placedWall";
-				DestroyItem (selectedGhost); // We delete this wallghost, because the Manager will not do it
+			itemToBeConstructed.tag = "placedWall";
+			DestroyItem (selectedGhost); // We delete this wallghost, because the Manager will not do it
 			}
 
 		itemToBeConstructed = null;

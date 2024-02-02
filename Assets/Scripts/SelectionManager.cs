@@ -28,6 +28,7 @@ public class SelectionManager:MonoBehaviour
 	public bool handIsVisible;
 
 	public GameObject selectedTree;
+
 	public GameObject chopHolder;
 
 	private void Start()

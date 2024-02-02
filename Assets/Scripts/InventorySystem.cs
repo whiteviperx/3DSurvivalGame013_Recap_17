@@ -37,6 +37,7 @@ public class InventorySystem:MonoBehaviour
 	public GameObject pickupAlert;
 
 	public Text pickupName;
+
 	public Image pickupImage;
 
 	// --- Item Info Panel --- //

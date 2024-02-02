@@ -5,13 +5,16 @@ public class PlayerMovement:MonoBehaviour
 	public CharacterController controller;
 
 	public float speed = 12f;
+
 	public float gravity = -9.81f * 2;
+
 	public float jumpHeight = 3f;
 
 	// --- Ground Check --- //
 	public Transform groundCheck;
 
 	public float groundDistance = 0.4f;
+
 	public LayerMask groundMask;
 
 	private Vector3 velocity;

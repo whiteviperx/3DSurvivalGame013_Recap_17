@@ -18,6 +18,7 @@ public class EquipSystem:MonoBehaviour
 	public GameObject numbersHolder;
 
 	public int selectedNumber = -1;
+
 	public GameObject selectedItem;
 
 	public GameObject toolHolder;
@@ -134,8 +135,10 @@ public class EquipSystem:MonoBehaviour
 			DestroyImmediate (selectedItemModel.gameObject);
 			selectedItemModel = null;
 			}
+
 		// --- Position of the new Item --- //
 		string selectedItemName = selectedItem.name.Replace ("(Clone)", "");
+
 		// --- Position (0.25f, 0.8f, 0.39f) --- Rotation (0, -100f, -20f) --- //
 		GameObject SelectedItemModel = Instantiate (Resources.Load<GameObject> (selectedItemName + "_Model"), new Vector3 (0.25f, 0.8f, 0.39f), Quaternion.Euler (0, -100f, -20f));
 		SelectedItemModel.transform.SetParent (toolHolder.transform, false);
