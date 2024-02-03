@@ -5,7 +5,8 @@ public class MouseMovement:MonoBehaviour
 	public float mouseSensitivity = 100f;
 
 	private float xRotation = 0f;
-	private float YRotation = 0f;
+
+	private float yRotation = 0f;
 
 	private void Start()
 		{
@@ -15,8 +16,10 @@ public class MouseMovement:MonoBehaviour
 
 	private void Update()
 		{
-		// if (InventorySystem.Instance.isOpen == false)
-		if (InventorySystem.Instance.isOpen && !CraftingSystem.Instance.isOpen && !MenuManager.Instance.isMenuOpen)
+		 if (InventorySystem.Instance.isOpen == false)
+		// if (InventorySystem.Instance.isOpen && !CraftingSystem.Instance.isOpen)
+		//if (InventorySystem.Instance.isOpen && !CraftingSystem.Instance.isOpen && !MenuManager.Instance.isMenuOpen)
+
 			{
 			float mouseX = Input.GetAxis ("Mouse X") * mouseSensitivity * Time.deltaTime;
 			float mouseY = Input.GetAxis ("Mouse Y") * mouseSensitivity * Time.deltaTime;
@@ -28,10 +31,10 @@ public class MouseMovement:MonoBehaviour
 			xRotation = Mathf.Clamp (xRotation, -90f, 90f);
 
 			// --- control rotation around y axis (Look up and down) --- //
-			YRotation += mouseX;
+			yRotation += mouseX;
 
 			// --- applying both rotations --- //
-			transform.localRotation = Quaternion.Euler (xRotation, YRotation, 0f);
+			transform.localRotation = Quaternion.Euler (xRotation, yRotation, 0f);
 			}
 		}
 	}
