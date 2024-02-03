@@ -9,8 +9,11 @@ public class AI_Movement:MonoBehaviour
 	private Vector3 stopPosition;
 
 	private float walkTime;
+
 	public float walkCounter;
+
 	private float waitTime;
+
 	public float waitCounter;
 
 	private int WalkDirection;
@@ -68,9 +71,11 @@ public class AI_Movement:MonoBehaviour
 				{
 				stopPosition = new (transform.position.x, transform.position.y, transform.position.z);
 				isWalking = false;
+
 				// --- Stop movement --- //
 				transform.position = stopPosition;
 				animator.SetBool ("isRunning", false);
+
 				// --- Reset the waitCounter --- //
 				waitCounter = waitTime;
 				}

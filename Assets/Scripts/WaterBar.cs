@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class WaterBar:MonoBehaviour
 	{
 	private Slider slider;
+
 	public Text WaterCounter;
 
 	public GameObject playerState;

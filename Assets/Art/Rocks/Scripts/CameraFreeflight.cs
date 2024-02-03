@@ -3,9 +3,11 @@ using UnityEngine;
 public class CameraFreeflight:MonoBehaviour
 	{
 	public float speedNormal = 10.0f;
+
 	public float speedFast = 50.0f;
 
 	public float mouseSensitivityX = 5.0f;
+
 	public float mouseSensitivityY = 5.0f;
 
 	private float rotY = 0.0f;

@@ -8,7 +8,7 @@ public class MainMenuSaveManager:MonoBehaviour
 		{
 		if (Instance != null && Instance != this)
 			{
-			Destroy (gameObject);
+			Destroy(gameObject);
 			}
 		else
 			{
@@ -28,19 +28,21 @@ public class MainMenuSaveManager:MonoBehaviour
 
 	public void SaveVolumeSettings(float _music, float _effects, float _master)
 		{
-		VolumeSettings volumeSettings = new ()
+		VolumeSettings volumeSettings = new()
 			{
 			music = _music,
 			effects = _effects,
 			master = _master
 			};
 
-		PlayerPrefs.SetString ("Volume", JsonUtility.ToJson (volumeSettings));
-		PlayerPrefs.Save ();
+		PlayerPrefs.SetString("Volume", JsonUtility.ToJson(volumeSettings));
+		PlayerPrefs.Save();
+
+		print("Saved to Player Prefs");
 		}
 
 	public VolumeSettings LoadVolumeSettings()
 		{
-		return JsonUtility.FromJson<VolumeSettings> (PlayerPrefs.GetString ("Volume"));
+		return JsonUtility.FromJson<VolumeSettings>(PlayerPrefs.GetString("Volume"));
 		}
 	}

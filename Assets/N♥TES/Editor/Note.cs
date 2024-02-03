@@ -1,366 +1,373 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEditor;
-using UnityEditor.AssetImporters;
-using System;
+﻿using System;
 using System.Reflection;
+
+using UnityEditor;
+
+using UnityEngine;
+
 using Object = UnityEngine.Object;
 
 namespace Notes
-{
-    [CustomEditor(typeof(Note), true)]
-    public class NoteNote : Note<Note> 
-    {
-        protected override bool AlwaysShowNote => true;
-        protected override bool RespectBaseInspector => false;
-    }
+	{
+	[CustomEditor (typeof (Note), true)]
+	public class NoteNote:Note<Note>
+		{
+		protected override bool AlwaysShowNote => true;
 
-    /// <summary>
-    /// The base class for adding notes to Objects.
-    /// </summary>
-    /// <typeparam name="T">The Object to add a note to.</typeparam>
-    [CanEditMultipleObjects]
-    public class Note<T> : Editor
-    {
-        protected virtual bool AlwaysShowNote => false;
-        protected virtual bool RespectBaseInspector => true;
-        protected virtual bool IsHeader => false; //May not work properly on all objects.
+		protected override bool RespectBaseInspector => false;
+		}
 
-        private int ID
-        {
-            get
-            {
-                Object sourceObject = null;
+	/// <summary>
+	/// The base class for adding notes to Objects.
+	/// </summary>
+	/// <typeparam name="T">The Object to add a note to.</typeparam>
+	[CanEditMultipleObjects]
+	public class Note<T>:Editor
+		{
+		protected virtual bool AlwaysShowNote => false;
 
-                if(PrefabUtility.IsPartOfAnyPrefab(target)) //if we've selected a prefab
-                {
-                    sourceObject = PrefabUtility.GetCorrespondingObjectFromSourceAtPath(target, PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(target));
-                }
-                else //regular instance
-                {
-                    return target.GetInstanceID();
-                }
+		protected virtual bool RespectBaseInspector => true;
 
-                if (sourceObject != null) //get prefab instance ID
-                {
-                    return sourceObject.GetInstanceID();
-                }
-                else //this should just never ever happen.
-                {
-                    allowNoteEdits = false;
-                    return target.GetInstanceID(); //SHOULD (hopefully) NEVER HAPPEN
-                }
-            }
-        }
+		protected virtual bool IsHeader => false; //May not work properly on all objects.
 
-        private SerializableNote note;
-        private bool allowNoteEdits = true;
+		private int ID
+			{
+			get
+				{
+				Object sourceObject = null;
 
-        //Unity's built-in editor
-        private Type targetType;
-        private Editor defaultEditor;
+				if (PrefabUtility.IsPartOfAnyPrefab (target)) //if we've selected a prefab
+					{
+					sourceObject = PrefabUtility.GetCorrespondingObjectFromSourceAtPath (target, PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot (target));
+					}
+				else //regular instance
+					{
+					return target.GetInstanceID ();
+					}
 
-        void OnEnable()
-        {
-            targetType = Type.GetType($"UnityEditor.{typeof(T).Name}Inspector, UnityEditor");
-            if (targetType != null)
-            {
-                //When this inspector is created, also create the built-in inspector
-                defaultEditor = Editor.CreateEditor(targets, targetType);
-            }
+				if (sourceObject != null) //get prefab instance ID
+					{
+					return sourceObject.GetInstanceID ();
+					}
+				else //this should just never ever happen.
+					{
+					allowNoteEdits = false;
+					return target.GetInstanceID (); //SHOULD (hopefully) NEVER HAPPEN
+					}
+				}
+			}
 
-            if (!Notes.TryLoadNote(ID, out note))
-            {
-                note = new SerializableNote(ID, "", false);
-            }
-        }
+		private SerializableNote note;
 
-        void OnDisable()
-        {
-            //When OnDisable is called, the default editor we created should be destroyed to avoid memory leakage.
-            //Also, make sure to call any required methods like OnDisable
-            if(defaultEditor != null)
-            {
-                MethodInfo disableMethod = defaultEditor.GetType().GetMethod("OnDisable", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
-                if (disableMethod != null)
-                    disableMethod.Invoke(defaultEditor, null);
-                DestroyImmediate(defaultEditor);
-            }
-        }
+		private bool allowNoteEdits = true;
 
-        public override void OnInspectorGUI()
-        {
-            if(RespectBaseInspector)
-            {
-                if (targetType != null)
-                {
-                    defaultEditor.OnInspectorGUI();
-                }
-                else
-                {
-                    DrawDefaultInspector();
-                }
-            }
+		//Unity's built-in editor
+		private Type targetType;
 
-            if(!IsHeader)
-            {
-                DrawNoteGui();
-            }
-        }
+		private Editor defaultEditor;
 
-        protected override void OnHeaderGUI()
-        {
-            if (RespectBaseInspector)
-            {
-                if (targetType != null)
-                {
-                    defaultEditor.DrawHeader();
-                }
-                else
-                {
-                    base.DrawHeader();
-                }
-            }
+		private void OnEnable()
+			{
+			targetType = Type.GetType ($"UnityEditor.{typeof (T).Name}Inspector, UnityEditor");
+			if (targetType != null)
+				{
+				//When this inspector is created, also create the built-in inspector
+				defaultEditor = Editor.CreateEditor (targets, targetType);
+				}
 
-            if (IsHeader)
-            {
-                DrawNoteGui();
-            }
-        }
+			if (!Notes.TryLoadNote (ID, out note))
+				{
+				note = new SerializableNote (ID, "", false);
+				}
+			}
 
-        public override void DrawPreview(Rect previewArea)
-        {
-            if (RespectBaseInspector)
-            {
-                if (targetType != null)
-                {
-                    defaultEditor.DrawPreview(previewArea);
-                }
-                else
-                {
-                    base.DrawPreview(previewArea);
-                }
-            }
-        }
+		private void OnDisable()
+			{
+			//When OnDisable is called, the default editor we created should be destroyed to avoid memory leakage.
+			//Also, make sure to call any required methods like OnDisable
+			if (defaultEditor != null)
+				{
+				MethodInfo disableMethod = defaultEditor.GetType ().GetMethod ("OnDisable", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+				if (disableMethod != null)
+					disableMethod.Invoke (defaultEditor, null);
+				DestroyImmediate (defaultEditor);
+				}
+			}
 
-        public override void OnPreviewGUI(Rect r, GUIStyle background)
-        {
-            if (RespectBaseInspector)
-            {
-                if (targetType != null)
-                {
-                    defaultEditor.OnPreviewGUI(r, background);
-                }
-                else
-                {
-                    base.OnPreviewGUI(r, background);
-                }
-            }
-        }
+		public override void OnInspectorGUI()
+			{
+			if (RespectBaseInspector)
+				{
+				if (targetType != null)
+					{
+					defaultEditor.OnInspectorGUI ();
+					}
+				else
+					{
+					DrawDefaultInspector ();
+					}
+				}
 
-        public override void OnInteractivePreviewGUI(Rect r, GUIStyle background)
-        {
-            if (RespectBaseInspector)
-            {
-                if (targetType != null)
-                {
-                    defaultEditor.OnInteractivePreviewGUI(r, background);
-                }
-                else
-                {
-                    base.OnInteractivePreviewGUI(r, background);
-                }
-            }
-        }
+			if (!IsHeader)
+				{
+				DrawNoteGui ();
+				}
+			}
 
-        protected virtual void DrawNoteGui()
-        {
-            if (targets.Length > 1) { return; }
+		protected override void OnHeaderGUI()
+			{
+			if (RespectBaseInspector)
+				{
+				if (targetType != null)
+					{
+					defaultEditor.DrawHeader ();
+					}
+				else
+					{
+					base.DrawHeader ();
+					}
+				}
 
-            if (allowNoteEdits)
-            {
-                bool guiEnabledCache = GUI.enabled;
-                GUI.enabled = true;
+			if (IsHeader)
+				{
+				DrawNoteGui ();
+				}
+			}
 
-                if (!AlwaysShowNote)
-                {
-                    if (GUILayout.Button(note.show ? "―" : (note.isEmpty ? "♡" : "♥"), EditorStyles.centeredGreyMiniLabel))
-                    {
-                        note.show = !note.show;
-                    }
-                }
+		public override void DrawPreview(Rect previewArea)
+			{
+			if (RespectBaseInspector)
+				{
+				if (targetType != null)
+					{
+					defaultEditor.DrawPreview (previewArea);
+					}
+				else
+					{
+					base.DrawPreview (previewArea);
+					}
+				}
+			}
 
-                if (note.show || AlwaysShowNote)
-                {
-                    EditorGUILayout.BeginHorizontal();
+		public override void OnPreviewGUI(Rect r, GUIStyle background)
+			{
+			if (RespectBaseInspector)
+				{
+				if (targetType != null)
+					{
+					defaultEditor.OnPreviewGUI (r, background);
+					}
+				else
+					{
+					base.OnPreviewGUI (r, background);
+					}
+				}
+			}
 
-                    GUIStyle textAreaStyle = EditorStyles.textArea;
-                    textAreaStyle.wordWrap = true;
+		public override void OnInteractivePreviewGUI(Rect r, GUIStyle background)
+			{
+			if (RespectBaseInspector)
+				{
+				if (targetType != null)
+					{
+					defaultEditor.OnInteractivePreviewGUI (r, background);
+					}
+				else
+					{
+					base.OnInteractivePreviewGUI (r, background);
+					}
+				}
+			}
 
-                    string noteText = EditorGUILayout.TextArea(note.noteText == "" ? Notes.placeholder : note.noteText, textAreaStyle);
-                    noteText = (noteText == Notes.placeholder ? "" : noteText);
+		protected virtual void DrawNoteGui()
+			{
+			if (targets.Length > 1) { return; }
 
-                    if (note.noteText != noteText)
-                    {
-                        note.noteText = noteText;
+			if (allowNoteEdits)
+				{
+				bool guiEnabledCache = GUI.enabled;
+				GUI.enabled = true;
 
-                        Notes.SaveNote(note);
+				if (!AlwaysShowNote)
+					{
+					if (GUILayout.Button (note.show ? "―" : (note.isEmpty ? "♡" : "♥"), EditorStyles.centeredGreyMiniLabel))
+						{
+						note.show = !note.show;
+						}
+					}
 
-                        if (Notes.Exists)
-                            Notes.Instance.Repaint();
-                    }
+				if (note.show || AlwaysShowNote)
+					{
+					EditorGUILayout.BeginHorizontal ();
 
-                    if (!Notes.Exists)
-                    {
-                        GUIContent pingContent = new GUIContent(Notes.pingIcon.Texture);
-                        float pingWidth = EditorStyles.miniButton.CalcSize(pingContent).x;
-                        if (GUILayout.Button(pingContent, EditorStyles.miniButton, GUILayout.Width(pingWidth)))
-                        {
-                            Notes.ShowWindow();
-                        }
-                    }
+					GUIStyle textAreaStyle = EditorStyles.textArea;
+					textAreaStyle.wordWrap = true;
 
-                    EditorGUILayout.EndHorizontal();
-                }
+					string noteText = EditorGUILayout.TextArea (note.noteText == "" ? Notes.placeholder : note.noteText, textAreaStyle);
+					noteText = (noteText == Notes.placeholder ? "" : noteText);
 
-                GUI.enabled = guiEnabledCache;
-            }
-        }
-    }
+					if (note.noteText != noteText)
+						{
+						note.noteText = noteText;
 
+						Notes.SaveNote (note);
 
-    /// <summary>
-    /// The static class that draws a note field in each Object's inspector header.
-    /// </summary>
-    [InitializeOnLoad]
-    public static class HeaderNotes
-    {
-        private static int ID
-        {
-            get
-            {
-                if (cachedHeader == null || cachedHeader.target == null) { return 0; }
+						if (Notes.Exists)
+							Notes.Instance.Repaint ();
+						}
 
-                Object sourceObject = null;
+					if (!Notes.Exists)
+						{
+						GUIContent pingContent = new GUIContent (Notes.pingIcon.Texture);
+						float pingWidth = EditorStyles.miniButton.CalcSize (pingContent).x;
+						if (GUILayout.Button (pingContent, EditorStyles.miniButton, GUILayout.Width (pingWidth)))
+							{
+							Notes.ShowWindow ();
+							}
+						}
 
-                if (PrefabUtility.IsPartOfAnyPrefab(cachedHeader.target)) //if we've selected a prefab
-                {
-                    sourceObject = PrefabUtility.GetCorrespondingObjectFromSourceAtPath(cachedHeader.target, PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(cachedHeader.target));
-                }
-                else //regular instance
-                {
-                    return cachedHeader.target.GetInstanceID();
-                }
+					EditorGUILayout.EndHorizontal ();
+					}
 
-                if (sourceObject != null) //get prefab instance ID
-                {
-                    return sourceObject.GetInstanceID();
-                }
-                else //this should just never ever happen.
-                {
-                    return cachedHeader.target.GetInstanceID(); //SHOULD (hopefully) NEVER HAPPEN
-                }
-            }
-        }
-        private static SerializableNote note;
-        private static Editor cachedHeader;
+				GUI.enabled = guiEnabledCache;
+				}
+			}
+		}
 
-        private static readonly Type[] unsupportedTypes = { typeof(AssetImporter) };
+	/// <summary>
+	/// The static class that draws a note field in each Object's inspector header.
+	/// </summary>
+	[InitializeOnLoad]
+	public static class HeaderNotes
+		{
+		private static int ID
+			{
+			get
+				{
+				if (cachedHeader == null || cachedHeader.target == null) { return 0; }
 
-        static HeaderNotes()
-        {
-            Editor.finishedDefaultHeaderGUI += OnPostHeaderGui;
-        }
+				Object sourceObject = null;
 
-        private static void InitializeHeader(Editor header)
-        {
-            cachedHeader = header;
+				if (PrefabUtility.IsPartOfAnyPrefab (cachedHeader.target)) //if we've selected a prefab
+					{
+					sourceObject = PrefabUtility.GetCorrespondingObjectFromSourceAtPath (cachedHeader.target, PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot (cachedHeader.target));
+					}
+				else //regular instance
+					{
+					return cachedHeader.target.GetInstanceID ();
+					}
 
-            if (!Notes.TryLoadNote(ID, out note))
-            {
-                note = new SerializableNote(ID, "", false);
-            }
-        }
+				if (sourceObject != null) //get prefab instance ID
+					{
+					return sourceObject.GetInstanceID ();
+					}
+				else //this should just never ever happen.
+					{
+					return cachedHeader.target.GetInstanceID (); //SHOULD (hopefully) NEVER HAPPEN
+					}
+				}
+			}
 
-        private static void OnPostHeaderGui(Editor header)
-        {
-            if(header.targets.Length > 1) { return; }
+		private static SerializableNote note;
 
-            foreach(Type unsupportedType in unsupportedTypes)
-            {
-                if(header.target.GetType().IsSubclassOf(unsupportedType))
-                {
-                    return;
-                }
-            }
+		private static Editor cachedHeader;
 
-            //================ Initialization ================
+		private static readonly Type [] unsupportedTypes = { typeof (AssetImporter) };
 
-            if(cachedHeader != header)
-            {
-                InitializeHeader(header);
-            }
+		static HeaderNotes()
+			{
+			Editor.finishedDefaultHeaderGUI += OnPostHeaderGui;
+			}
 
-            //================ Header ================
+		private static void InitializeHeader(Editor header)
+			{
+			cachedHeader = header;
 
-            bool guiEnabledCache = GUI.enabled;
-            GUI.enabled = true;
+			if (!Notes.TryLoadNote (ID, out note))
+				{
+				note = new SerializableNote (ID, "", false);
+				}
+			}
 
-            Color guiColorCache = GUI.color;
-            GUI.color = note.Color;
+		private static void OnPostHeaderGui(Editor header)
+			{
+			if (header.targets.Length > 1) { return; }
 
-            EditorGUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
+			foreach (Type unsupportedType in unsupportedTypes)
+				{
+				if (header.target.GetType ().IsSubclassOf (unsupportedType))
+					{
+					return;
+					}
+				}
 
-            if (GUILayout.Button(note.show ? "―" : (note.isEmpty ? "♡" : "♥"), EditorStyles.whiteMiniLabel))
-            {
-                note.show = !note.show;
+			//================ Initialization ================
 
-                Notes.SaveNote(note);
+			if (cachedHeader != header)
+				{
+				InitializeHeader (header);
+				}
 
-                if (Notes.Exists)
-                    Notes.Instance.Repaint();
-            }
+			//================ Header ================
 
-            GUILayout.FlexibleSpace();
-            EditorGUILayout.EndHorizontal();
+			bool guiEnabledCache = GUI.enabled;
+			GUI.enabled = true;
 
-            GUI.color = guiColorCache;
+			Color guiColorCache = GUI.color;
+			GUI.color = note.Color;
 
-            if (note.show)
-            {
-                EditorGUILayout.BeginHorizontal();
+			EditorGUILayout.BeginHorizontal ();
+			GUILayout.FlexibleSpace ();
 
-                GUIStyle textAreaStyle = EditorStyles.textArea;
-                textAreaStyle.wordWrap = true;
+			if (GUILayout.Button (note.show ? "―" : (note.isEmpty ? "♡" : "♥"), EditorStyles.whiteMiniLabel))
+				{
+				note.show = !note.show;
 
-                string noteText = EditorGUILayout.TextArea(note.noteText == "" ? Notes.placeholder : note.noteText, textAreaStyle);
-                noteText = (noteText == Notes.placeholder ? "" : noteText);
+				Notes.SaveNote (note);
 
-                if (note.noteText != noteText) {
-                    note.noteText = noteText;
+				if (Notes.Exists)
+					Notes.Instance.Repaint ();
+				}
 
-                    Notes.SaveNote(note);
+			GUILayout.FlexibleSpace ();
+			EditorGUILayout.EndHorizontal ();
 
-                    if (Notes.Exists)
-                        Notes.Instance.Repaint();
-                }
+			GUI.color = guiColorCache;
 
-                if (!Notes.Exists)
-                {
-                    GUIContent pingContent = new GUIContent(Notes.pingIcon.Texture);
-                    float pingWidth = EditorStyles.miniButton.CalcSize(pingContent).x;
-                    if (GUILayout.Button(pingContent, EditorStyles.miniButton, GUILayout.Width(pingWidth)))
-                    {
-                        Notes.ShowWindow();
-                    }
-                }
+			if (note.show)
+				{
+				EditorGUILayout.BeginHorizontal ();
 
-                EditorGUILayout.EndHorizontal();
-            }
+				GUIStyle textAreaStyle = EditorStyles.textArea;
+				textAreaStyle.wordWrap = true;
 
-            GUI.enabled = guiEnabledCache;
-        }
-    }
-}
+				string noteText = EditorGUILayout.TextArea (note.noteText == "" ? Notes.placeholder : note.noteText, textAreaStyle);
+				noteText = (noteText == Notes.placeholder ? "" : noteText);
+
+				if (note.noteText != noteText)
+					{
+					note.noteText = noteText;
+
+					Notes.SaveNote (note);
+
+					if (Notes.Exists)
+						Notes.Instance.Repaint ();
+					}
+
+				if (!Notes.Exists)
+					{
+					GUIContent pingContent = new GUIContent (Notes.pingIcon.Texture);
+					float pingWidth = EditorStyles.miniButton.CalcSize (pingContent).x;
+					if (GUILayout.Button (pingContent, EditorStyles.miniButton, GUILayout.Width (pingWidth)))
+						{
+						Notes.ShowWindow ();
+						}
+					}
+
+				EditorGUILayout.EndHorizontal ();
+				}
+
+			GUI.enabled = guiEnabledCache;
+			}
+		}
+	}

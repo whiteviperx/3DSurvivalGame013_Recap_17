@@ -1,156 +1,161 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
+
 using UnityEditor;
 using UnityEditor.SceneManagement;
-using UnityEngine.SceneManagement;
 
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 #nullable enable
 
-
 namespace Meryel.UnityCodeAssist.Editor
-{
+	{
+	[InitializeOnLoad]
+	public static class Monitor
+		{
+		private static readonly string tagManagerFilePath;
 
-    [InitializeOnLoad]
-    public static class Monitor
-    {
-        private readonly static string tagManagerFilePath;
-        private static System.DateTime previousTagManagerLastWrite;
+		private static System.DateTime previousTagManagerLastWrite;
 
-        private static bool isAppFocused;
-        private static bool isAppFocusedOnTagManager;
+		private static bool isAppFocused;
 
-        private static int dirtyCounter;
-        private static readonly Dictionary<GameObject, int> dirtyDict;
+		private static bool isAppFocusedOnTagManager;
 
-        static Monitor()
-        {
-            tagManagerFilePath = CommonTools.GetTagManagerFilePath();
-            try
-            {
-                previousTagManagerLastWrite = System.IO.File.GetLastWriteTime(tagManagerFilePath);
-            }
-            catch (System.Exception ex)
-            {
-                Serilog.Log.Debug(ex, "Exception at {Location}", nameof(System.IO.File.GetLastWriteTime));
-            }
-            dirtyDict = new Dictionary<GameObject, int>();
-            dirtyCounter = 0;
+		private static int dirtyCounter;
 
-            EditorApplication.hierarchyChanged += OnHierarchyChanged;
-            EditorApplication.update += OnUpdate;
-            Undo.postprocessModifications += MyPostprocessModificationsCallback;
-            Undo.undoRedoPerformed += MyUndoCallback;
-            Selection.selectionChanged += OnSelectionChanged;
-            //EditorSceneManager.sceneOpened += EditorSceneManager_sceneOpened;
-            EditorSceneManager.activeSceneChangedInEditMode += EditorSceneManager_activeSceneChangedInEditMode;
+		private static readonly Dictionary<GameObject, int> dirtyDict;
 
-            Application.logMessageReceived += Application_logMessageReceived;
-            //System.Threading.Tasks.TaskScheduler.UnobservedTaskException += 
-        }
+		static Monitor()
+			{
+			tagManagerFilePath = CommonTools.GetTagManagerFilePath ();
+			try
+				{
+				previousTagManagerLastWrite = System.IO.File.GetLastWriteTime (tagManagerFilePath);
+				}
+			catch (System.Exception ex)
+				{
+				Serilog.Log.Debug (ex, "Exception at {Location}", nameof (System.IO.File.GetLastWriteTime));
+				}
+			dirtyDict = new Dictionary<GameObject, int> ();
+			dirtyCounter = 0;
 
-        private static void EditorSceneManager_activeSceneChangedInEditMode(Scene arg0, Scene arg1)
-        {
-            //Debug.Log("EditorSceneManager_activeSceneChangedInEditMode");
-            OnHierarchyChanged();
-        }
+			EditorApplication.hierarchyChanged += OnHierarchyChanged;
+			EditorApplication.update += OnUpdate;
+			Undo.postprocessModifications += MyPostprocessModificationsCallback;
+			Undo.undoRedoPerformed += MyUndoCallback;
+			Selection.selectionChanged += OnSelectionChanged;
 
-        private static void EditorSceneManager_sceneOpened(Scene scene, OpenSceneMode mode)
-        {
-            Serilog.Log.Debug("Monitor {Event} scene:{Scene} mode:{Mode}", nameof(EditorSceneManager_sceneOpened), scene.name, mode);
-            //Debug.Log("EditorSceneManager_sceneOpened");
-            OnHierarchyChanged();
-        }
+			//EditorSceneManager.sceneOpened += EditorSceneManager_sceneOpened;
+			EditorSceneManager.activeSceneChangedInEditMode += EditorSceneManager_activeSceneChangedInEditMode;
 
-        static void OnUpdate()
-        {
-            string? currentEditorFocus = null;
-            if (Selection.activeObject)
-                currentEditorFocus = Selection.activeObject.GetType().ToString();
+			Application.logMessageReceived += Application_logMessageReceived;
 
-            var currentTagManagerLastWrite = previousTagManagerLastWrite;
-            try
-            {
-                currentTagManagerLastWrite = System.IO.File.GetLastWriteTime(tagManagerFilePath);
-            }
-            catch (System.Exception ex)
-            {
-                Serilog.Log.Debug(ex, "Exception at {Location}", nameof(System.IO.File.GetLastWriteTime));
-            }
-            if (currentTagManagerLastWrite != previousTagManagerLastWrite)
-            {
-                previousTagManagerLastWrite = currentTagManagerLastWrite;
-                OnTagsOrLayersModified();
-            }
-            else if (currentEditorFocus == "UnityEditor.TagManager")
-            {
-                // since unity does not commit changes to the file immediately, checking if user is displaying and focusing on tag manager (tags & layers) inspector
-                isAppFocusedOnTagManager = true;
-            }
-            
+			//System.Threading.Tasks.TaskScheduler.UnobservedTaskException +=
+			}
 
-            if (isAppFocused != UnityEditorInternal.InternalEditorUtility.isApplicationActive)
-            {
-                isAppFocused = UnityEditorInternal.InternalEditorUtility.isApplicationActive;
-                OnOnUnityEditorFocusChanged(isAppFocused);
-                Serilog.Log.Debug("On focus {State}", isAppFocused);
-            }
-        }
+		private static void EditorSceneManager_activeSceneChangedInEditMode(Scene arg0, Scene arg1)
+			{
+			//Debug.Log("EditorSceneManager_activeSceneChangedInEditMode");
+			OnHierarchyChanged ();
+			}
 
-        static void OnTagsOrLayersModified()
-        {
-            Serilog.Log.Debug("Monitor {Event}", nameof(OnTagsOrLayersModified));
+		private static void EditorSceneManager_sceneOpened(Scene scene, OpenSceneMode mode)
+			{
+			Serilog.Log.Debug ("Monitor {Event} scene:{Scene} mode:{Mode}", nameof (EditorSceneManager_sceneOpened), scene.name, mode);
 
-            Assister.SendTagsAndLayers();
-        }
+			//Debug.Log("EditorSceneManager_sceneOpened");
+			OnHierarchyChanged ();
+			}
 
-        static void OnHierarchyChanged()
-        {
-            Serilog.Log.Debug("Monitor {Event}", nameof(OnHierarchyChanged));
+		private static void OnUpdate()
+			{
+			string? currentEditorFocus = null;
+			if (Selection.activeObject)
+				currentEditorFocus = Selection.activeObject.GetType ().ToString ();
 
-            // For requesting active doc's GO
-            NetMQInitializer.Publisher?.SendHandshake();
+			var currentTagManagerLastWrite = previousTagManagerLastWrite;
+			try
+				{
+				currentTagManagerLastWrite = System.IO.File.GetLastWriteTime (tagManagerFilePath);
+				}
+			catch (System.Exception ex)
+				{
+				Serilog.Log.Debug (ex, "Exception at {Location}", nameof (System.IO.File.GetLastWriteTime));
+				}
+			if (currentTagManagerLastWrite != previousTagManagerLastWrite)
+				{
+				previousTagManagerLastWrite = currentTagManagerLastWrite;
+				OnTagsOrLayersModified ();
+				}
+			else if (currentEditorFocus == "UnityEditor.TagManager")
+				{
+				// since unity does not commit changes to the file immediately, checking if user is displaying and focusing on tag manager (tags & layers) inspector
+				isAppFocusedOnTagManager = true;
+				}
 
-            if (ScriptFinder.GetActiveGameObject(out var activeGO))
-                NetMQInitializer.Publisher?.SendGameObject(activeGO);
-            //Assister.SendTagsAndLayers(); Don't send tags & layers here
-        }
+			if (isAppFocused != UnityEditorInternal.InternalEditorUtility.isApplicationActive)
+				{
+				isAppFocused = UnityEditorInternal.InternalEditorUtility.isApplicationActive;
+				OnOnUnityEditorFocusChanged (isAppFocused);
+				Serilog.Log.Debug ("On focus {State}", isAppFocused);
+				}
+			}
 
-        static UndoPropertyModification[] MyPostprocessModificationsCallback(UndoPropertyModification[] modifications)
-        {
-            Serilog.Log.Debug("Monitor {Event}", nameof(MyPostprocessModificationsCallback));
+		private static void OnTagsOrLayersModified()
+			{
+			Serilog.Log.Debug ("Monitor {Event}", nameof (OnTagsOrLayersModified));
 
-            foreach (var modification in modifications)
-            {
-                var target = modification.currentValue?.target;
-                SetDirty(target);
-            }
+			Assister.SendTagsAndLayers ();
+			}
 
-            // here, you can perform processing of the recorded modifications before returning them
-            return modifications;
-        }
+		private static void OnHierarchyChanged()
+			{
+			Serilog.Log.Debug ("Monitor {Event}", nameof (OnHierarchyChanged));
 
-        static void MyUndoCallback()
-        {
-            Serilog.Log.Debug("Monitor {Event}", nameof(MyUndoCallback));
-            // code for the action to take on Undo
-        }
+			// For requesting active doc's GO
+			NetMQInitializer.Publisher?.SendHandshake ();
 
-        static void OnOnUnityEditorFocusChanged(bool isFocused)
-        {
-            if (!isFocused)
-            {
-                if (isAppFocusedOnTagManager)
-                {
-                    isAppFocusedOnTagManager = false;
-                    OnTagsOrLayersModified();
-                }
+			if (ScriptFinder.GetActiveGameObject (out var activeGO))
+				NetMQInitializer.Publisher?.SendGameObject (activeGO);
 
-                OnSelectionChanged();
-                FlushAllDirty();
-                /*
+			//Assister.SendTagsAndLayers(); Don't send tags & layers here
+			}
+
+		private static UndoPropertyModification [] MyPostprocessModificationsCallback(UndoPropertyModification [] modifications)
+			{
+			Serilog.Log.Debug ("Monitor {Event}", nameof (MyPostprocessModificationsCallback));
+
+			foreach (var modification in modifications)
+				{
+				var target = modification.currentValue?.target;
+				SetDirty (target);
+				}
+
+			// here, you can perform processing of the recorded modifications before returning them
+			return modifications;
+			}
+
+		private static void MyUndoCallback()
+			{
+			Serilog.Log.Debug ("Monitor {Event}", nameof (MyUndoCallback));
+
+			// code for the action to take on Undo
+			}
+
+		private static void OnOnUnityEditorFocusChanged(bool isFocused)
+			{
+			if (!isFocused)
+				{
+				if (isAppFocusedOnTagManager)
+					{
+					isAppFocusedOnTagManager = false;
+					OnTagsOrLayersModified ();
+					}
+
+				OnSelectionChanged ();
+				FlushAllDirty ();
+				/*
                 Serilog.Log.Debug("exporting {Count} objects", selectedObjects.Count);
 
                 //**--if too many
@@ -162,95 +167,93 @@ namespace Meryel.UnityCodeAssist.Editor
 
                 selectedObjects.Clear();
                 */
-            }
-        }
+				}
+			}
 
-        static void OnSelectionChanged()
-        {
-            
-            //**--check order, last selected should be sent last as well
-            //**--limit here, what if too many?
-            //selectedObjects.UnionWith(Selection.objects);
-            foreach(var so in Selection.objects)
-            {
-                SetDirty(so);
-            }
-        }
+		private static void OnSelectionChanged()
+			{
+			//**--check order, last selected should be sent last as well
+			//**--limit here, what if too many?
+			//selectedObjects.UnionWith(Selection.objects);
+			foreach (var so in Selection.objects)
+				{
+				SetDirty (so);
+				}
+			}
 
-        public static void SetDirty(Object? obj)
-        {
-            if (obj == null)
-                return;
-            else if (obj is GameObject go && go)
-                SetDirty(go);
-            else if (obj is Component component && component)
-            //SetDirty(component.gameObject);
-            {
-                var componentGo = component.gameObject;
-                if (componentGo)
-                    SetDirty(componentGo);
-            }
-            //else
-                //;//**--scriptable obj
-        }
+		public static void SetDirty(Object? obj)
+			{
+			if (obj == null)
+				return;
+			else if (obj is GameObject go && go)
+				SetDirty (go);
+			else if (obj is Component component && component)
 
-        public static void SetDirty(GameObject go)
-        {
-            dirtyCounter++;
-            dirtyDict[go] = dirtyCounter;
-        }
+			//SetDirty(component.gameObject);
+				{
+				var componentGo = component.gameObject;
+				if (componentGo)
+					SetDirty (componentGo);
+				}
 
-        static void FlushAllDirty()
-        {
-            // Sending order is important, must send them in the same order as they are added to/modified in the collection
-            // Using dict instead of hashset because of that. Dict value is used as add/modify order
+			//else
+			//;//**--scriptable obj
+			}
 
-            var sortedDict = from entry in dirtyDict orderby entry.Value descending select entry;
+		public static void SetDirty(GameObject go)
+			{
+			dirtyCounter++;
+			dirtyDict [go] = dirtyCounter;
+			}
 
-            foreach (var entry in sortedDict)
-            {
-                var go = entry.Key;
-                NetMQInitializer.Publisher?.SendGameObject(go);
-            }
+		private static void FlushAllDirty()
+			{
+			// Sending order is important, must send them in the same order as they are added to/modified in the collection
+			// Using dict instead of hashset because of that. Dict value is used as add/modify order
 
-            dirtyDict.Clear();
-            dirtyCounter = 0;
-        }
+			var sortedDict = from entry in dirtyDict orderby entry.Value descending select entry;
 
+			foreach (var entry in sortedDict)
+				{
+				var go = entry.Key;
+				NetMQInitializer.Publisher?.SendGameObject (go);
+				}
 
-        private static void Application_logMessageReceived(string condition, string stackTrace, LogType type)
-        {
-            if (type != LogType.Exception && type != LogType.Error && type != LogType.Warning)
-                return;
+			dirtyDict.Clear ();
+			dirtyCounter = 0;
+			}
 
-            if (!stackTrace.Contains("Meryel.UnityCodeAssist.Editor"))
-                return;
+		private static void Application_logMessageReceived(string condition, string stackTrace, LogType type)
+			{
+			if (type != LogType.Exception && type != LogType.Error && type != LogType.Warning)
+				return;
 
-            var typeStr = type.ToString();
+			if (!stackTrace.Contains ("Meryel.UnityCodeAssist.Editor"))
+				return;
 
-            NetMQInitializer.Publisher?.SendErrorReport(condition, stackTrace, typeStr);
-        }
+			var typeStr = type.ToString ();
 
+			NetMQInitializer.Publisher?.SendErrorReport (condition, stackTrace, typeStr);
+			}
 
-        public static void LazyLoad(string category)
-        {
-            if (category == "PlayerPrefs")
-            {
-                Preferences.PreferenceMonitor.InstanceOfPlayerPrefs.Bump();
-            }
-            else if(category == "EditorPrefs")
-            {
-                Preferences.PreferenceMonitor.InstanceOfEditorPrefs.Bump();
-            }
-            else if(category == "InputManager")
-            {
-                Input.InputManagerMonitor.Instance.Bump();
-            }
-            else
-            {
-                Serilog.Log.Error("Invalid LazyLoad category {Category}", category);
-            }
-        }
-    }
-
-}
+		public static void LazyLoad(string category)
+			{
+			if (category == "PlayerPrefs")
+				{
+				Preferences.PreferenceMonitor.InstanceOfPlayerPrefs.Bump ();
+				}
+			else if (category == "EditorPrefs")
+				{
+				Preferences.PreferenceMonitor.InstanceOfEditorPrefs.Bump ();
+				}
+			else if (category == "InputManager")
+				{
+				Input.InputManagerMonitor.Instance.Bump ();
+				}
+			else
+				{
+				Serilog.Log.Error ("Invalid LazyLoad category {Category}", category);
+				}
+			}
+		}
+	}

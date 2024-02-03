@@ -16,8 +16,9 @@ public class MouseMovement:MonoBehaviour
 
 	private void Update()
 		{
-		 if (InventorySystem.Instance.isOpen == false)
-		// if (InventorySystem.Instance.isOpen && !CraftingSystem.Instance.isOpen)
+		if (InventorySystem.Instance.isOpen == false)
+
+		//if (InventorySystem.Instance.isOpen && !CraftingSystem.Instance.isOpen)
 		//if (InventorySystem.Instance.isOpen && !CraftingSystem.Instance.isOpen && !MenuManager.Instance.isMenuOpen)
 
 			{

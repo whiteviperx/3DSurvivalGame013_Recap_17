@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class FoodBar:MonoBehaviour
 	{
 	private Slider slider;
+
 	public Text FoodCounter;
 
 	public GameObject playerState;

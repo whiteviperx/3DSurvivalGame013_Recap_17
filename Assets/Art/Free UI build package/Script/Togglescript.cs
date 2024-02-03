@@ -1,30 +1,26 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
+public class Togglescript:MonoBehaviour
+	{
+	private Toggle toggle;
 
-public class Togglescript : MonoBehaviour {
+	private void Start()
+		{
+		toggle = GetComponent<Toggle> ();
+		}
 
-    Toggle toggle;
+	public GameObject Slider;
 
-    private void Start()
-    {
-        toggle = GetComponent<Toggle>();
-    }
-
-    public GameObject Slider;
-
-
-    private void Update()
-    {
-        if (toggle.isOn)
-        {
-            Slider.SetActive(false);
-        }
-        else
-        {
-            Slider.SetActive(true);
-        }
-    }
-}
+	private void Update()
+		{
+		if (toggle.isOn)
+			{
+			Slider.SetActive (false);
+			}
+		else
+			{
+			Slider.SetActive (true);
+			}
+		}
+	}

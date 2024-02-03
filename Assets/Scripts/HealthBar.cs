@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class HealthBar:MonoBehaviour
 	{
 	private Slider slider;
+
 	public Text healthCounter;
 
 	public GameObject playerState;

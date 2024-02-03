@@ -235,9 +235,8 @@ public class ConstructionManager:MonoBehaviour
 
 		var randomOffset = UnityEngine.Random.Range (0.01f, 0.03f);
 
-		itemToBeConstructed.transform.position = new Vector3 (ghostPosition.x, ghostPosition.y, ghostPosition.z + randomOffset);
-
-		itemToBeConstructed.transform.rotation = ghostRotation;
+		
+		itemToBeConstructed.transform.SetPositionAndRotation (new Vector3 (ghostPosition.x, ghostPosition.y, ghostPosition.z + randomOffset), ghostRotation);
 
 		// Enabling back the solider collider that we disabled earlier
 		itemToBeConstructed.GetComponent<Constructable> ().solidCollider.enabled = true;

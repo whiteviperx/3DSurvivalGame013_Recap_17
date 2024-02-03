@@ -1,60 +1,65 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
 
+using UnityEngine;
 
 #nullable enable
 
-
 //namespace BgTools.PlayerPrefsEditor
 namespace Meryel.UnityCodeAssist.Editor.Preferences
-{
-    [System.Serializable]
-    public class PreferenceEntryHolder : ScriptableObject
-    {
-        public List<PreferenceEntry>? userDefList;
-        public List<PreferenceEntry>? unityDefList;
+	{
+	[System.Serializable]
+	public class PreferenceEntryHolder:ScriptableObject
+		{
+		public List<PreferenceEntry>? userDefList;
 
-        private void OnEnable()
-        {
-            hideFlags = HideFlags.DontSave;
-            userDefList ??= new List<PreferenceEntry>();
-            unityDefList ??= new List<PreferenceEntry>();
-        }
+		public List<PreferenceEntry>? unityDefList;
 
-        public void ClearLists()
-        {
-            userDefList?.Clear();
-            unityDefList?.Clear();
-        }
-    }
+		private void OnEnable()
+			{
+			hideFlags = HideFlags.DontSave;
+			userDefList ??= new List<PreferenceEntry> ();
+			unityDefList ??= new List<PreferenceEntry> ();
+			}
 
-    [System.Serializable]
-    public class PreferenceEntry
-    {
-        public enum PrefTypes
-        {
-            String = 0,
-            Int = 1,
-            Float = 2
-        }
+		public void ClearLists()
+			{
+			userDefList?.Clear ();
+			unityDefList?.Clear ();
+			}
+		}
 
-        public PrefTypes m_typeSelection;
-        public string? m_key;
+	[System.Serializable]
+	public class PreferenceEntry
+		{
+		public enum PrefTypes
+			{
+			String = 0,
 
-        // Need diffrend ones for auto type selection of serilizedProerty
-        public string? m_strValue;
-        public int m_intValue;
-        public float m_floatValue;
+			Int = 1,
 
-        public string? ValueAsString()
-        {
-            return m_typeSelection switch
-            {
-                PrefTypes.String => m_strValue,
-                PrefTypes.Int => m_intValue.ToString(),
-                PrefTypes.Float => m_floatValue.ToString(),
-                _ => string.Empty,
-            };
-        }
-    }
-}
+			Float = 2
+			}
+
+		public PrefTypes m_typeSelection;
+
+		public string? m_key;
+
+		// Need diffrend ones for auto type selection of serilizedProerty
+		public string? m_strValue;
+
+		public int m_intValue;
+
+		public float m_floatValue;
+
+		public string? ValueAsString()
+			{
+			return m_typeSelection switch
+				{
+					PrefTypes.String => m_strValue,
+					PrefTypes.Int => m_intValue.ToString (),
+					PrefTypes.Float => m_floatValue.ToString (),
+					_ => string.Empty,
+					};
+			}
+		}
+	}

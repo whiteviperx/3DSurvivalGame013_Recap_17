@@ -11,6 +11,7 @@ public class TrashSlot:MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoint
 	private Text textToModify;
 
 	public Sprite trash_closed;
+
 	public Sprite trash_opened;
 
 	private Image imageComponent;

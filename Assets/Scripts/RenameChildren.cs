@@ -5,7 +5,9 @@ using UnityEngine;
 public class RenameChildren:EditorWindow
 	{
 	private static readonly Vector2Int size = new (250, 100);
+
 	private string childrenPrefix;
+
 	private int startIndex;
 
 	[MenuItem ("GameObject/Rename children")]

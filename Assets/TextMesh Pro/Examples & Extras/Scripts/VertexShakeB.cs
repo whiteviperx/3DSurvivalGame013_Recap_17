@@ -1,185 +1,180 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
 
+using UnityEngine;
 
 namespace TMPro.Examples
-{
+	{
+	public class VertexShakeB:MonoBehaviour
+		{
+		public float AngleMultiplier = 1.0f;
 
-    public class VertexShakeB : MonoBehaviour
-    {
+		public float SpeedMultiplier = 1.0f;
 
-        public float AngleMultiplier = 1.0f;
-        public float SpeedMultiplier = 1.0f;
-        public float CurveScale = 1.0f;
+		public float CurveScale = 1.0f;
 
-        private TMP_Text m_TextComponent;
-        private bool hasTextChanged;
+		private TMP_Text m_TextComponent;
 
+		private bool hasTextChanged;
 
-        void Awake()
-        {
-            m_TextComponent = GetComponent<TMP_Text>();
-        }
+		private void Awake()
+			{
+			m_TextComponent = GetComponent<TMP_Text> ();
+			}
 
-        void OnEnable()
-        {
-            // Subscribe to event fired when text object has been regenerated.
-            TMPro_EventManager.TEXT_CHANGED_EVENT.Add(ON_TEXT_CHANGED);
-        }
+		private void OnEnable()
+			{
+			// Subscribe to event fired when text object has been regenerated.
+			TMPro_EventManager.TEXT_CHANGED_EVENT.Add (ON_TEXT_CHANGED);
+			}
 
-        void OnDisable()
-        {
-            TMPro_EventManager.TEXT_CHANGED_EVENT.Remove(ON_TEXT_CHANGED);
-        }
+		private void OnDisable()
+			{
+			TMPro_EventManager.TEXT_CHANGED_EVENT.Remove (ON_TEXT_CHANGED);
+			}
 
+		private void Start()
+			{
+			StartCoroutine (AnimateVertexColors ());
+			}
 
-        void Start()
-        {
-            StartCoroutine(AnimateVertexColors());
-        }
+		private void ON_TEXT_CHANGED(Object obj)
+			{
+			if (obj = m_TextComponent)
+				hasTextChanged = true;
+			}
 
+		/// <summary>
+		/// Method to animate vertex colors of a TMP Text object.
+		/// </summary>
+		/// <returns></returns>
+		private IEnumerator AnimateVertexColors()
+			{
+			// We force an update of the text object since it would only be updated at the end of the frame. Ie. before this code is executed on the first frame.
+			// Alternatively, we could yield and wait until the end of the frame when the text object will be generated.
+			m_TextComponent.ForceMeshUpdate ();
 
-        void ON_TEXT_CHANGED(Object obj)
-        {
-            if (obj = m_TextComponent)
-                hasTextChanged = true;
-        }
+			TMP_TextInfo textInfo = m_TextComponent.textInfo;
 
-        /// <summary>
-        /// Method to animate vertex colors of a TMP Text object.
-        /// </summary>
-        /// <returns></returns>
-        IEnumerator AnimateVertexColors()
-        {
+			Matrix4x4 matrix;
+			Vector3 [] [] copyOfVertices = new Vector3 [0] [];
 
-            // We force an update of the text object since it would only be updated at the end of the frame. Ie. before this code is executed on the first frame.
-            // Alternatively, we could yield and wait until the end of the frame when the text object will be generated.
-            m_TextComponent.ForceMeshUpdate();
+			hasTextChanged = true;
 
-            TMP_TextInfo textInfo = m_TextComponent.textInfo;
+			while (true)
+				{
+				// Allocate new vertices
+				if (hasTextChanged)
+					{
+					if (copyOfVertices.Length < textInfo.meshInfo.Length)
+						copyOfVertices = new Vector3 [textInfo.meshInfo.Length] [];
 
-            Matrix4x4 matrix;
-            Vector3[][] copyOfVertices = new Vector3[0][];
+					for (int i = 0; i < textInfo.meshInfo.Length; i++)
+						{
+						int length = textInfo.meshInfo [i].vertices.Length;
+						copyOfVertices [i] = new Vector3 [length];
+						}
 
-            hasTextChanged = true;
+					hasTextChanged = false;
+					}
 
-            while (true)
-            {
-                // Allocate new vertices 
-                if (hasTextChanged)
-                {
-                    if (copyOfVertices.Length < textInfo.meshInfo.Length)
-                        copyOfVertices = new Vector3[textInfo.meshInfo.Length][];
+				int characterCount = textInfo.characterCount;
 
-                    for (int i = 0; i < textInfo.meshInfo.Length; i++)
-                    {
-                        int length = textInfo.meshInfo[i].vertices.Length;
-                        copyOfVertices[i] = new Vector3[length];
-                    }
+				// If No Characters then just yield and wait for some text to be added
+				if (characterCount == 0)
+					{
+					yield return new WaitForSeconds (0.25f);
+					continue;
+					}
 
-                    hasTextChanged = false;
-                }
+				int lineCount = textInfo.lineCount;
 
-                int characterCount = textInfo.characterCount;
+				// Iterate through each line of the text.
+				for (int i = 0; i < lineCount; i++)
+					{
+					int first = textInfo.lineInfo [i].firstCharacterIndex;
+					int last = textInfo.lineInfo [i].lastCharacterIndex;
 
-                // If No Characters then just yield and wait for some text to be added
-                if (characterCount == 0)
-                {
-                    yield return new WaitForSeconds(0.25f);
-                    continue;
-                }
+					// Determine the center of each line
+					Vector3 centerOfLine = (textInfo.characterInfo [first].bottomLeft + textInfo.characterInfo [last].topRight) / 2;
+					Quaternion rotation = Quaternion.Euler (0, 0, Random.Range (-0.25f, 0.25f));
 
-                int lineCount = textInfo.lineCount;
+					// Iterate through each character of the line.
+					for (int j = first; j <= last; j++)
+						{
+						// Skip characters that are not visible and thus have no geometry to manipulate.
+						if (!textInfo.characterInfo [j].isVisible)
+							continue;
 
-                // Iterate through each line of the text.
-                for (int i = 0; i < lineCount; i++)
-                {
+						// Get the index of the material used by the current character.
+						int materialIndex = textInfo.characterInfo [j].materialReferenceIndex;
 
-                    int first = textInfo.lineInfo[i].firstCharacterIndex;
-                    int last = textInfo.lineInfo[i].lastCharacterIndex;
+						// Get the index of the first vertex used by this text element.
+						int vertexIndex = textInfo.characterInfo [j].vertexIndex;
 
-                    // Determine the center of each line
-                    Vector3 centerOfLine = (textInfo.characterInfo[first].bottomLeft + textInfo.characterInfo[last].topRight) / 2;
-                    Quaternion rotation = Quaternion.Euler(0, 0, Random.Range(-0.25f, 0.25f));
+						// Get the vertices of the mesh used by this text element (character or sprite).
+						Vector3 [] sourceVertices = textInfo.meshInfo [materialIndex].vertices;
 
-                    // Iterate through each character of the line.
-                    for (int j = first; j <= last; j++)
-                    {
-                        // Skip characters that are not visible and thus have no geometry to manipulate.
-                        if (!textInfo.characterInfo[j].isVisible)
-                            continue;
+						// Determine the center point of each character at the baseline.
+						Vector3 charCenter = (sourceVertices [vertexIndex + 0] + sourceVertices [vertexIndex + 2]) / 2;
 
-                        // Get the index of the material used by the current character.
-                        int materialIndex = textInfo.characterInfo[j].materialReferenceIndex;
+						// Need to translate all 4 vertices of each quad to aligned with center of character.
+						// This is needed so the matrix TRS is applied at the origin for each character.
+						copyOfVertices [materialIndex] [vertexIndex + 0] = sourceVertices [vertexIndex + 0] - charCenter;
+						copyOfVertices [materialIndex] [vertexIndex + 1] = sourceVertices [vertexIndex + 1] - charCenter;
+						copyOfVertices [materialIndex] [vertexIndex + 2] = sourceVertices [vertexIndex + 2] - charCenter;
+						copyOfVertices [materialIndex] [vertexIndex + 3] = sourceVertices [vertexIndex + 3] - charCenter;
 
-                        // Get the index of the first vertex used by this text element.
-                        int vertexIndex = textInfo.characterInfo[j].vertexIndex;
+						// Determine the random scale change for each character.
+						float randomScale = Random.Range (0.95f, 1.05f);
 
-                        // Get the vertices of the mesh used by this text element (character or sprite).
-                        Vector3[] sourceVertices = textInfo.meshInfo[materialIndex].vertices;
+						// Setup the matrix for the scale change.
+						matrix = Matrix4x4.TRS (Vector3.one, Quaternion.identity, Vector3.one * randomScale);
 
-                        // Determine the center point of each character at the baseline.
-                        Vector3 charCenter = (sourceVertices[vertexIndex + 0] + sourceVertices[vertexIndex + 2]) / 2;
+						// Apply the scale change relative to the center of each character.
+						copyOfVertices [materialIndex] [vertexIndex + 0] = matrix.MultiplyPoint3x4 (copyOfVertices [materialIndex] [vertexIndex + 0]);
+						copyOfVertices [materialIndex] [vertexIndex + 1] = matrix.MultiplyPoint3x4 (copyOfVertices [materialIndex] [vertexIndex + 1]);
+						copyOfVertices [materialIndex] [vertexIndex + 2] = matrix.MultiplyPoint3x4 (copyOfVertices [materialIndex] [vertexIndex + 2]);
+						copyOfVertices [materialIndex] [vertexIndex + 3] = matrix.MultiplyPoint3x4 (copyOfVertices [materialIndex] [vertexIndex + 3]);
 
-                        // Need to translate all 4 vertices of each quad to aligned with center of character.
-                        // This is needed so the matrix TRS is applied at the origin for each character.
-                        copyOfVertices[materialIndex][vertexIndex + 0] = sourceVertices[vertexIndex + 0] - charCenter;
-                        copyOfVertices[materialIndex][vertexIndex + 1] = sourceVertices[vertexIndex + 1] - charCenter;
-                        copyOfVertices[materialIndex][vertexIndex + 2] = sourceVertices[vertexIndex + 2] - charCenter;
-                        copyOfVertices[materialIndex][vertexIndex + 3] = sourceVertices[vertexIndex + 3] - charCenter;
+						// Revert the translation change.
+						copyOfVertices [materialIndex] [vertexIndex + 0] += charCenter;
+						copyOfVertices [materialIndex] [vertexIndex + 1] += charCenter;
+						copyOfVertices [materialIndex] [vertexIndex + 2] += charCenter;
+						copyOfVertices [materialIndex] [vertexIndex + 3] += charCenter;
 
-                        // Determine the random scale change for each character.
-                        float randomScale = Random.Range(0.95f, 1.05f);
+						// Need to translate all 4 vertices of each quad to aligned with the center of the line.
+						// This is needed so the matrix TRS is applied from the center of the line.
+						copyOfVertices [materialIndex] [vertexIndex + 0] -= centerOfLine;
+						copyOfVertices [materialIndex] [vertexIndex + 1] -= centerOfLine;
+						copyOfVertices [materialIndex] [vertexIndex + 2] -= centerOfLine;
+						copyOfVertices [materialIndex] [vertexIndex + 3] -= centerOfLine;
 
-                        // Setup the matrix for the scale change.
-                        matrix = Matrix4x4.TRS(Vector3.one, Quaternion.identity, Vector3.one * randomScale);
+						// Setup the matrix rotation.
+						matrix = Matrix4x4.TRS (Vector3.one, rotation, Vector3.one);
 
-                        // Apply the scale change relative to the center of each character.
-                        copyOfVertices[materialIndex][vertexIndex + 0] = matrix.MultiplyPoint3x4(copyOfVertices[materialIndex][vertexIndex + 0]);
-                        copyOfVertices[materialIndex][vertexIndex + 1] = matrix.MultiplyPoint3x4(copyOfVertices[materialIndex][vertexIndex + 1]);
-                        copyOfVertices[materialIndex][vertexIndex + 2] = matrix.MultiplyPoint3x4(copyOfVertices[materialIndex][vertexIndex + 2]);
-                        copyOfVertices[materialIndex][vertexIndex + 3] = matrix.MultiplyPoint3x4(copyOfVertices[materialIndex][vertexIndex + 3]);
+						// Apply the matrix TRS to the individual characters relative to the center of the current line.
+						copyOfVertices [materialIndex] [vertexIndex + 0] = matrix.MultiplyPoint3x4 (copyOfVertices [materialIndex] [vertexIndex + 0]);
+						copyOfVertices [materialIndex] [vertexIndex + 1] = matrix.MultiplyPoint3x4 (copyOfVertices [materialIndex] [vertexIndex + 1]);
+						copyOfVertices [materialIndex] [vertexIndex + 2] = matrix.MultiplyPoint3x4 (copyOfVertices [materialIndex] [vertexIndex + 2]);
+						copyOfVertices [materialIndex] [vertexIndex + 3] = matrix.MultiplyPoint3x4 (copyOfVertices [materialIndex] [vertexIndex + 3]);
 
-                        // Revert the translation change.
-                        copyOfVertices[materialIndex][vertexIndex + 0] += charCenter;
-                        copyOfVertices[materialIndex][vertexIndex + 1] += charCenter;
-                        copyOfVertices[materialIndex][vertexIndex + 2] += charCenter;
-                        copyOfVertices[materialIndex][vertexIndex + 3] += charCenter;
+						// Revert the translation change.
+						copyOfVertices [materialIndex] [vertexIndex + 0] += centerOfLine;
+						copyOfVertices [materialIndex] [vertexIndex + 1] += centerOfLine;
+						copyOfVertices [materialIndex] [vertexIndex + 2] += centerOfLine;
+						copyOfVertices [materialIndex] [vertexIndex + 3] += centerOfLine;
+						}
+					}
 
-                        // Need to translate all 4 vertices of each quad to aligned with the center of the line.
-                        // This is needed so the matrix TRS is applied from the center of the line.
-                        copyOfVertices[materialIndex][vertexIndex + 0] -= centerOfLine;
-                        copyOfVertices[materialIndex][vertexIndex + 1] -= centerOfLine;
-                        copyOfVertices[materialIndex][vertexIndex + 2] -= centerOfLine;
-                        copyOfVertices[materialIndex][vertexIndex + 3] -= centerOfLine;
+				// Push changes into meshes
+				for (int i = 0; i < textInfo.meshInfo.Length; i++)
+					{
+					textInfo.meshInfo [i].mesh.vertices = copyOfVertices [i];
+					m_TextComponent.UpdateGeometry (textInfo.meshInfo [i].mesh, i);
+					}
 
-                        // Setup the matrix rotation.
-                        matrix = Matrix4x4.TRS(Vector3.one, rotation, Vector3.one);
-
-                        // Apply the matrix TRS to the individual characters relative to the center of the current line.
-                        copyOfVertices[materialIndex][vertexIndex + 0] = matrix.MultiplyPoint3x4(copyOfVertices[materialIndex][vertexIndex + 0]);
-                        copyOfVertices[materialIndex][vertexIndex + 1] = matrix.MultiplyPoint3x4(copyOfVertices[materialIndex][vertexIndex + 1]);
-                        copyOfVertices[materialIndex][vertexIndex + 2] = matrix.MultiplyPoint3x4(copyOfVertices[materialIndex][vertexIndex + 2]);
-                        copyOfVertices[materialIndex][vertexIndex + 3] = matrix.MultiplyPoint3x4(copyOfVertices[materialIndex][vertexIndex + 3]);
-
-                        // Revert the translation change.
-                        copyOfVertices[materialIndex][vertexIndex + 0] += centerOfLine;
-                        copyOfVertices[materialIndex][vertexIndex + 1] += centerOfLine;
-                        copyOfVertices[materialIndex][vertexIndex + 2] += centerOfLine;
-                        copyOfVertices[materialIndex][vertexIndex + 3] += centerOfLine;
-                    }
-                }
-
-                // Push changes into meshes
-                for (int i = 0; i < textInfo.meshInfo.Length; i++)
-                {
-                    textInfo.meshInfo[i].mesh.vertices = copyOfVertices[i];
-                    m_TextComponent.UpdateGeometry(textInfo.meshInfo[i].mesh, i);
-                }
-
-                yield return new WaitForSeconds(0.1f);
-            }
-        }
-
-    }
-}
+				yield return new WaitForSeconds (0.1f);
+				}
+			}
+		}
+	}

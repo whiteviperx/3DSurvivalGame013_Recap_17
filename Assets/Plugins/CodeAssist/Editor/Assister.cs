@@ -1,93 +1,93 @@
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
+
 using UnityEditor;
 
+using UnityEngine;
 
 #nullable enable
 
-
 namespace Meryel.UnityCodeAssist.Editor
-{
-    public class Assister
-    {
-        public const string Version = "1.1.11";
+	{
+	public class Assister
+		{
+		public const string Version = "1.1.11";
 
 #if MERYEL_UCA_LITE_VERSION
-        public const string Title = "Code Assist Lite";
+
+		public const string Title = "Code Assist Lite";
+
 #else
         public const string Title = "Code Assist";
 #endif
 
-        [MenuItem("Tools/" + Title + "/Status", false, 1)]
-        static void DisplayStatusWindow()
-        {
-            StatusWindow.Display();
-        }
+		[MenuItem ("Tools/" + Title + "/Status", false, 1)]
+		private static void DisplayStatusWindow()
+			{
+			StatusWindow.Display ();
+			}
 
+		[MenuItem ("Tools/" + Title + "/Synchronize", false, 2)]
+		private static void Sync()
+			{
+			EditorCoroutines.EditorCoroutineUtility.StartCoroutine (SyncAux (), NetMQInitializer.Publisher);
 
-        [MenuItem("Tools/" + Title + "/Synchronize", false, 2)]
-        static void Sync()
-        {
-            EditorCoroutines.EditorCoroutineUtility.StartCoroutine(SyncAux(), NetMQInitializer.Publisher);
+			//NetMQInitializer.Publisher.SendConnect();
+			//Serilog.Log.Information("Code Assist is looking for more IDEs to connect to...");
 
-            //NetMQInitializer.Publisher.SendConnect();
-            //Serilog.Log.Information("Code Assist is looking for more IDEs to connect to...");
+			NetMQInitializer.Publisher?.SendAnalyticsEvent ("Gui", "Synchronize_MenuItem");
+			}
 
-            NetMQInitializer.Publisher?.SendAnalyticsEvent("Gui", "Synchronize_MenuItem");
-        }
+		[MenuItem ("Tools/" + Title + "/Report error", false, 51)]
+		private static void DisplayFeedbackWindow()
+			{
+			FeedbackWindow.Display ();
+			}
 
-
-        [MenuItem("Tools/" + Title + "/Report error", false, 51)]
-        static void DisplayFeedbackWindow()
-        {
-            FeedbackWindow.Display();
-        }
-
-        [MenuItem("Tools/" + Title + "/About", false, 52)]
-        static void DisplayAboutWindow()
-        {
-            AboutWindow.Display();
-        }
+		[MenuItem ("Tools/" + Title + "/About", false, 52)]
+		private static void DisplayAboutWindow()
+			{
+			AboutWindow.Display ();
+			}
 
 #if MERYEL_UCA_LITE_VERSION
-        [MenuItem("Tools/" + Title + "/Compare versions", false, 31)]
-        static void CompareVersions()
-        {
-            Application.OpenURL("http://unitycodeassist.netlify.app/compare");
 
-            NetMQInitializer.Publisher?.SendAnalyticsEvent("Gui", "CompareVersions_MenuItem");
-        }
+		[MenuItem ("Tools/" + Title + "/Compare versions", false, 31)]
+		private static void CompareVersions()
+			{
+			Application.OpenURL ("http://unitycodeassist.netlify.app/compare");
 
-        [MenuItem("Tools/" + Title + "/Get full version", false, 32)]
-        static void GetFullVersion()
-        {
-            Application.OpenURL("http://u3d.as/2N2H");
+			NetMQInitializer.Publisher?.SendAnalyticsEvent ("Gui", "CompareVersions_MenuItem");
+			}
 
-            NetMQInitializer.Publisher?.SendAnalyticsEvent("Gui", "FullVersion_MenuItem");
-        }
+		[MenuItem ("Tools/" + Title + "/Get full version", false, 32)]
+		private static void GetFullVersion()
+			{
+			Application.OpenURL ("http://u3d.as/2N2H");
+
+			NetMQInitializer.Publisher?.SendAnalyticsEvent ("Gui", "FullVersion_MenuItem");
+			}
+
 #endif // MERYEL_UCA_LITE_VERSION
 
+		private static IEnumerator SyncAux()
+			{
+			var clientCount = NetMQInitializer.Publisher?.clients.Count ?? 0;
+			NetMQInitializer.Publisher?.SendConnect ();
+			Serilog.Log.Information ("Code Assist is looking for more IDEs to connect to...");
 
-        static IEnumerator SyncAux()
-        {
-            var clientCount = NetMQInitializer.Publisher?.clients.Count ?? 0;
-            NetMQInitializer.Publisher?.SendConnect();
-            Serilog.Log.Information("Code Assist is looking for more IDEs to connect to...");
+			//yield return new WaitForSeconds(3);
+			yield return new EditorCoroutines.EditorWaitForSeconds (3);
 
-            //yield return new WaitForSeconds(3);
-            yield return new EditorCoroutines.EditorWaitForSeconds(3);
+			var newClientCount = NetMQInitializer.Publisher?.clients.Count ?? 0;
 
-            var newClientCount = NetMQInitializer.Publisher?.clients.Count ?? 0;
+			var dif = newClientCount - clientCount;
 
-            var dif = newClientCount - clientCount;
-
-            if (dif <= 0)
-                Serilog.Log.Information("Code Assist couldn't find any new IDE to connect to.");
-            else
-                Serilog.Log.Information("Code Assist is connected to {Dif} new IDE(s).", dif);
-        }
+			if (dif <= 0)
+				Serilog.Log.Information ("Code Assist couldn't find any new IDE to connect to.");
+			else
+				Serilog.Log.Information ("Code Assist is connected to {Dif} new IDE(s).", dif);
+			}
 
 #if MERYEL_DEBUG
 
@@ -97,7 +97,7 @@ namespace Meryel.UnityCodeAssist.Editor
             var filePath = CommonTools.GetInputManagerFilePath();
             var hash = Input.UnityInputManager.GetMD5Hash(filePath);
             var convertedPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"UCA_IM_{hash}.txt");
-            
+
             var b = new Input.Binary2TextExec();
             b.Exec(filePath, convertedPath, detailed: false, largeBinaryHashOnly: false, hexFloat: false);
         }
@@ -107,7 +107,6 @@ namespace Meryel.UnityCodeAssist.Editor
         {
             Input.InputManagerMonitor.Instance.Bump();
         }
-
 
         [MenuItem("Code Assist/Layer Check")]
         static void UpdateLayers()
@@ -152,15 +151,13 @@ namespace Meryel.UnityCodeAssist.Editor
             }
 
             NetMQInitializer.Publisher?.SendTags(UnityEditorInternal.InternalEditorUtility.tags);
-
         }
 
         [MenuItem("Code Assist/GO Check")]
-
         static void TestGO()
         {
-
             var go = GameObject.Find("Deneme");
+
             //var go = MonoBehaviour.FindObjectOfType<Deneme>().gameObject;
 
             NetMQInitializer.Publisher?.SendGameObject(go);
@@ -188,11 +185,9 @@ namespace Meryel.UnityCodeAssist.Editor
             }
         }
 
-
         [MenuItem("Code Assist/Undo List Test")]
         static void Undo2Test()
         {
-
             //List<string> undoList, out int undoCursor
             var undoList = new List<string>();
             int undoCursor = int.MaxValue;
@@ -206,20 +201,16 @@ namespace Meryel.UnityCodeAssist.Editor
                 new System.Type[] { typeof(List<string>), typeof(int).MakeByRefType() },
                 null);
 
-
             dynMethod.Invoke(null, new object[] { undoList, undoCursor });
 
             Serilog.Log.Debug("undo count: {Count}", undoList.Count);
-
         }
 
         [MenuItem("Code Assist/Reload Domain")]
         static void ReloadDomain()
         {
             EditorUtility.RequestScriptReload();
-
         }
-
 
         /*
         [MenuItem("Code Assist/TEST")]
@@ -232,32 +223,27 @@ namespace Meryel.UnityCodeAssist.Editor
             }
 
             ScriptFinder.DENEMEEEE();
-
-
-
         }
         */
 
 #endif // MERYEL_DEBUG
 
+		public static void SendTagsAndLayers()
+			{
+			Serilog.Log.Debug (nameof (SendTagsAndLayers));
 
-        public static void SendTagsAndLayers()
-        {
-            Serilog.Log.Debug(nameof(SendTagsAndLayers));
+			var tags = UnityEditorInternal.InternalEditorUtility.tags;
+			NetMQInitializer.Publisher?.SendTags (tags);
 
-            var tags = UnityEditorInternal.InternalEditorUtility.tags;
-            NetMQInitializer.Publisher?.SendTags(tags);
+			var names = UnityEditorInternal.InternalEditorUtility.layers;
+			var indices = names.Select (l => LayerMask.NameToLayer (l).ToString ()).ToArray ();
+			NetMQInitializer.Publisher?.SendLayers (indices, names);
 
-            var names = UnityEditorInternal.InternalEditorUtility.layers;
-            var indices = names.Select(l => LayerMask.NameToLayer(l).ToString()).ToArray();
-            NetMQInitializer.Publisher?.SendLayers(indices, names);
-
-            var sls = SortingLayer.layers;
-            var sortingNames = sls.Select(sl => sl.name).ToArray();
-            var sortingIds = sls.Select(sl => sl.id.ToString()).ToArray();
-            var sortingValues = sls.Select(sl => sl.value.ToString()).ToArray();
-            NetMQInitializer.Publisher?.SendSortingLayers(sortingNames, sortingIds, sortingValues);
-        }
-
-    }
-}
+			var sls = SortingLayer.layers;
+			var sortingNames = sls.Select (sl => sl.name).ToArray ();
+			var sortingIds = sls.Select (sl => sl.id.ToString ()).ToArray ();
+			var sortingValues = sls.Select (sl => sl.value.ToString ()).ToArray ();
+			NetMQInitializer.Publisher?.SendSortingLayers (sortingNames, sortingIds, sortingValues);
+			}
+		}
+	}
