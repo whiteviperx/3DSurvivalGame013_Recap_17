@@ -45,7 +45,7 @@ public class MenuManager:MonoBehaviour
 			SelectionManager.Instance.DisableSelection();
 			SelectionManager.Instance.GetComponent<SelectionManager>().enabled = false;
 			}
-		else if (Input.GetKeyDown(KeyCode.M) && !isMenuOpen)
+		else if (Input.GetKeyDown(KeyCode.M) && isMenuOpen)
 			{
 			saveMenu.SetActive(false);
 			settingsMenu.SetActive(false);
