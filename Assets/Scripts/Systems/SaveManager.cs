@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,7 +10,7 @@ public class SaveManager:MonoBehaviour
 	{
 	public static SaveManager Instance { get; set; }
 
-	void Awake()
+	private void Awake()
 		{
 		if (Instance != null && Instance != this)
 			{
@@ -24,25 +25,22 @@ public class SaveManager:MonoBehaviour
 		}
 
 	// Json Project Save Path
-	string jsonPathProject;
+	private string jsonPathProject;
+
 	// Json External/Real Save Path
-	string jsonPathPersistant;
+	private string jsonPathPersistant;
+
 	// Binary Save Path
-	string binaryPath;
-
-
+	private string binaryPath;
 
 	public bool isSavingToJson;
-
 
 	private void Start()
 		{
 		jsonPathProject = Application.dataPath + Path.AltDirectorySeparatorChar + "SaveGame.json";
 		jsonPathPersistant = Application.persistentDataPath + Path.AltDirectorySeparatorChar + "SaveGame.json";
 		binaryPath = Application.persistentDataPath + "/save_game.bin";
-
 		}
-
 
 	#region || --- General Section --- ||
 
@@ -55,7 +53,7 @@ public class SaveManager:MonoBehaviour
 		SavingTypeSwitch(data);
 		}
 
-	PlayerData GetPlayerData()
+	private PlayerData GetPlayerData()
 		{
 		var playerStats = new float [3];
 		playerStats [0] = PlayerState.Instance.currentHealth;
@@ -78,7 +76,7 @@ public class SaveManager:MonoBehaviour
 		{
 		if (isSavingToJson)
 			{
-			// SaveGameDataToJsonFile(gameData);
+			SaveGameDataToJsonFile(gameData);
 			}
 		else
 			{
@@ -95,13 +93,13 @@ public class SaveManager:MonoBehaviour
 		{
 		if (isSavingToJson)
 			{
-			// AllGameData gameData = LoadGameDataFromJsonFile();
-			var gameData = LoadGameDataFromBinaryFile();
+			AllGameData gameData = LoadGameDataFromJsonFile();
+			//AllGameData gameData = LoadGameDataFromBinaryFile();
 			return gameData;
 			}
 		else
 			{
-			var gameData = LoadGameDataFromBinaryFile();
+			AllGameData gameData = LoadGameDataFromBinaryFile();
 			return gameData;
 			}
 		}
@@ -115,7 +113,7 @@ public class SaveManager:MonoBehaviour
 		// setEnviroment();
 		}
 
-	void SetPlayerData(PlayerData playerData)
+	private void SetPlayerData(PlayerData playerData)
 		{
 		// --- Setting Player Stats --- //
 		PlayerState.Instance.currentHealth = playerData.playerStats [0];
@@ -146,7 +144,7 @@ public class SaveManager:MonoBehaviour
 		StartCoroutine(DelayedLoading());
 		}
 
-	IEnumerator DelayedLoading()
+	private IEnumerator DelayedLoading()
 		{
 		yield return new WaitForSeconds(1f);
 
@@ -164,7 +162,6 @@ public class SaveManager:MonoBehaviour
 	// Save Game Data To Binary File //
 	public void SaveGameDataToBinaryFile(AllGameData gameData)
 		{
-		
 		BinaryFormatter formatter = new();
 
 		// --- Path to save to --- //
@@ -227,9 +224,7 @@ public class SaveManager:MonoBehaviour
 
 			AllGameData data = JsonUtility.FromJson<AllGameData>(json);
 			return data;
-			}
-
-
+			};
 		}
 
 	#endregion || --- Json Section --- ||
