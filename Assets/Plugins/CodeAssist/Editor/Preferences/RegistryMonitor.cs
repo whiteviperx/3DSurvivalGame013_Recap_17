@@ -21,13 +21,13 @@ namespace Meryel.UnityCodeAssist.Editor.Preferences
 		{
 		#region P/Invoke
 
-		[DllImport ("advapi32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+		[DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
 		private static extern int RegOpenKeyEx(IntPtr hKey, string subKey, uint options, int samDesired, out IntPtr phkResult);
 
-		[DllImport ("advapi32.dll", SetLastError = true)]
+		[DllImport("advapi32.dll", SetLastError = true)]
 		private static extern int RegNotifyChangeKeyValue(IntPtr hKey, bool bWatchSubtree, RegChangeNotifyFilter dwNotifyFilter, IntPtr hEvent, bool fAsynchronous);
 
-		[DllImport ("advapi32.dll", SetLastError = true)]
+		[DllImport("advapi32.dll", SetLastError = true)]
 		private static extern int RegCloseKey(IntPtr hKey);
 
 		private const int KEY_QUERY_VALUE = 0x0001;
@@ -36,19 +36,19 @@ namespace Meryel.UnityCodeAssist.Editor.Preferences
 
 		private const int STANDARD_RIGHTS_READ = 0x00020000;
 
-		private static readonly IntPtr HKEY_CLASSES_ROOT = new IntPtr (unchecked((int) 0x80000000));
+		private static readonly IntPtr HKEY_CLASSES_ROOT = new IntPtr(unchecked((int) 0x80000000));
 
-		private static readonly IntPtr HKEY_CURRENT_USER = new IntPtr (unchecked((int) 0x80000001));
+		private static readonly IntPtr HKEY_CURRENT_USER = new IntPtr(unchecked((int) 0x80000001));
 
-		private static readonly IntPtr HKEY_LOCAL_MACHINE = new IntPtr (unchecked((int) 0x80000002));
+		private static readonly IntPtr HKEY_LOCAL_MACHINE = new IntPtr(unchecked((int) 0x80000002));
 
-		private static readonly IntPtr HKEY_USERS = new IntPtr (unchecked((int) 0x80000003));
+		private static readonly IntPtr HKEY_USERS = new IntPtr(unchecked((int) 0x80000003));
 
-		private static readonly IntPtr HKEY_PERFORMANCE_DATA = new IntPtr (unchecked((int) 0x80000004));
+		private static readonly IntPtr HKEY_PERFORMANCE_DATA = new IntPtr(unchecked((int) 0x80000004));
 
-		private static readonly IntPtr HKEY_CURRENT_CONFIG = new IntPtr (unchecked((int) 0x80000005));
+		private static readonly IntPtr HKEY_CURRENT_CONFIG = new IntPtr(unchecked((int) 0x80000005));
 
-		private static readonly IntPtr HKEY_DYN_DATA = new IntPtr (unchecked((int) 0x80000006));
+		private static readonly IntPtr HKEY_DYN_DATA = new IntPtr(unchecked((int) 0x80000006));
 
 		#endregion P/Invoke
 
@@ -73,7 +73,7 @@ namespace Meryel.UnityCodeAssist.Editor.Preferences
 		/// </remarks>
 		protected virtual void OnRegChanged()
 			{
-			RegChanged?.Invoke (this, null);
+			RegChanged?.Invoke(this, null);
 			}
 
 		/// <summary>
@@ -96,7 +96,7 @@ namespace Meryel.UnityCodeAssist.Editor.Preferences
 		/// </remarks>
 		protected virtual void OnError(Exception e)
 			{
-			Error?.Invoke (this, new ErrorEventArgs (e));
+			Error?.Invoke(this, new ErrorEventArgs(e));
 			}
 
 		#endregion Event handling
@@ -107,13 +107,13 @@ namespace Meryel.UnityCodeAssist.Editor.Preferences
 
 		private string _registrySubName;
 
-		private readonly object _threadLock = new object ();
+		private readonly object _threadLock = new object();
 
 		private Thread _thread;
 
 		private bool _disposed = false;
 
-		private readonly ManualResetEvent _eventTerminate = new ManualResetEvent (false);
+		private readonly ManualResetEvent _eventTerminate = new ManualResetEvent(false);
 
 		private RegChangeNotifyFilter _regFilter = RegChangeNotifyFilter.Key | RegChangeNotifyFilter.Attribute | RegChangeNotifyFilter.Value | RegChangeNotifyFilter.Security;
 
@@ -125,7 +125,7 @@ namespace Meryel.UnityCodeAssist.Editor.Preferences
 		/// <param name="registryKey">The registry key to monitor.</param>
 		public RegistryMonitor(RegistryKey registryKey)
 			{
-			InitRegistryKey (registryKey.Name);
+			InitRegistryKey(registryKey.Name);
 			}
 
 		/// <summary>
@@ -135,9 +135,9 @@ namespace Meryel.UnityCodeAssist.Editor.Preferences
 		public RegistryMonitor(string name)
 			{
 			if (name == null || name.Length == 0)
-				throw new ArgumentNullException ("name");
+				throw new ArgumentNullException("name");
 
-			InitRegistryKey (name);
+			InitRegistryKey(name);
 			}
 
 		/// <summary>
@@ -147,7 +147,7 @@ namespace Meryel.UnityCodeAssist.Editor.Preferences
 		/// <param name="subKey">The sub key.</param>
 		public RegistryMonitor(RegistryHive registryHive, string subKey)
 			{
-			InitRegistryKey (registryHive, subKey);
+			InitRegistryKey(registryHive, subKey);
 			}
 
 		/// <summary>
@@ -155,9 +155,9 @@ namespace Meryel.UnityCodeAssist.Editor.Preferences
 		/// </summary>
 		public void Dispose()
 			{
-			Stop ();
+			Stop();
 			_disposed = true;
-			GC.SuppressFinalize (this);
+			GC.SuppressFinalize(this);
 			}
 
 		/// <summary>
@@ -172,7 +172,7 @@ namespace Meryel.UnityCodeAssist.Editor.Preferences
 				lock (_threadLock)
 					{
 					if (IsMonitoring)
-						throw new InvalidOperationException ("Monitoring thread is already running");
+						throw new InvalidOperationException("Monitoring thread is already running");
 
 					_regFilter = value;
 					}
@@ -192,14 +192,14 @@ namespace Meryel.UnityCodeAssist.Editor.Preferences
 					RegistryHive.LocalMachine => HKEY_LOCAL_MACHINE,
 					RegistryHive.PerformanceData => HKEY_PERFORMANCE_DATA,
 					RegistryHive.Users => HKEY_USERS,
-					_ => throw new InvalidEnumArgumentException ("hive", (int) hive, typeof (RegistryHive)),
+					_ => throw new InvalidEnumArgumentException("hive", (int) hive, typeof(RegistryHive)),
 					};
 			_registrySubName = name;
 			}
 
 		private void InitRegistryKey(string name)
 			{
-			string [] nameParts = name.Split ('\\');
+			string [] nameParts = name.Split('\\');
 
 			switch (nameParts [0])
 				{
@@ -228,10 +228,10 @@ namespace Meryel.UnityCodeAssist.Editor.Preferences
 
 				default:
 					_registryHive = IntPtr.Zero;
-					throw new ArgumentException ("The registry hive '" + nameParts [0] + "' is not supported", "value");
+					throw new ArgumentException("The registry hive '" + nameParts [0] + "' is not supported", "value");
 				}
 
-			_registrySubName = String.Join ("\\", nameParts, 1, nameParts.Length - 1);
+			_registrySubName = String.Join("\\", nameParts, 1, nameParts.Length - 1);
 			}
 
 		#endregion Initialization
@@ -251,15 +251,15 @@ namespace Meryel.UnityCodeAssist.Editor.Preferences
 		public void Start()
 			{
 			if (_disposed)
-				throw new ObjectDisposedException (null, "This instance is already disposed");
+				throw new ObjectDisposedException(null, "This instance is already disposed");
 
 			lock (_threadLock)
 				{
 				if (!IsMonitoring)
 					{
-					_eventTerminate.Reset ();
-					_thread = new Thread (new ThreadStart (MonitorThread)) { IsBackground = true };
-					_thread.Start ();
+					_eventTerminate.Reset();
+					_thread = new Thread(new ThreadStart(MonitorThread)) { IsBackground = true };
+					_thread.Start();
 					}
 				}
 			}
@@ -270,15 +270,15 @@ namespace Meryel.UnityCodeAssist.Editor.Preferences
 		public void Stop()
 			{
 			if (_disposed)
-				throw new ObjectDisposedException (null, "This instance is already disposed");
+				throw new ObjectDisposedException(null, "This instance is already disposed");
 
 			lock (_threadLock)
 				{
 				Thread thread = _thread;
 				if (thread != null)
 					{
-					_eventTerminate.Set ();
-					thread.Join ();
+					_eventTerminate.Set();
+					thread.Join();
 					}
 				}
 			}
@@ -287,38 +287,38 @@ namespace Meryel.UnityCodeAssist.Editor.Preferences
 			{
 			try
 				{
-				ThreadLoop ();
+				ThreadLoop();
 				}
 			catch (Exception e)
 				{
-				OnError (e);
+				OnError(e);
 				}
 			_thread = null;
 			}
 
 		private void ThreadLoop()
 			{
-			int result = RegOpenKeyEx (_registryHive, _registrySubName, 0, STANDARD_RIGHTS_READ | KEY_QUERY_VALUE | KEY_NOTIFY, out IntPtr registryKey);
+			int result = RegOpenKeyEx(_registryHive, _registrySubName, 0, STANDARD_RIGHTS_READ | KEY_QUERY_VALUE | KEY_NOTIFY, out IntPtr registryKey);
 			if (result != 0)
 				{
-				throw new Win32Exception (result);
+				throw new Win32Exception(result);
 				}
 
 			try
 				{
-				AutoResetEvent _eventNotify = new AutoResetEvent (false);
+				AutoResetEvent _eventNotify = new AutoResetEvent(false);
 				WaitHandle [] waitHandles = new WaitHandle [] { _eventNotify, _eventTerminate };
-				while (!_eventTerminate.WaitOne (0, true))
+				while (!_eventTerminate.WaitOne(0, true))
 					{
-					result = RegNotifyChangeKeyValue (registryKey, true, _regFilter, _eventNotify.SafeWaitHandle.DangerousGetHandle (), true);
+					result = RegNotifyChangeKeyValue(registryKey, true, _regFilter, _eventNotify.SafeWaitHandle.DangerousGetHandle(), true);
 					if (result != 0)
 						{
-						throw new Win32Exception (result);
+						throw new Win32Exception(result);
 						}
 
-					if (WaitHandle.WaitAny (waitHandles) == 0)
+					if (WaitHandle.WaitAny(waitHandles) == 0)
 						{
-						OnRegChanged ();
+						OnRegChanged();
 						}
 					}
 				}
@@ -326,7 +326,7 @@ namespace Meryel.UnityCodeAssist.Editor.Preferences
 				{
 				if (registryKey != IntPtr.Zero)
 					{
-					RegCloseKey (registryKey);
+					RegCloseKey(registryKey);
 					}
 				}
 			}

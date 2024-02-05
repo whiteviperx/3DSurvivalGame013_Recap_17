@@ -4,7 +4,7 @@ using System.Collections;
 
 using UnityEngine;
 
-[RequireComponent (typeof (Animator))]
+[RequireComponent(typeof(Animator))]
 public class EquipableItem:MonoBehaviour
 	{
 	public Animator animator;
@@ -12,13 +12,13 @@ public class EquipableItem:MonoBehaviour
 	// --- Start is called before the first frame update --- //
 	private void Start()
 		{
-		animator = GetComponent<Animator> ();
+		animator = GetComponent<Animator>();
 		}
 
 	// --- Update is called once per frame --- //
 	private void Update()
 		{
-		if (Input.GetMouseButtonDown (0) && // --- Left Mouse Button --- //
+		if (Input.GetMouseButtonDown(0) && // --- Left Mouse Button --- //
 			InventorySystem.Instance.isOpen == false &&
 			CraftingSystem.Instance.isOpen == false &&
 			SelectionManager.Instance.handIsVisible == false &&
@@ -26,10 +26,10 @@ public class EquipableItem:MonoBehaviour
 			)
 
 			{
-			SoundManager.Instance.PlaySound (SoundManager.Instance.toolSwingSound);
-			animator.SetTrigger ("hit");
+			SoundManager.Instance.PlaySound(SoundManager.Instance.toolSwingSound);
+			animator.SetTrigger("hit");
 
-			Debug.Log ("EquipableItem animator.SetTrigger hit");
+			Debug.Log("EquipableItem animator.SetTrigger hit");
 			}
 		}
 
@@ -39,13 +39,13 @@ public class EquipableItem:MonoBehaviour
 
 		if (selectedTree != null)
 			{
-			selectedTree.GetComponent<ChoppableTree> ().GetHit ();
+			selectedTree.GetComponent<ChoppableTree>().GetHit();
 			}
 		}
 
 	private IEnumerator SwingSoundDelay()
 		{
-		yield return new WaitForSeconds (0.1f);
-		SoundManager.Instance.PlaySound (SoundManager.Instance.toolSwingSound);
+		yield return new WaitForSeconds(0.1f);
+		SoundManager.Instance.PlaySound(SoundManager.Instance.toolSwingSound);
 		}
 	}

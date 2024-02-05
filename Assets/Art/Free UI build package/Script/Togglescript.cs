@@ -7,7 +7,7 @@ public class Togglescript:MonoBehaviour
 
 	private void Start()
 		{
-		toggle = GetComponent<Toggle> ();
+		toggle = GetComponent<Toggle>();
 		}
 
 	public GameObject Slider;
@@ -16,11 +16,11 @@ public class Togglescript:MonoBehaviour
 		{
 		if (toggle.isOn)
 			{
-			Slider.SetActive (false);
+			Slider.SetActive(false);
 			}
 		else
 			{
-			Slider.SetActive (true);
+			Slider.SetActive(true);
 			}
 		}
 	}

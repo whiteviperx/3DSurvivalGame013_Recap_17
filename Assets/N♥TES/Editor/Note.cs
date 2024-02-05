@@ -9,7 +9,7 @@ using Object = UnityEngine.Object;
 
 namespace Notes
 	{
-	[CustomEditor (typeof (Note), true)]
+	[CustomEditor(typeof(Note), true)]
 	public class NoteNote:Note<Note>
 		{
 		protected override bool AlwaysShowNote => true;
@@ -36,23 +36,23 @@ namespace Notes
 				{
 				Object sourceObject = null;
 
-				if (PrefabUtility.IsPartOfAnyPrefab (target)) //if we've selected a prefab
+				if (PrefabUtility.IsPartOfAnyPrefab(target)) //if we've selected a prefab
 					{
-					sourceObject = PrefabUtility.GetCorrespondingObjectFromSourceAtPath (target, PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot (target));
+					sourceObject = PrefabUtility.GetCorrespondingObjectFromSourceAtPath(target, PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(target));
 					}
 				else //regular instance
 					{
-					return target.GetInstanceID ();
+					return target.GetInstanceID();
 					}
 
 				if (sourceObject != null) //get prefab instance ID
 					{
-					return sourceObject.GetInstanceID ();
+					return sourceObject.GetInstanceID();
 					}
 				else //this should just never ever happen.
 					{
 					allowNoteEdits = false;
-					return target.GetInstanceID (); //SHOULD (hopefully) NEVER HAPPEN
+					return target.GetInstanceID(); //SHOULD (hopefully) NEVER HAPPEN
 					}
 				}
 			}
@@ -68,16 +68,16 @@ namespace Notes
 
 		private void OnEnable()
 			{
-			targetType = Type.GetType ($"UnityEditor.{typeof (T).Name}Inspector, UnityEditor");
+			targetType = Type.GetType($"UnityEditor.{typeof(T).Name}Inspector, UnityEditor");
 			if (targetType != null)
 				{
 				//When this inspector is created, also create the built-in inspector
-				defaultEditor = Editor.CreateEditor (targets, targetType);
+				defaultEditor = Editor.CreateEditor(targets, targetType);
 				}
 
-			if (!Notes.TryLoadNote (ID, out note))
+			if (!Notes.TryLoadNote(ID, out note))
 				{
-				note = new SerializableNote (ID, "", false);
+				note = new SerializableNote(ID, "", false);
 				}
 			}
 
@@ -87,10 +87,10 @@ namespace Notes
 			//Also, make sure to call any required methods like OnDisable
 			if (defaultEditor != null)
 				{
-				MethodInfo disableMethod = defaultEditor.GetType ().GetMethod ("OnDisable", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+				MethodInfo disableMethod = defaultEditor.GetType().GetMethod("OnDisable", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
 				if (disableMethod != null)
-					disableMethod.Invoke (defaultEditor, null);
-				DestroyImmediate (defaultEditor);
+					disableMethod.Invoke(defaultEditor, null);
+				DestroyImmediate(defaultEditor);
 				}
 			}
 
@@ -100,17 +100,17 @@ namespace Notes
 				{
 				if (targetType != null)
 					{
-					defaultEditor.OnInspectorGUI ();
+					defaultEditor.OnInspectorGUI();
 					}
 				else
 					{
-					DrawDefaultInspector ();
+					DrawDefaultInspector();
 					}
 				}
 
 			if (!IsHeader)
 				{
-				DrawNoteGui ();
+				DrawNoteGui();
 				}
 			}
 
@@ -120,17 +120,17 @@ namespace Notes
 				{
 				if (targetType != null)
 					{
-					defaultEditor.DrawHeader ();
+					defaultEditor.DrawHeader();
 					}
 				else
 					{
-					base.DrawHeader ();
+					base.DrawHeader();
 					}
 				}
 
 			if (IsHeader)
 				{
-				DrawNoteGui ();
+				DrawNoteGui();
 				}
 			}
 
@@ -140,11 +140,11 @@ namespace Notes
 				{
 				if (targetType != null)
 					{
-					defaultEditor.DrawPreview (previewArea);
+					defaultEditor.DrawPreview(previewArea);
 					}
 				else
 					{
-					base.DrawPreview (previewArea);
+					base.DrawPreview(previewArea);
 					}
 				}
 			}
@@ -155,11 +155,11 @@ namespace Notes
 				{
 				if (targetType != null)
 					{
-					defaultEditor.OnPreviewGUI (r, background);
+					defaultEditor.OnPreviewGUI(r, background);
 					}
 				else
 					{
-					base.OnPreviewGUI (r, background);
+					base.OnPreviewGUI(r, background);
 					}
 				}
 			}
@@ -170,11 +170,11 @@ namespace Notes
 				{
 				if (targetType != null)
 					{
-					defaultEditor.OnInteractivePreviewGUI (r, background);
+					defaultEditor.OnInteractivePreviewGUI(r, background);
 					}
 				else
 					{
-					base.OnInteractivePreviewGUI (r, background);
+					base.OnInteractivePreviewGUI(r, background);
 					}
 				}
 			}
@@ -190,7 +190,7 @@ namespace Notes
 
 				if (!AlwaysShowNote)
 					{
-					if (GUILayout.Button (note.show ? "―" : (note.isEmpty ? "♡" : "♥"), EditorStyles.centeredGreyMiniLabel))
+					if (GUILayout.Button(note.show ? "―" : (note.isEmpty ? "♡" : "♥"), EditorStyles.centeredGreyMiniLabel))
 						{
 						note.show = !note.show;
 						}
@@ -198,35 +198,35 @@ namespace Notes
 
 				if (note.show || AlwaysShowNote)
 					{
-					EditorGUILayout.BeginHorizontal ();
+					EditorGUILayout.BeginHorizontal();
 
 					GUIStyle textAreaStyle = EditorStyles.textArea;
 					textAreaStyle.wordWrap = true;
 
-					string noteText = EditorGUILayout.TextArea (note.noteText == "" ? Notes.placeholder : note.noteText, textAreaStyle);
+					string noteText = EditorGUILayout.TextArea(note.noteText == "" ? Notes.placeholder : note.noteText, textAreaStyle);
 					noteText = (noteText == Notes.placeholder ? "" : noteText);
 
 					if (note.noteText != noteText)
 						{
 						note.noteText = noteText;
 
-						Notes.SaveNote (note);
+						Notes.SaveNote(note);
 
 						if (Notes.Exists)
-							Notes.Instance.Repaint ();
+							Notes.Instance.Repaint();
 						}
 
 					if (!Notes.Exists)
 						{
-						GUIContent pingContent = new GUIContent (Notes.pingIcon.Texture);
-						float pingWidth = EditorStyles.miniButton.CalcSize (pingContent).x;
-						if (GUILayout.Button (pingContent, EditorStyles.miniButton, GUILayout.Width (pingWidth)))
+						GUIContent pingContent = new GUIContent(Notes.pingIcon.Texture);
+						float pingWidth = EditorStyles.miniButton.CalcSize(pingContent).x;
+						if (GUILayout.Button(pingContent, EditorStyles.miniButton, GUILayout.Width(pingWidth)))
 							{
-							Notes.ShowWindow ();
+							Notes.ShowWindow();
 							}
 						}
 
-					EditorGUILayout.EndHorizontal ();
+					EditorGUILayout.EndHorizontal();
 					}
 
 				GUI.enabled = guiEnabledCache;
@@ -248,22 +248,22 @@ namespace Notes
 
 				Object sourceObject = null;
 
-				if (PrefabUtility.IsPartOfAnyPrefab (cachedHeader.target)) //if we've selected a prefab
+				if (PrefabUtility.IsPartOfAnyPrefab(cachedHeader.target)) //if we've selected a prefab
 					{
-					sourceObject = PrefabUtility.GetCorrespondingObjectFromSourceAtPath (cachedHeader.target, PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot (cachedHeader.target));
+					sourceObject = PrefabUtility.GetCorrespondingObjectFromSourceAtPath(cachedHeader.target, PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(cachedHeader.target));
 					}
 				else //regular instance
 					{
-					return cachedHeader.target.GetInstanceID ();
+					return cachedHeader.target.GetInstanceID();
 					}
 
 				if (sourceObject != null) //get prefab instance ID
 					{
-					return sourceObject.GetInstanceID ();
+					return sourceObject.GetInstanceID();
 					}
 				else //this should just never ever happen.
 					{
-					return cachedHeader.target.GetInstanceID (); //SHOULD (hopefully) NEVER HAPPEN
+					return cachedHeader.target.GetInstanceID(); //SHOULD (hopefully) NEVER HAPPEN
 					}
 				}
 			}
@@ -272,7 +272,7 @@ namespace Notes
 
 		private static Editor cachedHeader;
 
-		private static readonly Type [] unsupportedTypes = { typeof (AssetImporter) };
+		private static readonly Type [] unsupportedTypes = { typeof(AssetImporter) };
 
 		static HeaderNotes()
 			{
@@ -283,9 +283,9 @@ namespace Notes
 			{
 			cachedHeader = header;
 
-			if (!Notes.TryLoadNote (ID, out note))
+			if (!Notes.TryLoadNote(ID, out note))
 				{
-				note = new SerializableNote (ID, "", false);
+				note = new SerializableNote(ID, "", false);
 				}
 			}
 
@@ -295,7 +295,7 @@ namespace Notes
 
 			foreach (Type unsupportedType in unsupportedTypes)
 				{
-				if (header.target.GetType ().IsSubclassOf (unsupportedType))
+				if (header.target.GetType().IsSubclassOf(unsupportedType))
 					{
 					return;
 					}
@@ -305,7 +305,7 @@ namespace Notes
 
 			if (cachedHeader != header)
 				{
-				InitializeHeader (header);
+				InitializeHeader(header);
 				}
 
 			//================ Header ================
@@ -316,55 +316,55 @@ namespace Notes
 			Color guiColorCache = GUI.color;
 			GUI.color = note.Color;
 
-			EditorGUILayout.BeginHorizontal ();
-			GUILayout.FlexibleSpace ();
+			EditorGUILayout.BeginHorizontal();
+			GUILayout.FlexibleSpace();
 
-			if (GUILayout.Button (note.show ? "―" : (note.isEmpty ? "♡" : "♥"), EditorStyles.whiteMiniLabel))
+			if (GUILayout.Button(note.show ? "―" : (note.isEmpty ? "♡" : "♥"), EditorStyles.whiteMiniLabel))
 				{
 				note.show = !note.show;
 
-				Notes.SaveNote (note);
+				Notes.SaveNote(note);
 
 				if (Notes.Exists)
-					Notes.Instance.Repaint ();
+					Notes.Instance.Repaint();
 				}
 
-			GUILayout.FlexibleSpace ();
-			EditorGUILayout.EndHorizontal ();
+			GUILayout.FlexibleSpace();
+			EditorGUILayout.EndHorizontal();
 
 			GUI.color = guiColorCache;
 
 			if (note.show)
 				{
-				EditorGUILayout.BeginHorizontal ();
+				EditorGUILayout.BeginHorizontal();
 
 				GUIStyle textAreaStyle = EditorStyles.textArea;
 				textAreaStyle.wordWrap = true;
 
-				string noteText = EditorGUILayout.TextArea (note.noteText == "" ? Notes.placeholder : note.noteText, textAreaStyle);
+				string noteText = EditorGUILayout.TextArea(note.noteText == "" ? Notes.placeholder : note.noteText, textAreaStyle);
 				noteText = (noteText == Notes.placeholder ? "" : noteText);
 
 				if (note.noteText != noteText)
 					{
 					note.noteText = noteText;
 
-					Notes.SaveNote (note);
+					Notes.SaveNote(note);
 
 					if (Notes.Exists)
-						Notes.Instance.Repaint ();
+						Notes.Instance.Repaint();
 					}
 
 				if (!Notes.Exists)
 					{
-					GUIContent pingContent = new GUIContent (Notes.pingIcon.Texture);
-					float pingWidth = EditorStyles.miniButton.CalcSize (pingContent).x;
-					if (GUILayout.Button (pingContent, EditorStyles.miniButton, GUILayout.Width (pingWidth)))
+					GUIContent pingContent = new GUIContent(Notes.pingIcon.Texture);
+					float pingWidth = EditorStyles.miniButton.CalcSize(pingContent).x;
+					if (GUILayout.Button(pingContent, EditorStyles.miniButton, GUILayout.Width(pingWidth)))
 						{
-						Notes.ShowWindow ();
+						Notes.ShowWindow();
 						}
 					}
 
-				EditorGUILayout.EndHorizontal ();
+				EditorGUILayout.EndHorizontal();
 				}
 
 			GUI.enabled = guiEnabledCache;

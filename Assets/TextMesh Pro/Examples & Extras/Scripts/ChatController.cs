@@ -13,12 +13,12 @@ public class ChatController:MonoBehaviour
 
 	private void OnEnable()
 		{
-		ChatInputField.onSubmit.AddListener (AddToChatOutput);
+		ChatInputField.onSubmit.AddListener(AddToChatOutput);
 		}
 
 	private void OnDisable()
 		{
-		ChatInputField.onSubmit.RemoveListener (AddToChatOutput);
+		ChatInputField.onSubmit.RemoveListener(AddToChatOutput);
 		}
 
 	private void AddToChatOutput(string newText)
@@ -28,7 +28,7 @@ public class ChatController:MonoBehaviour
 
 		var timeNow = System.DateTime.Now;
 
-		string formattedInput = "[<#FFFF80>" + timeNow.Hour.ToString ("d2") + ":" + timeNow.Minute.ToString ("d2") + ":" + timeNow.Second.ToString ("d2") + "</color>] " + newText;
+		string formattedInput = "[<#FFFF80>" + timeNow.Hour.ToString("d2") + ":" + timeNow.Minute.ToString("d2") + ":" + timeNow.Second.ToString("d2") + "</color>] " + newText;
 
 		if (ChatDisplayOutput != null)
 			{
@@ -41,7 +41,7 @@ public class ChatController:MonoBehaviour
 			}
 
 		// Keep Chat input field active
-		ChatInputField.ActivateInputField ();
+		ChatInputField.ActivateInputField();
 
 		// Set the scrollbar to the bottom when next text is submitted.
 		ChatScrollbar.value = 0;

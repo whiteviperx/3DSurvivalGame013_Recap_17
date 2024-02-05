@@ -19,24 +19,24 @@ namespace TMPro.Examples
 
 		private void Awake()
 			{
-			m_TextComponent = GetComponent<TMP_Text> ();
+			m_TextComponent = GetComponent<TMP_Text>();
 			}
 
 		private void OnEnable()
 			{
 			// Subscribe to event fired when text object has been regenerated.
-			TMPro_EventManager.TEXT_CHANGED_EVENT.Add (ON_TEXT_CHANGED);
+			TMPro_EventManager.TEXT_CHANGED_EVENT.Add(ON_TEXT_CHANGED);
 			}
 
 		private void OnDisable()
 			{
 			// UnSubscribe to event fired when text object has been regenerated.
-			TMPro_EventManager.TEXT_CHANGED_EVENT.Remove (ON_TEXT_CHANGED);
+			TMPro_EventManager.TEXT_CHANGED_EVENT.Remove(ON_TEXT_CHANGED);
 			}
 
 		private void Start()
 			{
-			StartCoroutine (AnimateVertexColors ());
+			StartCoroutine(AnimateVertexColors());
 			}
 
 		private void ON_TEXT_CHANGED(Object obj)
@@ -53,16 +53,16 @@ namespace TMPro.Examples
 			{
 			// We force an update of the text object since it would only be updated at the end of the frame. Ie. before this code is executed on the first frame.
 			// Alternatively, we could yield and wait until the end of the frame when the text object will be generated.
-			m_TextComponent.ForceMeshUpdate ();
+			m_TextComponent.ForceMeshUpdate();
 
 			TMP_TextInfo textInfo = m_TextComponent.textInfo;
 
 			Matrix4x4 matrix;
-			TMP_MeshInfo [] cachedMeshInfoVertexData = textInfo.CopyMeshInfoVertexData ();
+			TMP_MeshInfo [] cachedMeshInfoVertexData = textInfo.CopyMeshInfoVertexData();
 
 			// Allocations for sorting of the modified scales
-			List<float> modifiedCharScale = new List<float> ();
-			List<int> scaleSortingOrder = new List<int> ();
+			List<float> modifiedCharScale = new List<float>();
+			List<int> scaleSortingOrder = new List<int>();
 
 			hasTextChanged = true;
 
@@ -72,7 +72,7 @@ namespace TMPro.Examples
 				if (hasTextChanged)
 					{
 					// Get updated vertex data
-					cachedMeshInfoVertexData = textInfo.CopyMeshInfoVertexData ();
+					cachedMeshInfoVertexData = textInfo.CopyMeshInfoVertexData();
 
 					hasTextChanged = false;
 					}
@@ -82,13 +82,13 @@ namespace TMPro.Examples
 				// If No Characters then just yield and wait for some text to be added
 				if (characterCount == 0)
 					{
-					yield return new WaitForSeconds (0.25f);
+					yield return new WaitForSeconds(0.25f);
 					continue;
 					}
 
 				// Clear list of character scales
-				modifiedCharScale.Clear ();
-				scaleSortingOrder.Clear ();
+				modifiedCharScale.Clear();
+				scaleSortingOrder.Clear();
 
 				for (int i = 0; i < characterCount; i++)
 					{
@@ -126,20 +126,20 @@ namespace TMPro.Examples
 					//Vector3 jitterOffset = new Vector3(Random.Range(-.25f, .25f), Random.Range(-.25f, .25f), 0);
 
 					// Determine the random scale change for each character.
-					float randomScale = Random.Range (1f, 1.5f);
+					float randomScale = Random.Range(1f, 1.5f);
 
 					// Add modified scale and index
-					modifiedCharScale.Add (randomScale);
-					scaleSortingOrder.Add (modifiedCharScale.Count - 1);
+					modifiedCharScale.Add(randomScale);
+					scaleSortingOrder.Add(modifiedCharScale.Count - 1);
 
 					// Setup the matrix for the scale change.
 					//matrix = Matrix4x4.TRS(jitterOffset, Quaternion.Euler(0, 0, Random.Range(-5f, 5f)), Vector3.one * randomScale);
-					matrix = Matrix4x4.TRS (new Vector3 (0, 0, 0), Quaternion.identity, Vector3.one * randomScale);
+					matrix = Matrix4x4.TRS(new Vector3(0, 0, 0), Quaternion.identity, Vector3.one * randomScale);
 
-					destinationVertices [vertexIndex + 0] = matrix.MultiplyPoint3x4 (destinationVertices [vertexIndex + 0]);
-					destinationVertices [vertexIndex + 1] = matrix.MultiplyPoint3x4 (destinationVertices [vertexIndex + 1]);
-					destinationVertices [vertexIndex + 2] = matrix.MultiplyPoint3x4 (destinationVertices [vertexIndex + 2]);
-					destinationVertices [vertexIndex + 3] = matrix.MultiplyPoint3x4 (destinationVertices [vertexIndex + 3]);
+					destinationVertices [vertexIndex + 0] = matrix.MultiplyPoint3x4(destinationVertices [vertexIndex + 0]);
+					destinationVertices [vertexIndex + 1] = matrix.MultiplyPoint3x4(destinationVertices [vertexIndex + 1]);
+					destinationVertices [vertexIndex + 2] = matrix.MultiplyPoint3x4(destinationVertices [vertexIndex + 2]);
+					destinationVertices [vertexIndex + 3] = matrix.MultiplyPoint3x4(destinationVertices [vertexIndex + 3]);
 
 					destinationVertices [vertexIndex + 0] += offset;
 					destinationVertices [vertexIndex + 1] += offset;
@@ -169,19 +169,19 @@ namespace TMPro.Examples
 				for (int i = 0; i < textInfo.meshInfo.Length; i++)
 					{
 					//// Sort Quads based modified scale
-					scaleSortingOrder.Sort ((a, b) => modifiedCharScale [a].CompareTo (modifiedCharScale [b]));
+					scaleSortingOrder.Sort((a, b) => modifiedCharScale [a].CompareTo(modifiedCharScale [b]));
 
-					textInfo.meshInfo [i].SortGeometry (scaleSortingOrder);
+					textInfo.meshInfo [i].SortGeometry(scaleSortingOrder);
 
 					// Updated modified vertex attributes
 					textInfo.meshInfo [i].mesh.vertices = textInfo.meshInfo [i].vertices;
-					textInfo.meshInfo [i].mesh.SetUVs (0, textInfo.meshInfo [i].uvs0);
+					textInfo.meshInfo [i].mesh.SetUVs(0, textInfo.meshInfo [i].uvs0);
 					textInfo.meshInfo [i].mesh.colors32 = textInfo.meshInfo [i].colors32;
 
-					m_TextComponent.UpdateGeometry (textInfo.meshInfo [i].mesh, i);
+					m_TextComponent.UpdateGeometry(textInfo.meshInfo [i].mesh, i);
 					}
 
-				yield return new WaitForSeconds (0.1f);
+				yield return new WaitForSeconds(0.1f);
 				}
 			}
 		}

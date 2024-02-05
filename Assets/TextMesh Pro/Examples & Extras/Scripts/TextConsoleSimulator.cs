@@ -12,12 +12,12 @@ namespace TMPro.Examples
 
 		private void Awake()
 			{
-			m_TextComponent = gameObject.GetComponent<TMP_Text> ();
+			m_TextComponent = gameObject.GetComponent<TMP_Text>();
 			}
 
 		private void Start()
 			{
-			StartCoroutine (RevealCharacters (m_TextComponent));
+			StartCoroutine(RevealCharacters(m_TextComponent));
 
 			//StartCoroutine(RevealWords(m_TextComponent));
 			}
@@ -25,12 +25,12 @@ namespace TMPro.Examples
 		private void OnEnable()
 			{
 			// Subscribe to event fired when text object has been regenerated.
-			TMPro_EventManager.TEXT_CHANGED_EVENT.Add (ON_TEXT_CHANGED);
+			TMPro_EventManager.TEXT_CHANGED_EVENT.Add(ON_TEXT_CHANGED);
 			}
 
 		private void OnDisable()
 			{
-			TMPro_EventManager.TEXT_CHANGED_EVENT.Remove (ON_TEXT_CHANGED);
+			TMPro_EventManager.TEXT_CHANGED_EVENT.Remove(ON_TEXT_CHANGED);
 			}
 
 		// Event received when the text object has changed.
@@ -45,7 +45,7 @@ namespace TMPro.Examples
 		/// <returns></returns>
 		private IEnumerator RevealCharacters(TMP_Text textComponent)
 			{
-			textComponent.ForceMeshUpdate ();
+			textComponent.ForceMeshUpdate();
 
 			TMP_TextInfo textInfo = textComponent.textInfo;
 
@@ -62,7 +62,7 @@ namespace TMPro.Examples
 
 				if (visibleCount > totalVisibleCharacters)
 					{
-					yield return new WaitForSeconds (1.0f);
+					yield return new WaitForSeconds(1.0f);
 					visibleCount = 0;
 					}
 
@@ -80,7 +80,7 @@ namespace TMPro.Examples
 		/// <returns></returns>
 		private IEnumerator RevealWords(TMP_Text textComponent)
 			{
-			textComponent.ForceMeshUpdate ();
+			textComponent.ForceMeshUpdate();
 
 			int totalWordCount = textComponent.textInfo.wordCount;
 			int totalVisibleCharacters = textComponent.textInfo.characterCount; // Get # of Visible Character in text object
@@ -105,12 +105,12 @@ namespace TMPro.Examples
 				// Once the last character has been revealed, wait 1.0 second and start over.
 				if (visibleCount >= totalVisibleCharacters)
 					{
-					yield return new WaitForSeconds (1.0f);
+					yield return new WaitForSeconds(1.0f);
 					}
 
 				counter += 1;
 
-				yield return new WaitForSeconds (0.1f);
+				yield return new WaitForSeconds(0.1f);
 				}
 			}
 		}

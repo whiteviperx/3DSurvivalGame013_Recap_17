@@ -14,9 +14,9 @@ namespace Meryel.UnityCodeAssist.Editor.Preferences
 	{
 	public class PreferenceMonitor
 		{
-		private static readonly Lazy<PreferenceMonitor> _instanceOfPlayerPrefs = new Lazy<PreferenceMonitor> (() => new PreferenceMonitor (true));
+		private static readonly Lazy<PreferenceMonitor> _instanceOfPlayerPrefs = new Lazy<PreferenceMonitor>(() => new PreferenceMonitor(true));
 
-		private static readonly Lazy<PreferenceMonitor> _instanceOfEditorPrefs = new Lazy<PreferenceMonitor> (() => new PreferenceMonitor (false));
+		private static readonly Lazy<PreferenceMonitor> _instanceOfEditorPrefs = new Lazy<PreferenceMonitor>(() => new PreferenceMonitor(false));
 
 		public static PreferenceMonitor InstanceOfPlayerPrefs => _instanceOfPlayerPrefs.Value;
 
@@ -74,33 +74,33 @@ namespace Meryel.UnityCodeAssist.Editor.Preferences
 		private PreferenceMonitor(bool isPlayerPrefs)
 			{
 			this.isPlayerPrefs = isPlayerPrefs;
-			OnEnable ();
+			OnEnable();
 			EditorApplication.update += Update;
 			}
 
 		~PreferenceMonitor()
 			{
-			OnDisable ();
+			OnDisable();
 			}
 
 		public void Bump()
 			{
-			Serilog.Log.Debug ("Bumping preference {IsPlayerPrefs}", isPlayerPrefs);
+			Serilog.Log.Debug("Bumping preference {IsPlayerPrefs}", isPlayerPrefs);
 
-			RetrieveAndSendKeysAndValues (false);
+			RetrieveAndSendKeysAndValues(false);
 			}
 
 		private void RetrieveAndSendKeysAndValues(bool reloadKeys)
 			{
-			string []? keys = GetKeys (reloadKeys);
+			string []? keys = GetKeys(reloadKeys);
 			if (keys == null)
 				return;
-			string [] values = GetKeyValues (reloadKeys, keys, out var stringKeys, out var integerKeys, out var floatKeys, out var booleanKeys);
+			string [] values = GetKeyValues(reloadKeys, keys, out var stringKeys, out var integerKeys, out var floatKeys, out var booleanKeys);
 
 			if (isPlayerPrefs)
-				NetMQInitializer.Publisher?.SendPlayerPrefs (keys, values, stringKeys, integerKeys, floatKeys);
+				NetMQInitializer.Publisher?.SendPlayerPrefs(keys, values, stringKeys, integerKeys, floatKeys);
 			else
-				NetMQInitializer.Publisher?.SendEditorPrefs (keys, values, stringKeys, integerKeys, floatKeys, booleanKeys);
+				NetMQInitializer.Publisher?.SendEditorPrefs(keys, values, stringKeys, integerKeys, floatKeys, booleanKeys);
 			}
 
 		private void OnEnable()
@@ -112,7 +112,7 @@ namespace Meryel.UnityCodeAssist.Editor.Preferences
 				pathToPrefs = @"Software\Unity Technologies\Unity Editor 5.x";
 
 			platformPathPrefix = @"<CurrentUser>";
-			entryAccessor = new WindowsPrefStorage (pathToPrefs);
+			entryAccessor = new WindowsPrefStorage(pathToPrefs);
 #elif UNITY_EDITOR_OSX
             if (isPlayerPrefs)
                 pathToPrefs = @"Library/Preferences/com." + MakeValidFileName(PlayerSettings.companyName) + "." + MakeValidFileName(PlayerSettings.productName) + ".plist";
@@ -142,7 +142,7 @@ namespace Meryel.UnityCodeAssist.Editor.Preferences
 			if (entryAccessor != null)
 				{
 				entryAccessor.PrefEntryChangedDelegate = () => { updateView = true; };
-				entryAccessor.StartMonitoring ();
+				entryAccessor.StartMonitoring();
 				}
 			}
 
@@ -157,50 +157,50 @@ namespace Meryel.UnityCodeAssist.Editor.Preferences
 				//PrepareData();
 				//Repaint();
 
-				Serilog.Log.Debug ("Updating preference {IsPlayerPrefs}", isPlayerPrefs);
+				Serilog.Log.Debug("Updating preference {IsPlayerPrefs}", isPlayerPrefs);
 
-				RetrieveAndSendKeysAndValues (true);
+				RetrieveAndSendKeysAndValues(true);
 				}
 			}
 
 		private void OnDisable()
 			{
-			entryAccessor?.StopMonitoring ();
+			entryAccessor?.StopMonitoring();
 			}
 
 		private void InitReorderedList()
 			{
 			if (prefEntryHolder == null)
 				{
-				var tmp = Resources.FindObjectsOfTypeAll<PreferenceEntryHolder> ();
+				var tmp = Resources.FindObjectsOfTypeAll<PreferenceEntryHolder>();
 				if (tmp.Length > 0)
 					{
 					prefEntryHolder = tmp [0];
 					}
 				else
 					{
-					prefEntryHolder = ScriptableObject.CreateInstance<PreferenceEntryHolder> ();
+					prefEntryHolder = ScriptableObject.CreateInstance<PreferenceEntryHolder>();
 					}
 				}
 
-			serializedObject ??= new SerializedObject (prefEntryHolder);
+			serializedObject ??= new SerializedObject(prefEntryHolder);
 
-			userDefList = new ReorderableList (serializedObject, serializedObject.FindProperty ("userDefList"), false, true, true, true);
-			unityDefList = new ReorderableList (serializedObject, serializedObject.FindProperty ("unityDefList"), false, true, false, false);
+			userDefList = new ReorderableList(serializedObject, serializedObject.FindProperty("userDefList"), false, true, true, true);
+			unityDefList = new ReorderableList(serializedObject, serializedObject.FindProperty("unityDefList"), false, true, false, false);
 			}
 
 		private string []? GetKeys(bool reloadKeys)
 			{
 			if (entryAccessor == null)
 				{
-				Serilog.Log.Warning ($"{nameof (entryAccessor)} is null");
+				Serilog.Log.Warning($"{nameof(entryAccessor)} is null");
 				return null;
 				}
 
-			string [] keys = entryAccessor.GetKeys (reloadKeys);
+			string [] keys = entryAccessor.GetKeys(reloadKeys);
 
 			if (keys.Length > Limit)
-				keys = keys.Where (k => !k.StartsWith ("unity.") && !k.StartsWith ("UnityGraphicsQuality")).Take (Limit).ToArray ();
+				keys = keys.Where(k => !k.StartsWith("unity.") && !k.StartsWith("UnityGraphicsQuality")).Take(Limit).ToArray();
 
 			return keys;
 			}
@@ -228,10 +228,10 @@ namespace Meryel.UnityCodeAssist.Editor.Preferences
 				}
 
 			string [] values = new string [keys.Length];
-			var stringKeyList = new List<string> ();
-			var integerKeyList = new List<string> ();
-			var floatKeyList = new List<string> ();
-			var boolenKeyList = new List<string> ();
+			var stringKeyList = new List<string>();
+			var integerKeyList = new List<string>();
+			var floatKeyList = new List<string>();
+			var boolenKeyList = new List<string>();
 
 			for (int i = 0; i < keys.Length; i++)
 				{
@@ -239,54 +239,54 @@ namespace Meryel.UnityCodeAssist.Editor.Preferences
 
 				string stringValue;
 				if (isPlayerPrefs)
-					stringValue = PlayerPrefs.GetString (key, ERROR_VALUE_STR);
+					stringValue = PlayerPrefs.GetString(key, ERROR_VALUE_STR);
 				else
-					stringValue = EditorPrefs.GetString (key, ERROR_VALUE_STR);
+					stringValue = EditorPrefs.GetString(key, ERROR_VALUE_STR);
 
 				if (stringValue != ERROR_VALUE_STR)
 					{
 					values [i] = stringValue;
-					stringKeyList.Add (key);
+					stringKeyList.Add(key);
 					continue;
 					}
 
 				float floatValue;
 				if (isPlayerPrefs)
-					floatValue = PlayerPrefs.GetFloat (key, float.NaN);
+					floatValue = PlayerPrefs.GetFloat(key, float.NaN);
 				else
-					floatValue = EditorPrefs.GetFloat (key, float.NaN);
+					floatValue = EditorPrefs.GetFloat(key, float.NaN);
 
-				if (!float.IsNaN (floatValue))
+				if (!float.IsNaN(floatValue))
 					{
-					values [i] = floatValue.ToString ();
-					floatKeyList.Add (key);
+					values [i] = floatValue.ToString();
+					floatKeyList.Add(key);
 					continue;
 					}
 
 				int intValue;
 				if (isPlayerPrefs)
-					intValue = PlayerPrefs.GetInt (key, ERROR_VALUE_INT);
+					intValue = PlayerPrefs.GetInt(key, ERROR_VALUE_INT);
 				else
-					intValue = EditorPrefs.GetInt (key, ERROR_VALUE_INT);
+					intValue = EditorPrefs.GetInt(key, ERROR_VALUE_INT);
 
 				if (intValue != ERROR_VALUE_INT)
 					{
-					values [i] = intValue.ToString ();
-					integerKeyList.Add (key);
+					values [i] = intValue.ToString();
+					integerKeyList.Add(key);
 					continue;
 					}
 
 				bool boolValue = false;
 				if (!isPlayerPrefs)
 					{
-					bool boolValueTrue = EditorPrefs.GetBool (key, true);
-					bool boolValueFalse = EditorPrefs.GetBool (key, false);
+					bool boolValueTrue = EditorPrefs.GetBool(key, true);
+					bool boolValueFalse = EditorPrefs.GetBool(key, false);
 
 					boolValue = boolValueFalse;
 					if (boolValueTrue == boolValueFalse)
 						{
-						values [i] = boolValueTrue.ToString ();
-						boolenKeyList.Add (key);
+						values [i] = boolValueTrue.ToString();
+						boolenKeyList.Add(key);
 						continue;
 						}
 					}
@@ -295,23 +295,23 @@ namespace Meryel.UnityCodeAssist.Editor.Preferences
 				if (isPlayerPrefs)
 					{
 					// Keys with ? causing problems, just ignore them
-					if (key.Contains ("?"))
-						Serilog.Log.Debug ("Invalid {PreferenceType} KEY WITH '?', '{Key}' at {Location}, str:{StringValue}, int:{IntegerValue}, float:{FloatValue}, bool:{BooleanValue}",
-							(isPlayerPrefs ? "PlayerPrefs" : "EditorPrefs"), key, nameof (GetKeyValues),
+					if (key.Contains("?"))
+						Serilog.Log.Debug("Invalid {PreferenceType} KEY WITH '?', '{Key}' at {Location}, str:{StringValue}, int:{IntegerValue}, float:{FloatValue}, bool:{BooleanValue}",
+							(isPlayerPrefs ? "PlayerPrefs" : "EditorPrefs"), key, nameof(GetKeyValues),
 							stringValue, intValue, floatValue, boolValue);
 					else
 
 						// EditorPrefs gives error for some keys
-						Serilog.Log.Error ("Invalid {PreferenceType} '{Key}' at {Location}, str:{StringValue}, int:{IntegerValue}, float:{FloatValue}, bool:{BooleanValue}",
-							(isPlayerPrefs ? "PlayerPrefs" : "EditorPrefs"), key, nameof (GetKeyValues),
+						Serilog.Log.Error("Invalid {PreferenceType} '{Key}' at {Location}, str:{StringValue}, int:{IntegerValue}, float:{FloatValue}, bool:{BooleanValue}",
+							(isPlayerPrefs ? "PlayerPrefs" : "EditorPrefs"), key, nameof(GetKeyValues),
 							stringValue, intValue, floatValue, boolValue);
 					}
 				}
 
-			stringKeys = stringKeyList.ToArray ();
-			integerKeys = integerKeyList.ToArray ();
-			floatKeys = floatKeyList.ToArray ();
-			booleanKeys = boolenKeyList.ToArray ();
+			stringKeys = stringKeyList.ToArray();
+			integerKeys = integerKeyList.ToArray();
+			floatKeys = floatKeyList.ToArray();
+			booleanKeys = boolenKeyList.ToArray();
 
 			_cachedKeyValues = values;
 
@@ -332,17 +332,17 @@ namespace Meryel.UnityCodeAssist.Editor.Preferences
 				return;
 				}
 
-			string [] keys = entryAccessor.GetKeys (reloadKeys);
+			string [] keys = entryAccessor.GetKeys(reloadKeys);
 
 			//keys.ToList().ForEach( e => { Debug.Log(e); } );
 
 			// Seperate keys int unity defined and user defined
 			Dictionary<bool, List<string>> groups = keys
-				.GroupBy ((key) => key.StartsWith ("unity.") || key.StartsWith ("UnityGraphicsQuality"))
-				.ToDictionary ((g) => g.Key, (g) => g.ToList ());
+				.GroupBy((key) => key.StartsWith("unity.") || key.StartsWith("UnityGraphicsQuality"))
+				.ToDictionary((g) => g.Key, (g) => g.ToList());
 
-			unityDef = (groups.ContainsKey (true)) ? groups [true].ToArray () : new string [0];
-			userDef = (groups.ContainsKey (false)) ? groups [false].ToArray () : new string [0];
+			unityDef = (groups.ContainsKey(true)) ? groups [true].ToArray() : new string [0];
+			userDef = (groups.ContainsKey(false)) ? groups [false].ToArray() : new string [0];
 			}
 
 #if (UNITY_EDITOR_LINUX || UNITY_EDITOR_OSX)

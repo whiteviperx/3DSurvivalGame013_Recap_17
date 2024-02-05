@@ -34,14 +34,14 @@ public class SelectionManager:MonoBehaviour
 	private void Start()
 		{
 		onTarget = false;
-		interaction_text = interaction_Info_UI.GetComponent<Text> ();
+		interaction_text = interaction_Info_UI.GetComponent<Text>();
 		}
 
 	private void Awake()
 		{
 		if (Instance != null && Instance != this)
 			{
-			Destroy (gameObject);
+			Destroy(gameObject);
 			}
 		else
 			{
@@ -51,29 +51,29 @@ public class SelectionManager:MonoBehaviour
 
 	private void Update()
 		{
-		var ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+		var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-		if (Physics.Raycast (ray, out RaycastHit hit))
+		if (Physics.Raycast(ray, out RaycastHit hit))
 			{
 			var selectionTransform = hit.transform;
 
-			var interactable = selectionTransform.GetComponent<InteractableObject> ();
+			var interactable = selectionTransform.GetComponent<InteractableObject>();
 
-			ChoppableTree choppableTree = selectionTransform.GetComponent<ChoppableTree> ();
+			ChoppableTree choppableTree = selectionTransform.GetComponent<ChoppableTree>();
 
 			if (choppableTree && choppableTree.playerInRange)
 				{
 				choppableTree.canBeChopped = true;
 				selectedTree = choppableTree.gameObject;
-				chopHolder.gameObject.SetActive (true);
+				chopHolder.gameObject.SetActive(true);
 				}
 			else
 				{
 				if (selectedTree != null)
 					{
-					selectedTree.gameObject.GetComponent<ChoppableTree> ().canBeChopped = false;
+					selectedTree.gameObject.GetComponent<ChoppableTree>().canBeChopped = false;
 					selectedTree = null;
-					chopHolder.gameObject.SetActive (false);
+					chopHolder.gameObject.SetActive(false);
 					}
 				}
 
@@ -86,21 +86,21 @@ public class SelectionManager:MonoBehaviour
 				selectedObject = interactable.gameObject;
 
 				// --- Interaction info --- //
-				interaction_text.text = interactable.GetItemName ();
-				interaction_Info_UI.SetActive (true);
+				interaction_text.text = interactable.GetItemName();
+				interaction_Info_UI.SetActive(true);
 
 				// --- Compare tags to only interact and show hand with pickable items --- //
-				if (interactable.CompareTag ("Pickable"))
+				if (interactable.CompareTag("Pickable"))
 					{
-					centerDotImage.gameObject.SetActive (false);
-					handIcon.gameObject.SetActive (true);
+					centerDotImage.gameObject.SetActive(false);
+					handIcon.gameObject.SetActive(true);
 
 					handIsVisible = true;
 					}
 				else
 					{
-					handIcon.gameObject.SetActive (false);
-					centerDotImage.gameObject.SetActive (true);
+					handIcon.gameObject.SetActive(false);
+					centerDotImage.gameObject.SetActive(true);
 
 					handIsVisible = false;
 					}
@@ -108,9 +108,9 @@ public class SelectionManager:MonoBehaviour
 			else // --- If there is a hit, but without an interactable Script --- //
 				{
 				onTarget = false;
-				interaction_Info_UI.SetActive (false);
-				handIcon.gameObject.SetActive (false);
-				centerDotImage.gameObject.SetActive (true);
+				interaction_Info_UI.SetActive(false);
+				handIcon.gameObject.SetActive(false);
+				centerDotImage.gameObject.SetActive(true);
 
 				handIsVisible = false;
 				}
@@ -118,9 +118,9 @@ public class SelectionManager:MonoBehaviour
 		else // --- If there is no hit at all --- //
 			{
 			onTarget = false;
-			interaction_Info_UI.SetActive (false);
-			handIcon.gameObject.SetActive (false);
-			centerDotImage.gameObject.SetActive (true);
+			interaction_Info_UI.SetActive(false);
+			handIcon.gameObject.SetActive(false);
+			centerDotImage.gameObject.SetActive(true);
 
 			handIsVisible = false;
 			}
@@ -130,7 +130,7 @@ public class SelectionManager:MonoBehaviour
 		{
 		handIcon.enabled = false;
 		centerDotImage.enabled = false;
-		interaction_Info_UI.SetActive (false);
+		interaction_Info_UI.SetActive(false);
 
 		selectedObject = null;
 		}
@@ -139,6 +139,6 @@ public class SelectionManager:MonoBehaviour
 		{
 		handIcon.enabled = true;
 		centerDotImage.enabled = true;
-		interaction_Info_UI.SetActive (true);
+		interaction_Info_UI.SetActive(true);
 		}
 	}

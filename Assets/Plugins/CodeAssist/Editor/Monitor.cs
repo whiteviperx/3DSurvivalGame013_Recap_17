@@ -28,16 +28,16 @@ namespace Meryel.UnityCodeAssist.Editor
 
 		static Monitor()
 			{
-			tagManagerFilePath = CommonTools.GetTagManagerFilePath ();
+			tagManagerFilePath = CommonTools.GetTagManagerFilePath();
 			try
 				{
-				previousTagManagerLastWrite = System.IO.File.GetLastWriteTime (tagManagerFilePath);
+				previousTagManagerLastWrite = System.IO.File.GetLastWriteTime(tagManagerFilePath);
 				}
 			catch (System.Exception ex)
 				{
-				Serilog.Log.Debug (ex, "Exception at {Location}", nameof (System.IO.File.GetLastWriteTime));
+				Serilog.Log.Debug(ex, "Exception at {Location}", nameof(System.IO.File.GetLastWriteTime));
 				}
-			dirtyDict = new Dictionary<GameObject, int> ();
+			dirtyDict = new Dictionary<GameObject, int>();
 			dirtyCounter = 0;
 
 			EditorApplication.hierarchyChanged += OnHierarchyChanged;
@@ -57,36 +57,36 @@ namespace Meryel.UnityCodeAssist.Editor
 		private static void EditorSceneManager_activeSceneChangedInEditMode(Scene arg0, Scene arg1)
 			{
 			//Debug.Log("EditorSceneManager_activeSceneChangedInEditMode");
-			OnHierarchyChanged ();
+			OnHierarchyChanged();
 			}
 
 		private static void EditorSceneManager_sceneOpened(Scene scene, OpenSceneMode mode)
 			{
-			Serilog.Log.Debug ("Monitor {Event} scene:{Scene} mode:{Mode}", nameof (EditorSceneManager_sceneOpened), scene.name, mode);
+			Serilog.Log.Debug("Monitor {Event} scene:{Scene} mode:{Mode}", nameof(EditorSceneManager_sceneOpened), scene.name, mode);
 
 			//Debug.Log("EditorSceneManager_sceneOpened");
-			OnHierarchyChanged ();
+			OnHierarchyChanged();
 			}
 
 		private static void OnUpdate()
 			{
 			string? currentEditorFocus = null;
 			if (Selection.activeObject)
-				currentEditorFocus = Selection.activeObject.GetType ().ToString ();
+				currentEditorFocus = Selection.activeObject.GetType().ToString();
 
 			var currentTagManagerLastWrite = previousTagManagerLastWrite;
 			try
 				{
-				currentTagManagerLastWrite = System.IO.File.GetLastWriteTime (tagManagerFilePath);
+				currentTagManagerLastWrite = System.IO.File.GetLastWriteTime(tagManagerFilePath);
 				}
 			catch (System.Exception ex)
 				{
-				Serilog.Log.Debug (ex, "Exception at {Location}", nameof (System.IO.File.GetLastWriteTime));
+				Serilog.Log.Debug(ex, "Exception at {Location}", nameof(System.IO.File.GetLastWriteTime));
 				}
 			if (currentTagManagerLastWrite != previousTagManagerLastWrite)
 				{
 				previousTagManagerLastWrite = currentTagManagerLastWrite;
-				OnTagsOrLayersModified ();
+				OnTagsOrLayersModified();
 				}
 			else if (currentEditorFocus == "UnityEditor.TagManager")
 				{
@@ -97,39 +97,39 @@ namespace Meryel.UnityCodeAssist.Editor
 			if (isAppFocused != UnityEditorInternal.InternalEditorUtility.isApplicationActive)
 				{
 				isAppFocused = UnityEditorInternal.InternalEditorUtility.isApplicationActive;
-				OnOnUnityEditorFocusChanged (isAppFocused);
-				Serilog.Log.Debug ("On focus {State}", isAppFocused);
+				OnOnUnityEditorFocusChanged(isAppFocused);
+				Serilog.Log.Debug("On focus {State}", isAppFocused);
 				}
 			}
 
 		private static void OnTagsOrLayersModified()
 			{
-			Serilog.Log.Debug ("Monitor {Event}", nameof (OnTagsOrLayersModified));
+			Serilog.Log.Debug("Monitor {Event}", nameof(OnTagsOrLayersModified));
 
-			Assister.SendTagsAndLayers ();
+			Assister.SendTagsAndLayers();
 			}
 
 		private static void OnHierarchyChanged()
 			{
-			Serilog.Log.Debug ("Monitor {Event}", nameof (OnHierarchyChanged));
+			Serilog.Log.Debug("Monitor {Event}", nameof(OnHierarchyChanged));
 
 			// For requesting active doc's GO
-			NetMQInitializer.Publisher?.SendHandshake ();
+			NetMQInitializer.Publisher?.SendHandshake();
 
-			if (ScriptFinder.GetActiveGameObject (out var activeGO))
-				NetMQInitializer.Publisher?.SendGameObject (activeGO);
+			if (ScriptFinder.GetActiveGameObject(out var activeGO))
+				NetMQInitializer.Publisher?.SendGameObject(activeGO);
 
 			//Assister.SendTagsAndLayers(); Don't send tags & layers here
 			}
 
 		private static UndoPropertyModification [] MyPostprocessModificationsCallback(UndoPropertyModification [] modifications)
 			{
-			Serilog.Log.Debug ("Monitor {Event}", nameof (MyPostprocessModificationsCallback));
+			Serilog.Log.Debug("Monitor {Event}", nameof(MyPostprocessModificationsCallback));
 
 			foreach (var modification in modifications)
 				{
 				var target = modification.currentValue?.target;
-				SetDirty (target);
+				SetDirty(target);
 				}
 
 			// here, you can perform processing of the recorded modifications before returning them
@@ -138,7 +138,7 @@ namespace Meryel.UnityCodeAssist.Editor
 
 		private static void MyUndoCallback()
 			{
-			Serilog.Log.Debug ("Monitor {Event}", nameof (MyUndoCallback));
+			Serilog.Log.Debug("Monitor {Event}", nameof(MyUndoCallback));
 
 			// code for the action to take on Undo
 			}
@@ -150,11 +150,11 @@ namespace Meryel.UnityCodeAssist.Editor
 				if (isAppFocusedOnTagManager)
 					{
 					isAppFocusedOnTagManager = false;
-					OnTagsOrLayersModified ();
+					OnTagsOrLayersModified();
 					}
 
-				OnSelectionChanged ();
-				FlushAllDirty ();
+				OnSelectionChanged();
+				FlushAllDirty();
 				/*
                 Serilog.Log.Debug("exporting {Count} objects", selectedObjects.Count);
 
@@ -177,7 +177,7 @@ namespace Meryel.UnityCodeAssist.Editor
 			//selectedObjects.UnionWith(Selection.objects);
 			foreach (var so in Selection.objects)
 				{
-				SetDirty (so);
+				SetDirty(so);
 				}
 			}
 
@@ -186,14 +186,14 @@ namespace Meryel.UnityCodeAssist.Editor
 			if (obj == null)
 				return;
 			else if (obj is GameObject go && go)
-				SetDirty (go);
+				SetDirty(go);
 			else if (obj is Component component && component)
 
 			//SetDirty(component.gameObject);
 				{
 				var componentGo = component.gameObject;
 				if (componentGo)
-					SetDirty (componentGo);
+					SetDirty(componentGo);
 				}
 
 			//else
@@ -216,10 +216,10 @@ namespace Meryel.UnityCodeAssist.Editor
 			foreach (var entry in sortedDict)
 				{
 				var go = entry.Key;
-				NetMQInitializer.Publisher?.SendGameObject (go);
+				NetMQInitializer.Publisher?.SendGameObject(go);
 				}
 
-			dirtyDict.Clear ();
+			dirtyDict.Clear();
 			dirtyCounter = 0;
 			}
 
@@ -228,31 +228,31 @@ namespace Meryel.UnityCodeAssist.Editor
 			if (type != LogType.Exception && type != LogType.Error && type != LogType.Warning)
 				return;
 
-			if (!stackTrace.Contains ("Meryel.UnityCodeAssist.Editor"))
+			if (!stackTrace.Contains("Meryel.UnityCodeAssist.Editor"))
 				return;
 
-			var typeStr = type.ToString ();
+			var typeStr = type.ToString();
 
-			NetMQInitializer.Publisher?.SendErrorReport (condition, stackTrace, typeStr);
+			NetMQInitializer.Publisher?.SendErrorReport(condition, stackTrace, typeStr);
 			}
 
 		public static void LazyLoad(string category)
 			{
 			if (category == "PlayerPrefs")
 				{
-				Preferences.PreferenceMonitor.InstanceOfPlayerPrefs.Bump ();
+				Preferences.PreferenceMonitor.InstanceOfPlayerPrefs.Bump();
 				}
 			else if (category == "EditorPrefs")
 				{
-				Preferences.PreferenceMonitor.InstanceOfEditorPrefs.Bump ();
+				Preferences.PreferenceMonitor.InstanceOfEditorPrefs.Bump();
 				}
 			else if (category == "InputManager")
 				{
-				Input.InputManagerMonitor.Instance.Bump ();
+				Input.InputManagerMonitor.Instance.Bump();
 				}
 			else
 				{
-				Serilog.Log.Error ("Invalid LazyLoad category {Category}", category);
+				Serilog.Log.Error("Invalid LazyLoad category {Category}", category);
 				}
 			}
 		}

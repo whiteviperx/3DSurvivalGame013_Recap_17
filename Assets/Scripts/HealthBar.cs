@@ -11,13 +11,13 @@ public class HealthBar:MonoBehaviour
 
 	private float currentHealth, maxHealth;
 
-	private void Awake() => slider = GetComponent<Slider> ();
+	private void Awake() => slider = GetComponent<Slider>();
 
 	private void Update()
 		{
 		// --- Set current and max health --- //
-		currentHealth = playerState.GetComponent<PlayerState> ().currentHealth;
-		maxHealth = playerState.GetComponent<PlayerState> ().maxHealth;
+		currentHealth = playerState.GetComponent<PlayerState>().currentHealth;
+		maxHealth = playerState.GetComponent<PlayerState>().maxHealth;
 
 		var fillValue = currentHealth / maxHealth; // 0 - 1
 		slider.value = fillValue;

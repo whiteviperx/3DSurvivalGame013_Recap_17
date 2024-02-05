@@ -18,7 +18,7 @@ namespace TMPro.Examples
 		private void Awake()
 			{
 			// Get Reference to TextMeshPro Component
-			m_textMeshPro = GetComponent<TMP_Text> ();
+			m_textMeshPro = GetComponent<TMP_Text>();
 			m_textMeshPro.text = label01;
 			m_textMeshPro.textWrappingMode = TextWrappingModes.Normal;
 			m_textMeshPro.alignment = TextAlignmentOptions.Top;
@@ -38,7 +38,7 @@ namespace TMPro.Examples
 		private IEnumerator Start()
 			{
 			// Force and update of the mesh to get valid information.
-			m_textMeshPro.ForceMeshUpdate ();
+			m_textMeshPro.ForceMeshUpdate();
 
 			int totalVisibleCharacters = m_textMeshPro.textInfo.characterCount; // Get # of Visible Character in text object
 			int counter = 0;
@@ -53,16 +53,16 @@ namespace TMPro.Examples
 				// Once the last character has been revealed, wait 1.0 second and start over.
 				if (visibleCount >= totalVisibleCharacters)
 					{
-					yield return new WaitForSeconds (1.0f);
+					yield return new WaitForSeconds(1.0f);
 					m_textMeshPro.text = label02;
-					yield return new WaitForSeconds (1.0f);
+					yield return new WaitForSeconds(1.0f);
 					m_textMeshPro.text = label01;
-					yield return new WaitForSeconds (1.0f);
+					yield return new WaitForSeconds(1.0f);
 					}
 
 				counter += 1;
 
-				yield return new WaitForSeconds (0.05f);
+				yield return new WaitForSeconds(0.05f);
 				}
 
 			//Debug.Log("Done revealing the text.");

@@ -18,23 +18,23 @@ namespace Meryel.UnityCodeAssist.Editor.Logger
 
 		public void Emit(LogEvent logEvent)
 			{
-			var message = logEvent.RenderMessage (_formatProvider);
+			var message = logEvent.RenderMessage(_formatProvider);
 
 			switch (logEvent.Level)
 				{
 				case LogEventLevel.Verbose:
 				case LogEventLevel.Debug:
 				case LogEventLevel.Information:
-					UnityEngine.Debug.Log (message);
+					UnityEngine.Debug.Log(message);
 					break;
 
 				case LogEventLevel.Warning:
-					UnityEngine.Debug.LogWarning (message);
+					UnityEngine.Debug.LogWarning(message);
 					break;
 
 				case LogEventLevel.Error:
 				case LogEventLevel.Fatal:
-					UnityEngine.Debug.LogError (message);
+					UnityEngine.Debug.LogError(message);
 					break;
 
 				default:

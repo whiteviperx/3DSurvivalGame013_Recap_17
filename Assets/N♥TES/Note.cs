@@ -2,12 +2,12 @@
 
 namespace Notes
 	{
-	[AddComponentMenu ("Note")]
+	[AddComponentMenu("Note")]
 	public class Note:MonoBehaviour
 		{
 		private void OnEnable()
 			{
-			Destroy (this);
+			Destroy(this);
 			}
 		}
 	}

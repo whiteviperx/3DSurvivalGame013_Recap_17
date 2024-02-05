@@ -1,9 +1,11 @@
 using System.Collections;
+
 using TMPro;
+
 using UnityEngine;
 using UnityEngine.UI;
 
-using static MainMenuSaveManager;
+using static SaveManager;
 
 public class SettingsManager:MonoBehaviour
 	{
@@ -25,17 +27,17 @@ public class SettingsManager:MonoBehaviour
 
 	private void Start()
 		{
-		backBTN.onClick.AddListener (() =>
+		backBTN.onClick.AddListener(() =>
 		{
-			MainMenuSaveManager.Instance.SaveVolumeSettings (musicSlider.value, effectsSlider.value, masterSlider.value);
+			SaveManager.Instance.SaveVolumeSettings(musicSlider.value, effectsSlider.value, masterSlider.value);
 		});
 
-		StartCoroutine (LoadAndApplySettings ());
+		StartCoroutine(LoadAndApplySettings());
 		}
 
 	private IEnumerator LoadAndApplySettings()
 		{
-		LoadAndSetVolume ();
+		LoadAndSetVolume();
 
 		// Load Graphics Settings
 
@@ -44,26 +46,25 @@ public class SettingsManager:MonoBehaviour
 		// Load Key Bindings
 
 		// Load ????
-		yield return new WaitForSeconds (0.1f);
+		yield return new WaitForSeconds(0.1f);
 		}
 
 	private void LoadAndSetVolume()
 		{
-		VolumeSettings volumeSettings = MainMenuSaveManager.Instance.LoadVolumeSettings();
+		VolumeSettings volumeSettings = SaveManager.Instance.LoadVolumeSettings();
 
 		masterSlider.value = volumeSettings.master;
 		musicSlider.value = volumeSettings.music;
 		effectsSlider.value = volumeSettings.effects;
 
 		print("Volume Settings are Loaded");
-
 		}
 
 	private void Awake()
 		{
 		if (Instance != null && Instance != this)
 			{
-			Destroy (gameObject);
+			Destroy(gameObject);
 			}
 		else
 			{
@@ -73,8 +74,8 @@ public class SettingsManager:MonoBehaviour
 
 	private void Update()
 		{
-		masterValue.GetComponent<TextMeshProUGUI> ().text = "" + masterSlider.value + "";
-		musicValue.GetComponent<TextMeshProUGUI> ().text = "" + musicSlider.value + "";
-		effectsValue.GetComponent<TextMeshProUGUI> ().text = "" + effectsSlider.value + "";
+		masterValue.GetComponent<TextMeshProUGUI>().text = "" + masterSlider.value + "";
+		musicValue.GetComponent<TextMeshProUGUI>().text = "" + musicSlider.value + "";
+		effectsValue.GetComponent<TextMeshProUGUI>().text = "" + effectsSlider.value + "";
 		}
 	}

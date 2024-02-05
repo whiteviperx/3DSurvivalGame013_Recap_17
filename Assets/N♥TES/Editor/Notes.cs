@@ -19,7 +19,7 @@ namespace Notes
 				{
 				if (texture == null)
 					{
-					texture = EditorGUIUtility.FindTexture (name);
+					texture = EditorGUIUtility.FindTexture(name);
 					}
 
 				return texture;
@@ -47,11 +47,11 @@ namespace Notes
 				{
 				if (typeName == "")
 					{
-					Object objectFromInstanceID = EditorUtility.InstanceIDToObject (ObjectID);
+					Object objectFromInstanceID = EditorUtility.InstanceIDToObject(ObjectID);
 
 					if (objectFromInstanceID != null)
 						{
-						typeName = objectFromInstanceID.GetType ().FullName;
+						typeName = objectFromInstanceID.GetType().FullName;
 						}
 					}
 
@@ -65,14 +65,14 @@ namespace Notes
 				{
 				if (objectID == null)
 					{
-					objectID = GlobalObjectId.GlobalObjectIdentifierToInstanceIDSlow (globalObjectID);
+					objectID = GlobalObjectId.GlobalObjectIdentifierToInstanceIDSlow(globalObjectID);
 					}
 
 				return objectID ?? default;
 				}
 			}
 
-		public Color Color => Color.HSVToRGB (Mathf.Repeat (ObjectID / 256f, 1f), ColorS, ColorV);
+		public Color Color => Color.HSVToRGB(Mathf.Repeat(ObjectID / 256f, 1f), ColorS, ColorV);
 
 		#endregion Properties
 
@@ -98,7 +98,7 @@ namespace Notes
 
 		#region Constructors
 
-		public SerializableNote(int objectID, string noteText, bool show = false) : this (EditorUtility.InstanceIDToObject (objectID), noteText, show)
+		public SerializableNote(int objectID, string noteText, bool show = false) : this(EditorUtility.InstanceIDToObject(objectID), noteText, show)
 			{
 			}
 
@@ -106,8 +106,8 @@ namespace Notes
 			{
 			if (attachedObject != null)
 				{
-				this.globalObjectID = GlobalObjectId.GetGlobalObjectIdSlow (attachedObject);
-				this.typeName = attachedObject.GetType ().FullName;
+				this.globalObjectID = GlobalObjectId.GetGlobalObjectIdSlow(attachedObject);
+				this.typeName = attachedObject.GetType().FullName;
 				}
 
 			this.noteText = noteText;
@@ -120,7 +120,7 @@ namespace Notes
 
 		public Object GetAttachedObject()
 			{
-			return EditorUtility.InstanceIDToObject (ObjectID);
+			return EditorUtility.InstanceIDToObject(ObjectID);
 			}
 
 		#endregion Functions
@@ -129,12 +129,12 @@ namespace Notes
 
 		public void OnBeforeSerialize()
 			{
-			GlobalObjectSerialization = globalObjectID.ToString ();
+			GlobalObjectSerialization = globalObjectID.ToString();
 			}
 
 		public void OnAfterDeserialize()
 			{
-			GlobalObjectId.TryParse (GlobalObjectSerialization, out globalObjectID);
+			GlobalObjectId.TryParse(GlobalObjectSerialization, out globalObjectID);
 			}
 
 		#endregion Serialisation
@@ -143,11 +143,11 @@ namespace Notes
 	[System.Serializable]
 	public class NoteCache
 		{
-		public List<SerializableNote> notes = new List<SerializableNote> ();
+		public List<SerializableNote> notes = new List<SerializableNote>();
 
 		public SerializableNote this [int objectID]
 			{
-			get { return notes.Where (n => n.ObjectID == objectID).FirstOrDefault (); }
+			get { return notes.Where(n => n.ObjectID == objectID).FirstOrDefault(); }
 			}
 		}
 
@@ -156,7 +156,7 @@ namespace Notes
 		{
 		static LoadNotesOnStartup()
 			{
-			Notes.LoadNotesFromDisk ();
+			Notes.LoadNotesFromDisk();
 			}
 		}
 
@@ -187,9 +187,9 @@ namespace Notes
 			{
 			if (note == null) { return; }
 
-			LoadNotesFromDisk ();
+			LoadNotesFromDisk();
 
-			int noteIndex = noteCache.notes.IndexOf (noteCache [note.ObjectID]);
+			int noteIndex = noteCache.notes.IndexOf(noteCache [note.ObjectID]);
 
 			if (noteIndex >= 0)
 				{
@@ -197,19 +197,19 @@ namespace Notes
 				}
 			else
 				{
-				noteCache.notes.Add (note);
+				noteCache.notes.Add(note);
 				}
 
-			SaveNotesToDisk ();
+			SaveNotesToDisk();
 
-			LoadNotesFromDisk ();
+			LoadNotesFromDisk();
 			}
 
 		public static bool TryLoadNote(int objectID, out SerializableNote note)
 			{
-			LoadNotesFromDisk ();
+			LoadNotesFromDisk();
 
-			SerializableNote cachedNote = noteCache.notes.Where (n => n.ObjectID == objectID).OrderBy (n => n.TypeName).FirstOrDefault ();
+			SerializableNote cachedNote = noteCache.notes.Where(n => n.ObjectID == objectID).OrderBy(n => n.TypeName).FirstOrDefault();
 
 			if (cachedNote != null)
 				{
@@ -223,28 +223,28 @@ namespace Notes
 
 		public static void NukeNote(SerializableNote note)
 			{
-			noteCache.notes.Remove (note);
+			noteCache.notes.Remove(note);
 
-			SaveNotesToDisk ();
+			SaveNotesToDisk();
 			}
 
 		public static void NukeAllNotes()
 			{
-			noteCache = new NoteCache ();
+			noteCache = new NoteCache();
 
-			SaveNotesToDisk ();
+			SaveNotesToDisk();
 			}
 
 		public static void LoadNotesFromDisk()
 			{
 			if (noteCache == null)
 				{
-				noteCache = new NoteCache ();
+				noteCache = new NoteCache();
 				}
 
-			if (File.Exists (noteCachePath))
+			if (File.Exists(noteCachePath))
 				{
-				NoteCache loadedCache = JsonUtility.FromJson<NoteCache> (File.ReadAllText (noteCachePath));
+				NoteCache loadedCache = JsonUtility.FromJson<NoteCache>(File.ReadAllText(noteCachePath));
 
 				noteCache = loadedCache == null ? noteCache : loadedCache;
 				}
@@ -254,20 +254,20 @@ namespace Notes
 			{
 			if (noteCache != null)
 				{
-				if (!File.Exists (noteCachePath))
+				if (!File.Exists(noteCachePath))
 					{
-					File.Create (noteCachePath).Dispose ();
+					File.Create(noteCachePath).Dispose();
 					}
 
-				File.WriteAllText (noteCachePath, JsonUtility.ToJson (noteCache, true));
+				File.WriteAllText(noteCachePath, JsonUtility.ToJson(noteCache, true));
 				}
 
-			LoadNotesFromDisk ();
+			LoadNotesFromDisk();
 			}
 
 		public static bool NoteIsInCache(SerializableNote note)
 			{
-			return noteCache.notes.Contains (note);
+			return noteCache.notes.Contains(note);
 			}
 
 		#endregion static
@@ -276,26 +276,26 @@ namespace Notes
 
 		private Vector2 scrollPosition;
 
-		public static BuiltInEditorIcon notesIcon = new BuiltInEditorIcon ("d_FilterByLabel");
+		public static BuiltInEditorIcon notesIcon = new BuiltInEditorIcon("d_FilterByLabel");
 
-		public static BuiltInEditorIcon helpIcon = new BuiltInEditorIcon ("_Help");
+		public static BuiltInEditorIcon helpIcon = new BuiltInEditorIcon("_Help");
 
-		public static BuiltInEditorIcon pingIcon = new BuiltInEditorIcon ("animationvisibilitytoggleon");
+		public static BuiltInEditorIcon pingIcon = new BuiltInEditorIcon("animationvisibilitytoggleon");
 
-		public static BuiltInEditorIcon copyIcon = new BuiltInEditorIcon ("d_UnityEditor.ConsoleWindow");
+		public static BuiltInEditorIcon copyIcon = new BuiltInEditorIcon("d_UnityEditor.ConsoleWindow");
 
-		public static BuiltInEditorIcon clearIcon = new BuiltInEditorIcon ("Grid.EraserTool");
+		public static BuiltInEditorIcon clearIcon = new BuiltInEditorIcon("Grid.EraserTool");
 
 		public GUIStyle richTextHelpBoxStyle;
 
-		[MenuItem ("Window/N♥TES")]
+		[MenuItem("Window/N♥TES")]
 		public static void ShowWindow()
 			{
-			Instance = GetWindow<Notes> ("N♥TES");
+			Instance = GetWindow<Notes>("N♥TES");
 
-			Instance.titleContent = new GUIContent (Instance.titleContent.text, notesIcon.Texture);
+			Instance.titleContent = new GUIContent(Instance.titleContent.text, notesIcon.Texture);
 
-			Instance.Show ();
+			Instance.Show();
 			}
 
 		private void OnEnable()
@@ -315,97 +315,97 @@ namespace Notes
 				{
 				//================ Header ================
 
-				EditorGUILayout.BeginHorizontal ();
+				EditorGUILayout.BeginHorizontal();
 
-				GUILayout.Label (titleText, EditorStyles.centeredGreyMiniLabel);
+				GUILayout.Label(titleText, EditorStyles.centeredGreyMiniLabel);
 
-				GUIContent helpContent = new GUIContent (helpIcon.Texture);
-				if (GUILayout.Button (helpContent, EditorStyles.centeredGreyMiniLabel, GUILayout.Width (EditorStyles.centeredGreyMiniLabel.CalcSize (helpContent).x)))
+				GUIContent helpContent = new GUIContent(helpIcon.Texture);
+				if (GUILayout.Button(helpContent, EditorStyles.centeredGreyMiniLabel, GUILayout.Width(EditorStyles.centeredGreyMiniLabel.CalcSize(helpContent).x)))
 					{
-					Application.OpenURL (assetStoreUrl);
+					Application.OpenURL(assetStoreUrl);
 					}
 
-				EditorGUILayout.EndHorizontal ();
+				EditorGUILayout.EndHorizontal();
 
 				//================ Notes ================
 
-				EditorGUILayout.Space ();
+				EditorGUILayout.Space();
 
-				scrollPosition = EditorGUILayout.BeginScrollView (scrollPosition);
+				scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
 
 				for (int n = 0; n < notes.Count; n++)
 					{
 					if (notes [n] == null || notes [n].noteText == "") { continue; }
 
-					Object noteAttachedObject = notes [n].GetAttachedObject ();
+					Object noteAttachedObject = notes [n].GetAttachedObject();
 
 					if (noteAttachedObject == null) { continue; }
 
-					GUILayout.BeginHorizontal ();
+					GUILayout.BeginHorizontal();
 
-					GUIContent noteAssetContent = new GUIContent (noteAttachedObject.name, AssetPreview.GetMiniThumbnail (noteAttachedObject));
-					float nameHeight = EditorStyles.boldLabel.CalcHeight (new GUIContent (noteAttachedObject.name), position.width);
-					float nameWidth = EditorStyles.boldLabel.CalcSize (new GUIContent (noteAssetContent.text, notesIcon.Texture)).x;
+					GUIContent noteAssetContent = new GUIContent(noteAttachedObject.name, AssetPreview.GetMiniThumbnail(noteAttachedObject));
+					float nameHeight = EditorStyles.boldLabel.CalcHeight(new GUIContent(noteAttachedObject.name), position.width);
+					float nameWidth = EditorStyles.boldLabel.CalcSize(new GUIContent(noteAssetContent.text, notesIcon.Texture)).x;
 
-					EditorGUI.DrawRect (GUILayoutUtility.GetRect (2f, nameHeight), notes [n].Color);
+					EditorGUI.DrawRect(GUILayoutUtility.GetRect(2f, nameHeight), notes [n].Color);
 
-					GUILayout.Label (noteAssetContent, EditorStyles.boldLabel, GUILayout.Width (nameWidth), GUILayout.Height (nameHeight));
+					GUILayout.Label(noteAssetContent, EditorStyles.boldLabel, GUILayout.Width(nameWidth), GUILayout.Height(nameHeight));
 
-					GUILayout.FlexibleSpace ();
+					GUILayout.FlexibleSpace();
 
-					GUIContent pingContent = new GUIContent ("Ping", pingIcon.Texture);
-					if (GUILayout.Button (pingContent, EditorStyles.miniButton, GUILayout.Width (EditorStyles.miniButton.CalcSize (pingContent).x)))
+					GUIContent pingContent = new GUIContent("Ping", pingIcon.Texture);
+					if (GUILayout.Button(pingContent, EditorStyles.miniButton, GUILayout.Width(EditorStyles.miniButton.CalcSize(pingContent).x)))
 						{
-						EditorGUIUtility.PingObject (noteAttachedObject);
+						EditorGUIUtility.PingObject(noteAttachedObject);
 						Selection.activeObject = noteAttachedObject;
 						}
 
-					if (string.IsNullOrWhiteSpace (notes [n].noteText))
+					if (string.IsNullOrWhiteSpace(notes [n].noteText))
 						GUI.enabled = false;
 
-					GUIContent copyContent = new GUIContent ("Copy", copyIcon.Texture);
-					if (GUILayout.Button (copyContent, EditorStyles.miniButton, GUILayout.Width (EditorStyles.miniButton.CalcSize (copyContent).x)))
+					GUIContent copyContent = new GUIContent("Copy", copyIcon.Texture);
+					if (GUILayout.Button(copyContent, EditorStyles.miniButton, GUILayout.Width(EditorStyles.miniButton.CalcSize(copyContent).x)))
 						{
 						EditorGUIUtility.systemCopyBuffer = notes [n].noteText;
 						}
 
 					GUI.enabled = true;
 
-					GUIContent clearContent = new GUIContent ("Clear", clearIcon.Texture);
-					if (GUILayout.Button (clearContent, EditorStyles.miniButton, GUILayout.Width (EditorStyles.miniButton.CalcSize (clearContent).x)))
+					GUIContent clearContent = new GUIContent("Clear", clearIcon.Texture);
+					if (GUILayout.Button(clearContent, EditorStyles.miniButton, GUILayout.Width(EditorStyles.miniButton.CalcSize(clearContent).x)))
 						{
-						GUILayout.EndHorizontal ();
+						GUILayout.EndHorizontal();
 
-						GUILayout.Label (notes [n].noteText, richTextHelpBoxStyle);
+						GUILayout.Label(notes [n].noteText, richTextHelpBoxStyle);
 
-						EditorGUILayout.Space ();
+						EditorGUILayout.Space();
 
-						NukeNote (notes [n]);
+						NukeNote(notes [n]);
 
 						continue;
 						}
 
-					GUILayout.EndHorizontal ();
+					GUILayout.EndHorizontal();
 
-					if (!string.IsNullOrWhiteSpace (notes [n].noteText))
+					if (!string.IsNullOrWhiteSpace(notes [n].noteText))
 						{
-						EditorGUILayout.HelpBox (notes [n].noteText, MessageType.None, true);
+						EditorGUILayout.HelpBox(notes [n].noteText, MessageType.None, true);
 						}
 
-					EditorGUILayout.Space ();
+					EditorGUILayout.Space();
 					}
 
-				EditorGUILayout.EndScrollView ();
+				EditorGUILayout.EndScrollView();
 				}
 			else
 				{
 				//================ No Notes ================
 
-				GUILayout.FlexibleSpace ();
+				GUILayout.FlexibleSpace();
 
-				GUILayout.Label (noNotesText, EditorStyles.centeredGreyMiniLabel);
+				GUILayout.Label(noNotesText, EditorStyles.centeredGreyMiniLabel);
 
-				GUILayout.FlexibleSpace ();
+				GUILayout.FlexibleSpace();
 				}
 			}
 		}

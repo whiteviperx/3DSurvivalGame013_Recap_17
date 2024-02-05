@@ -18,7 +18,7 @@ public class GhostItem:MonoBehaviour
 
 	private void Start()
 		{
-		mRenderer = GetComponent<Renderer> ();
+		mRenderer = GetComponent<Renderer>();
 
 		// --- We get them from the manager, because this way the reference always exists. --- //
 		// semiTransparentMat = ConstructionManager.Instance.ghostSemiTransparentMat;
@@ -36,7 +36,7 @@ public class GhostItem:MonoBehaviour
 		{
 		if (ConstructionManager.Instance.inConstructionMode)
 			{
-			Physics.IgnoreCollision (gameObject.GetComponent<Collider> (), ConstructionManager.Instance.player.GetComponent<Collider> ());
+			Physics.IgnoreCollision(gameObject.GetComponent<Collider>(), ConstructionManager.Instance.player.GetComponent<Collider>());
 			}
 
 		// --- We need the solid collider so the ray cast will detect it --- //

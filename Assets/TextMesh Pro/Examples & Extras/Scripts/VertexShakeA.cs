@@ -20,23 +20,23 @@ namespace TMPro.Examples
 
 		private void Awake()
 			{
-			m_TextComponent = GetComponent<TMP_Text> ();
+			m_TextComponent = GetComponent<TMP_Text>();
 			}
 
 		private void OnEnable()
 			{
 			// Subscribe to event fired when text object has been regenerated.
-			TMPro_EventManager.TEXT_CHANGED_EVENT.Add (ON_TEXT_CHANGED);
+			TMPro_EventManager.TEXT_CHANGED_EVENT.Add(ON_TEXT_CHANGED);
 			}
 
 		private void OnDisable()
 			{
-			TMPro_EventManager.TEXT_CHANGED_EVENT.Remove (ON_TEXT_CHANGED);
+			TMPro_EventManager.TEXT_CHANGED_EVENT.Remove(ON_TEXT_CHANGED);
 			}
 
 		private void Start()
 			{
-			StartCoroutine (AnimateVertexColors ());
+			StartCoroutine(AnimateVertexColors());
 			}
 
 		private void ON_TEXT_CHANGED(Object obj)
@@ -53,7 +53,7 @@ namespace TMPro.Examples
 			{
 			// We force an update of the text object since it would only be updated at the end of the frame. Ie. before this code is executed on the first frame.
 			// Alternatively, we could yield and wait until the end of the frame when the text object will be generated.
-			m_TextComponent.ForceMeshUpdate ();
+			m_TextComponent.ForceMeshUpdate();
 
 			TMP_TextInfo textInfo = m_TextComponent.textInfo;
 
@@ -84,7 +84,7 @@ namespace TMPro.Examples
 				// If No Characters then just yield and wait for some text to be added
 				if (characterCount == 0)
 					{
-					yield return new WaitForSeconds (0.25f);
+					yield return new WaitForSeconds(0.25f);
 					continue;
 					}
 
@@ -98,7 +98,7 @@ namespace TMPro.Examples
 
 					// Determine the center of each line
 					Vector3 centerOfLine = (textInfo.characterInfo [first].bottomLeft + textInfo.characterInfo [last].topRight) / 2;
-					Quaternion rotation = Quaternion.Euler (0, 0, Random.Range (-0.25f, 0.25f) * RotationMultiplier);
+					Quaternion rotation = Quaternion.Euler(0, 0, Random.Range(-0.25f, 0.25f) * RotationMultiplier);
 
 					// Iterate through each character of the line.
 					for (int j = first; j <= last; j++)
@@ -124,16 +124,16 @@ namespace TMPro.Examples
 						copyOfVertices [materialIndex] [vertexIndex + 3] = sourceVertices [vertexIndex + 3] - centerOfLine;
 
 						// Determine the random scale change for each character.
-						float randomScale = Random.Range (0.995f - 0.001f * ScaleMultiplier, 1.005f + 0.001f * ScaleMultiplier);
+						float randomScale = Random.Range(0.995f - 0.001f * ScaleMultiplier, 1.005f + 0.001f * ScaleMultiplier);
 
 						// Setup the matrix rotation.
-						matrix = Matrix4x4.TRS (Vector3.one, rotation, Vector3.one * randomScale);
+						matrix = Matrix4x4.TRS(Vector3.one, rotation, Vector3.one * randomScale);
 
 						// Apply the matrix TRS to the individual characters relative to the center of the current line.
-						copyOfVertices [materialIndex] [vertexIndex + 0] = matrix.MultiplyPoint3x4 (copyOfVertices [materialIndex] [vertexIndex + 0]);
-						copyOfVertices [materialIndex] [vertexIndex + 1] = matrix.MultiplyPoint3x4 (copyOfVertices [materialIndex] [vertexIndex + 1]);
-						copyOfVertices [materialIndex] [vertexIndex + 2] = matrix.MultiplyPoint3x4 (copyOfVertices [materialIndex] [vertexIndex + 2]);
-						copyOfVertices [materialIndex] [vertexIndex + 3] = matrix.MultiplyPoint3x4 (copyOfVertices [materialIndex] [vertexIndex + 3]);
+						copyOfVertices [materialIndex] [vertexIndex + 0] = matrix.MultiplyPoint3x4(copyOfVertices [materialIndex] [vertexIndex + 0]);
+						copyOfVertices [materialIndex] [vertexIndex + 1] = matrix.MultiplyPoint3x4(copyOfVertices [materialIndex] [vertexIndex + 1]);
+						copyOfVertices [materialIndex] [vertexIndex + 2] = matrix.MultiplyPoint3x4(copyOfVertices [materialIndex] [vertexIndex + 2]);
+						copyOfVertices [materialIndex] [vertexIndex + 3] = matrix.MultiplyPoint3x4(copyOfVertices [materialIndex] [vertexIndex + 3]);
 
 						// Revert the translation change.
 						copyOfVertices [materialIndex] [vertexIndex + 0] += centerOfLine;
@@ -147,10 +147,10 @@ namespace TMPro.Examples
 				for (int i = 0; i < textInfo.meshInfo.Length; i++)
 					{
 					textInfo.meshInfo [i].mesh.vertices = copyOfVertices [i];
-					m_TextComponent.UpdateGeometry (textInfo.meshInfo [i].mesh, i);
+					m_TextComponent.UpdateGeometry(textInfo.meshInfo [i].mesh, i);
 					}
 
-				yield return new WaitForSeconds (0.1f);
+				yield return new WaitForSeconds(0.1f);
 				}
 			}
 		}

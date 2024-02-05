@@ -48,20 +48,20 @@ namespace Meryel.UnityCodeAssist.Editor.EditorCoroutines
 				if (yield == data.current)
 					return;
 
-				var type = yield.GetType ();
+				var type = yield.GetType();
 				var dataType = DataType.None;
 				double targetTime = -1;
 
-				if (type == typeof (EditorWaitForSeconds))
+				if (type == typeof(EditorWaitForSeconds))
 					{
 					targetTime = EditorApplication.timeSinceStartup + (yield as EditorWaitForSeconds).WaitTime;
 					dataType = DataType.WaitForSeconds;
 					}
-				else if (type == typeof (EditorCoroutine))
+				else if (type == typeof(EditorCoroutine))
 					{
 					dataType = DataType.EditorCoroutine;
 					}
-				else if (type == typeof (AsyncOperation) || type.IsSubclassOf (typeof (AsyncOperation)))
+				else if (type == typeof(AsyncOperation) || type.IsSubclassOf(typeof(AsyncOperation)))
 					{
 					dataType = DataType.AsyncOP;
 					}
@@ -81,7 +81,7 @@ namespace Meryel.UnityCodeAssist.Editor.EditorCoroutines
 				if (advance)
 					{
 					data = default;// (ProcessorData);
-					return enumerator.MoveNext ();
+					return enumerator.MoveNext();
 					}
 				return true;
 				}
@@ -104,8 +104,8 @@ namespace Meryel.UnityCodeAssist.Editor.EditorCoroutines
 
 		internal EditorCoroutine(IEnumerator routine, object owner)
 			{
-			m_Processor = new YieldProcessor ();
-			m_Owner = new WeakReference (owner);
+			m_Processor = new YieldProcessor();
+			m_Owner = new WeakReference(owner);
 			m_Routine = routine;
 			EditorApplication.update += MoveNext;
 			}
@@ -118,41 +118,41 @@ namespace Meryel.UnityCodeAssist.Editor.EditorCoroutines
 				return;
 				}
 
-			bool done = ProcessIEnumeratorRecursive (m_Routine);
+			bool done = ProcessIEnumeratorRecursive(m_Routine);
 			m_IsDone = !done;
 
 			if (m_IsDone)
 				EditorApplication.update -= MoveNext;
 			}
 
-		private static readonly Stack<IEnumerator> kIEnumeratorProcessingStack = new Stack<IEnumerator> (32);
+		private static readonly Stack<IEnumerator> kIEnumeratorProcessingStack = new Stack<IEnumerator>(32);
 
 		private bool ProcessIEnumeratorRecursive(IEnumerator enumerator)
 			{
 			var root = enumerator;
 			while (enumerator.Current as IEnumerator != null)
 				{
-				kIEnumeratorProcessingStack.Push (enumerator);
+				kIEnumeratorProcessingStack.Push(enumerator);
 				enumerator = enumerator.Current as IEnumerator;
 				}
 
 			//process leaf
-			m_Processor.Set (enumerator.Current);
-			var result = m_Processor.MoveNext (enumerator);
+			m_Processor.Set(enumerator.Current);
+			var result = m_Processor.MoveNext(enumerator);
 
 			while (kIEnumeratorProcessingStack.Count > 1)
 				{
 				if (!result)
 					{
-					result = kIEnumeratorProcessingStack.Pop ().MoveNext ();
+					result = kIEnumeratorProcessingStack.Pop().MoveNext();
 					}
 				else
-					kIEnumeratorProcessingStack.Clear ();
+					kIEnumeratorProcessingStack.Clear();
 				}
 
-			if (kIEnumeratorProcessingStack.Count > 0 && !result && root == kIEnumeratorProcessingStack.Pop ())
+			if (kIEnumeratorProcessingStack.Count > 0 && !result && root == kIEnumeratorProcessingStack.Pop())
 				{
-				result = root.MoveNext ();
+				result = root.MoveNext();
 				}
 
 			return result;

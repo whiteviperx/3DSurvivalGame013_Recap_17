@@ -11,13 +11,13 @@ namespace Meryel.UnityCodeAssist.Editor.Logger
 
 		static DomainHashEnricher()
 			{
-			var guid = UnityEditor.GUID.Generate ();
-			domainHash = guid.GetHashCode ();
+			var guid = UnityEditor.GUID.Generate();
+			domainHash = guid.GetHashCode();
 			}
 
 		public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
 			{
-			logEvent.AddPropertyIfAbsent (propertyFactory.CreateProperty (
+			logEvent.AddPropertyIfAbsent(propertyFactory.CreateProperty(
 					"DomainHash", domainHash));
 			}
 		}

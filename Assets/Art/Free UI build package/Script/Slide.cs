@@ -10,7 +10,7 @@ public class Slide:MonoBehaviour
 	// Use this for initialization
 	private void Start()
 		{
-		Filler = GetComponent<Image> ();
+		Filler = GetComponent<Image>();
 		}
 
 	// Update is called once per frame

@@ -13,21 +13,21 @@ public class InteractableObject:MonoBehaviour
 	private void Update()
 		{
 		// --- Add to inventory, only if click the mouse, on target, and the item we are picking up is the selected object --- //
-		if (Input.GetKeyDown (KeyCode.Mouse0) && playerInRange && SelectionManager.Instance.onTarget && SelectionManager.Instance.selectedObject == gameObject)
+		if (Input.GetKeyDown(KeyCode.Mouse0) && playerInRange && SelectionManager.Instance.onTarget && SelectionManager.Instance.selectedObject == gameObject)
 
 			{
 			// ---  If the inventory is NOT full --- //
-			if (InventorySystem.Instance.CheckSlotsAvailable (1))
+			if (InventorySystem.Instance.CheckSlotsAvailable(1))
 				{
-				InventorySystem.Instance.AddToInventory (ItemName);
+				InventorySystem.Instance.AddToInventory(ItemName);
 
-				Debug.Log ("Item added to inventory");
+				Debug.Log("Item added to inventory");
 
-				Destroy (gameObject);
+				Destroy(gameObject);
 				}
 			else
 				{
-				Debug.Log ("Inventory is full");
+				Debug.Log("Inventory is full");
 				}
 			}
 		}
@@ -35,7 +35,7 @@ public class InteractableObject:MonoBehaviour
 	// --- Is player in range of object? --- //
 	private void OnTriggerEnter(Collider other)
 		{
-		if (other.CompareTag ("Player"))
+		if (other.CompareTag("Player"))
 			{
 			playerInRange = true;
 			}
@@ -43,7 +43,7 @@ public class InteractableObject:MonoBehaviour
 
 	private void OnTriggerExit(Collider other)
 		{
-		if (other.CompareTag ("Player"))
+		if (other.CompareTag("Player"))
 			{
 			playerInRange = false;
 			}

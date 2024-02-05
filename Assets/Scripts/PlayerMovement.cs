@@ -25,30 +25,30 @@ public class PlayerMovement:MonoBehaviour
 	private void Update()
 		{
 		// --- Checking if we hit the ground to reset our falling velocity, otherwise we will fall faster the next time --- //
-		isGrounded = Physics.CheckSphere (groundCheck.position, groundDistance, groundMask);
+		isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
 		if (isGrounded && velocity.y < 0)
 			{
 			velocity.y = -2f;
 			}
 
-		var x = Input.GetAxis ("Horizontal");
-		var z = Input.GetAxis ("Vertical");
+		var x = Input.GetAxis("Horizontal");
+		var z = Input.GetAxis("Vertical");
 
 		// --- Right is the red Axis, forward is the blue axis --- //
 		var move = transform.right * x + transform.forward * z;
 
-		controller.Move (move * (speed * Time.deltaTime));
+		controller.Move(move * (speed * Time.deltaTime));
 
 		// --- Check if the player is on the ground so he can jump --- //
-		if (Input.GetButtonDown ("Jump") && isGrounded)
+		if (Input.GetButtonDown("Jump") && isGrounded)
 			{
 			// --- The equation for jumping --- //
-			velocity.y = Mathf.Sqrt (jumpHeight * -2f * gravity);
+			velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
 			}
 
 		velocity.y += gravity * Time.deltaTime;
 
-		controller.Move (velocity * Time.deltaTime);
+		controller.Move(velocity * Time.deltaTime);
 		}
 	}

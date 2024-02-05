@@ -8,7 +8,7 @@ namespace StylizedTools
 
 		public void _OnURLOpen()
 			{
-			Application.OpenURL (url);
+			Application.OpenURL(url);
 			}
 		}
 	}

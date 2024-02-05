@@ -47,7 +47,7 @@ namespace Meryel.UnityCodeAssist.Editor.EditorCoroutines
 		/// <returns>A handle to an <see cref="EditorCoroutine">EditorCoroutine</see>.</returns>
 		public static EditorCoroutine StartCoroutine(IEnumerator routine, object owner)
 			{
-			return new EditorCoroutine (routine, owner);
+			return new EditorCoroutine(routine, owner);
 			}
 
 		/// <summary>
@@ -80,7 +80,7 @@ namespace Meryel.UnityCodeAssist.Editor.EditorCoroutines
 		/// <returns>A handle to an <see cref="EditorCoroutine">EditorCoroutine.</see></returns>
 		public static EditorCoroutine StartCoroutineOwnerless(IEnumerator routine)
 			{
-			return new EditorCoroutine (routine);
+			return new EditorCoroutine(routine);
 			}
 
 		/// <summary>
@@ -120,10 +120,10 @@ namespace Meryel.UnityCodeAssist.Editor.EditorCoroutines
 			{
 			if (coroutine == null)
 				{
-				Debug.LogAssertion ("EditorCoroutine handle is null.");
+				Debug.LogAssertion("EditorCoroutine handle is null.");
 				return;
 				}
-			coroutine.Stop ();
+			coroutine.Stop();
 			}
 		}
 	}

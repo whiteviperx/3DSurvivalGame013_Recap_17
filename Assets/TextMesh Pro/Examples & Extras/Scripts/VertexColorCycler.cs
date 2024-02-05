@@ -10,12 +10,12 @@ namespace TMPro.Examples
 
 		private void Awake()
 			{
-			m_TextComponent = GetComponent<TMP_Text> ();
+			m_TextComponent = GetComponent<TMP_Text>();
 			}
 
 		private void Start()
 			{
-			StartCoroutine (AnimateVertexColors ());
+			StartCoroutine(AnimateVertexColors());
 			}
 
 		/// <summary>
@@ -25,7 +25,7 @@ namespace TMPro.Examples
 		private IEnumerator AnimateVertexColors()
 			{
 			// Force the text object to update right away so we can have geometry to modify right from the start.
-			m_TextComponent.ForceMeshUpdate ();
+			m_TextComponent.ForceMeshUpdate();
 
 			TMP_TextInfo textInfo = m_TextComponent.textInfo;
 			int currentCharacter = 0;
@@ -40,7 +40,7 @@ namespace TMPro.Examples
 				// If No Characters then just yield and wait for some text to be added
 				if (characterCount == 0)
 					{
-					yield return new WaitForSeconds (0.25f);
+					yield return new WaitForSeconds(0.25f);
 					continue;
 					}
 
@@ -56,7 +56,7 @@ namespace TMPro.Examples
 				// Only change the vertex color if the text element is visible.
 				if (textInfo.characterInfo [currentCharacter].isVisible)
 					{
-					c0 = new Color32 ((byte) Random.Range (0, 255), (byte) Random.Range (0, 255), (byte) Random.Range (0, 255), 255);
+					c0 = new Color32((byte) Random.Range(0, 255), (byte) Random.Range(0, 255), (byte) Random.Range(0, 255), 255);
 
 					newVertexColors [vertexIndex + 0] = c0;
 					newVertexColors [vertexIndex + 1] = c0;
@@ -64,7 +64,7 @@ namespace TMPro.Examples
 					newVertexColors [vertexIndex + 3] = c0;
 
 					// New function which pushes (all) updated vertex data to the appropriate meshes when using either the Mesh Renderer or CanvasRenderer.
-					m_TextComponent.UpdateVertexData (TMP_VertexDataUpdateFlags.Colors32);
+					m_TextComponent.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
 
 					// This last process could be done to only update the vertex data that has changed as opposed to all of the vertex data but it would require extra steps and knowing what type of renderer is used.
 					// These extra steps would be a performance optimization but it is unlikely that such optimization will be necessary.
@@ -72,7 +72,7 @@ namespace TMPro.Examples
 
 				currentCharacter = (currentCharacter + 1) % characterCount;
 
-				yield return new WaitForSeconds (0.05f);
+				yield return new WaitForSeconds(0.05f);
 				}
 			}
 		}

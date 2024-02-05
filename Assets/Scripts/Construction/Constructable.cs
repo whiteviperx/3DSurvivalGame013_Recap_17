@@ -26,19 +26,19 @@ public class Constructable:MonoBehaviour
 	public Material defaultMaterial;
 
 	// --- List of Ghosts of the specific item --- //
-	public List<GameObject> ghostList = new ();
+	public List<GameObject> ghostList = new();
 
 	public BoxCollider solidCollider;
 
 	private void Start()
 		{
 		// --- Renderer to change materials --- //
-		mRenderer = GetComponent<Renderer> ();
+		mRenderer = GetComponent<Renderer>();
 
 		mRenderer.material = defaultMaterial;
 		foreach (Transform child in transform)
 			{
-			ghostList.Add (child.gameObject);
+			ghostList.Add(child.gameObject);
 			}
 		}
 
@@ -56,17 +56,17 @@ public class Constructable:MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 		{
-		if (other.CompareTag ("Ground") && gameObject.CompareTag ("activeConstructable"))
+		if (other.CompareTag("Ground") && gameObject.CompareTag("activeConstructable"))
 			{
 			isGrounded = true;
 			}
 
-		if (other.CompareTag ("Tree") || other.CompareTag ("Pickable") && gameObject.CompareTag ("activeConstructable"))
+		if (other.CompareTag("Tree") || other.CompareTag("Pickable") && gameObject.CompareTag("activeConstructable"))
 			{
 			isOverlappingItems = true;
 			}
 
-		if (other.gameObject.CompareTag ("ghost") && gameObject.CompareTag ("activeConstructable"))
+		if (other.gameObject.CompareTag("ghost") && gameObject.CompareTag("activeConstructable"))
 			{
 			detectedGhostMember = true;
 			}
@@ -74,17 +74,17 @@ public class Constructable:MonoBehaviour
 
 	private void OnTriggerExit(Collider other)
 		{
-		if (other.CompareTag ("Ground") && gameObject.CompareTag ("activeConstructable"))
+		if (other.CompareTag("Ground") && gameObject.CompareTag("activeConstructable"))
 			{
 			isGrounded = false;
 			}
 
-		if (other.CompareTag ("Tree") || other.CompareTag ("Pickable") && gameObject.CompareTag ("activeConstructable"))
+		if (other.CompareTag("Tree") || other.CompareTag("Pickable") && gameObject.CompareTag("activeConstructable"))
 			{
 			isOverlappingItems = false;
 			}
 
-		if (other.gameObject.CompareTag ("ghost") && gameObject.CompareTag ("activeConstructable"))
+		if (other.gameObject.CompareTag("ghost") && gameObject.CompareTag("activeConstructable"))
 			{
 			detectedGhostMember = false;
 			}
@@ -112,11 +112,11 @@ public class Constructable:MonoBehaviour
 		{
 		foreach (GameObject item in ghostList)
 			{
-			item.transform.SetParent (transform.parent, true);
+			item.transform.SetParent(transform.parent, true);
 
 			// sets solid false when finished collide so player doesn't hit them
-			item.GetComponent<GhostItem> ().solidCollider.enabled = false;
-			item.GetComponent<GhostItem> ().isPlaced = true;
+			item.GetComponent<GhostItem>().solidCollider.enabled = false;
+			item.GetComponent<GhostItem>().isPlaced = true;
 			}
 		}
 	}

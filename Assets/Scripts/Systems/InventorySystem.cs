@@ -15,10 +15,10 @@ public class InventorySystem:MonoBehaviour
 	public GameObject inventoryScreenUI;
 
 	// --- Slot list that contains the slots themselves --- //
-	public List<GameObject> slotList = new ();
+	public List<GameObject> slotList = new();
 
 	// --- Here we actually store the names of the actual items --- //
-	public List<string> itemList = new ();
+	public List<string> itemList = new();
 
 	// --- Items to add --- //
 	private GameObject itemToAdd;
@@ -33,7 +33,7 @@ public class InventorySystem:MonoBehaviour
 	public bool isFull;
 
 	// --- Pickup Popup --- //
-	[Header ("Pickup Alert")]
+	[Header("Pickup Alert")]
 	public GameObject pickupAlert;
 
 	public Text pickupName;
@@ -41,7 +41,7 @@ public class InventorySystem:MonoBehaviour
 	public Image pickupImage;
 
 	// --- Item Info Panel --- //
-	[Header ("Item Info Panel")]
+	[Header("Item Info Panel")]
 	public GameObject ItemInfoUI;
 
 	private void Awake()
@@ -55,7 +55,7 @@ public class InventorySystem:MonoBehaviour
 		isFull = false;
 
 		// --- Adding the slots to the inventory list (Calling it) --- //
-		PopulateSlotList ();
+		PopulateSlotList();
 
 		// --- Make cursor invisible when starting game --- //
 		Cursor.visible = false;
@@ -66,9 +66,9 @@ public class InventorySystem:MonoBehaviour
 		{
 		// --- Searches for all the slot children in the inventory screen UI --- //
 		foreach (Transform child in inventoryScreenUI.transform)
-			if (child.CompareTag ("Slot"))
+			if (child.CompareTag("Slot"))
 				{
-				slotList.Add (child.gameObject);
+				slotList.Add(child.gameObject);
 				}
 		}
 
@@ -76,30 +76,30 @@ public class InventorySystem:MonoBehaviour
 	private void Update()
 		{
 		// --- Pressing "I" opens & closes inventory screen --- //
-		if (Input.GetKeyDown (KeyCode.I) && !isOpen && !ConstructionManager.Instance.inConstructionMode)
+		if (Input.GetKeyDown(KeyCode.I) && !isOpen && !ConstructionManager.Instance.inConstructionMode)
 			{
-			Debug.Log ("i is pressed");
+			Debug.Log("i is pressed");
 
-			inventoryScreenUI.SetActive (true);
+			inventoryScreenUI.SetActive(true);
 			Cursor.lockState = CursorLockMode.None;
 			Cursor.visible = true;
 
-			SelectionManager.Instance.DisableSelection ();
-			SelectionManager.Instance.GetComponent<SelectionManager> ().enabled = false;
+			SelectionManager.Instance.DisableSelection();
+			SelectionManager.Instance.GetComponent<SelectionManager>().enabled = false;
 
 			isOpen = true;
 			}
-		else if (Input.GetKeyDown (KeyCode.I) && isOpen)
+		else if (Input.GetKeyDown(KeyCode.I) && isOpen)
 			{
-			inventoryScreenUI.SetActive (false);
+			inventoryScreenUI.SetActive(false);
 
 			if (!CraftingSystem.Instance.isOpen)
 				{
 				Cursor.lockState = CursorLockMode.Locked;
 				Cursor.visible = false;
 
-				SelectionManager.Instance.EnableSelection ();
-				SelectionManager.Instance.GetComponent<SelectionManager> ().enabled = true;
+				SelectionManager.Instance.EnableSelection();
+				SelectionManager.Instance.GetComponent<SelectionManager>().enabled = true;
 				}
 
 			isOpen = false;
@@ -109,26 +109,26 @@ public class InventorySystem:MonoBehaviour
 	// --- Adding items to inventory when we pick up an item --- //
 	public void AddToInventory(string itemName)
 		{
-		whatSlotToEquip = FindNextEmptySlot ();
+		whatSlotToEquip = FindNextEmptySlot();
 
-		itemToAdd = Instantiate (Resources.Load<GameObject> (itemName), whatSlotToEquip.transform.position, whatSlotToEquip.transform.rotation);
+		itemToAdd = Instantiate(Resources.Load<GameObject>(itemName), whatSlotToEquip.transform.position, whatSlotToEquip.transform.rotation);
 
-		itemToAdd.transform.SetParent (whatSlotToEquip.transform);
+		itemToAdd.transform.SetParent(whatSlotToEquip.transform);
 
-		itemList.Add (itemName);
-		Debug.Log ("added to inventory System Debug Log");
+		itemList.Add(itemName);
+		Debug.Log("added to inventory System Debug Log");
 
-		TriggerPickupPopUp (itemName, itemToAdd.GetComponent<Image> ().sprite);
+		TriggerPickupPopUp(itemName, itemToAdd.GetComponent<Image>().sprite);
 
-		ReCalculateList ();
-		CraftingSystem.Instance.RefreshNeededItems ();
+		ReCalculateList();
+		CraftingSystem.Instance.RefreshNeededItems();
 		}
 
 	// --- Trigger the popup when an item is picked up --- //
 	private void TriggerPickupPopUp(string itemName, Sprite itemSprite)
 		{
 		// --- Pickup alert to appear --- //
-		pickupAlert.SetActive (true);
+		pickupAlert.SetActive(true);
 
 		// --- Change the text and image --- //
 		pickupName.text = itemName;
@@ -142,7 +142,7 @@ public class InventorySystem:MonoBehaviour
 			if (slot.transform.childCount == 0)
 				return slot;
 
-		return new ();
+		return new();
 		}
 
 	// --- Check if slots available --- //
@@ -169,35 +169,35 @@ public class InventorySystem:MonoBehaviour
 			{
 			if (slotList [i].transform.childCount > 0)
 				{
-				if (slotList [i].transform.GetChild (0).name == nameToRemove + "(Clone)" && counter != 0)
+				if (slotList [i].transform.GetChild(0).name == nameToRemove + "(Clone)" && counter != 0)
 					{
-					DestroyImmediate (slotList [i].transform.GetChild (0).gameObject);
+					DestroyImmediate(slotList [i].transform.GetChild(0).gameObject);
 
 					counter -= 1;
 					}
 				}
 			}
 
-		ReCalculateList ();
-		CraftingSystem.Instance.RefreshNeededItems ();
+		ReCalculateList();
+		CraftingSystem.Instance.RefreshNeededItems();
 		}
 
 	// --- Recalculate remaining items in inventory --- //
 	public void ReCalculateList()
 		{
-		itemList.Clear ();
+		itemList.Clear();
 
 		foreach (GameObject slot in slotList)
 			{
 			if (slot.transform.childCount > 0)
 				{
-				var name = slot.transform.GetChild (0).name; // Item (Clone)
+				var name = slot.transform.GetChild(0).name; // Item (Clone)
 
 				var str2 = "(Clone)";
 
-				var result = name.Replace (str2, string.Empty);
+				var result = name.Replace(str2, string.Empty);
 
-				itemList.Add (result);
+				itemList.Add(result);
 				}
 			}
 		}

@@ -34,7 +34,7 @@ public class PlayerState:MonoBehaviour
 		{
 		if (Instance != null && Instance != this)
 			{
-			Destroy (gameObject);
+			Destroy(gameObject);
 			}
 		else
 			{
@@ -48,7 +48,7 @@ public class PlayerState:MonoBehaviour
 		currentFood = maxFood;
 		currentWaterPercent = maxWaterPercent;
 
-		StartCoroutine (DecreaseWater ());
+		StartCoroutine(DecreaseWater());
 		}
 
 	private IEnumerator DecreaseWater()
@@ -56,14 +56,14 @@ public class PlayerState:MonoBehaviour
 		while (true)
 			{
 			currentWaterPercent -= 1;
-			yield return new WaitForSeconds (60);
+			yield return new WaitForSeconds(60);
 			}
 		}
 
 	// --- Update is called once per frame --- //
 	private void Update()
 		{
-		distanceTraveled += Vector3.Distance (playerBody.transform.position, lastPosition);
+		distanceTraveled += Vector3.Distance(playerBody.transform.position, lastPosition);
 		lastPosition = playerBody.transform.position;
 
 		if (distanceTraveled >= 20)

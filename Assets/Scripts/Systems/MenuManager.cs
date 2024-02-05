@@ -1,3 +1,5 @@
+using UnityEditor.Rendering;
+
 using UnityEngine;
 
 public class MenuManager:MonoBehaviour
@@ -20,7 +22,7 @@ public class MenuManager:MonoBehaviour
 		{
 		if (Instance != null && Instance != this)
 			{
-			Destroy (gameObject);
+			Destroy(gameObject);
 			}
 		else
 			{
@@ -30,27 +32,27 @@ public class MenuManager:MonoBehaviour
 
 	private void Update()
 		{
-		if (Input.GetKeyDown (KeyCode.M) && !isMenuOpen)
+		if (Input.GetKeyDown(KeyCode.M) && !isMenuOpen)
 			{
-			uiCanvas.SetActive (false);
-			menuCanvas.SetActive (true);
+			uiCanvas.SetActive(false);
+			menuCanvas.SetActive(true);
 
 			isMenuOpen = true;
 
 			Cursor.lockState = CursorLockMode.None;
 			Cursor.visible = true;
 
-			SelectionManager.Instance.DisableSelection ();
-			SelectionManager.Instance.GetComponent<SelectionManager> ().enabled = false;
+			SelectionManager.Instance.DisableSelection();
+			SelectionManager.Instance.GetComponent<SelectionManager>().enabled = false;
 			}
-		else if (Input.GetKeyDown (KeyCode.M) && !isMenuOpen)
+		else if (Input.GetKeyDown(KeyCode.M) && !isMenuOpen)
 			{
-			saveMenu.SetActive (false);
-			settingsMenu.SetActive (false);
-			menu.SetActive (true);
+			saveMenu.SetActive(false);
+			settingsMenu.SetActive(false);
+			menu.SetActive(true);
 
-			uiCanvas.SetActive (true);
-			menuCanvas.SetActive (false);
+			uiCanvas.SetActive(true);
+			menuCanvas.SetActive(false);
 
 			isMenuOpen = false;
 
@@ -60,8 +62,16 @@ public class MenuManager:MonoBehaviour
 				Cursor.visible = false;
 				}
 
-			SelectionManager.Instance.EnableSelection ();
-			SelectionManager.Instance.GetComponent<SelectionManager> ().enabled = true;
+			SelectionManager.Instance.EnableSelection();
+			SelectionManager.Instance.GetComponent<SelectionManager>().enabled = true;
 			}
 		}
+
+	public void TempSaveGame()
+		{
+		SaveManager.Instance.SaveGame();
+		}
+
+
+
 	}

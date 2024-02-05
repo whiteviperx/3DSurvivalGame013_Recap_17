@@ -17,14 +17,14 @@ namespace Meryel.UnityCodeAssist.Editor.Preferences
 		private void OnEnable()
 			{
 			hideFlags = HideFlags.DontSave;
-			userDefList ??= new List<PreferenceEntry> ();
-			unityDefList ??= new List<PreferenceEntry> ();
+			userDefList ??= new List<PreferenceEntry>();
+			unityDefList ??= new List<PreferenceEntry>();
 			}
 
 		public void ClearLists()
 			{
-			userDefList?.Clear ();
-			unityDefList?.Clear ();
+			userDefList?.Clear();
+			unityDefList?.Clear();
 			}
 		}
 
@@ -44,7 +44,7 @@ namespace Meryel.UnityCodeAssist.Editor.Preferences
 
 		public string? m_key;
 
-		// Need diffrend ones for auto type selection of serilizedProerty
+		// Need different ones for auto type selection of serilizedProerty
 		public string? m_strValue;
 
 		public int m_intValue;
@@ -56,8 +56,8 @@ namespace Meryel.UnityCodeAssist.Editor.Preferences
 			return m_typeSelection switch
 				{
 					PrefTypes.String => m_strValue,
-					PrefTypes.Int => m_intValue.ToString (),
-					PrefTypes.Float => m_floatValue.ToString (),
+					PrefTypes.Int => m_intValue.ToString(),
+					PrefTypes.Float => m_floatValue.ToString(),
 					_ => string.Empty,
 					};
 			}

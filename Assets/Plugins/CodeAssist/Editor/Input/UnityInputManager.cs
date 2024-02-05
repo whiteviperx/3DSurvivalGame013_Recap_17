@@ -17,8 +17,8 @@ namespace Meryel.UnityCodeAssist.Editor.Input
 
 		public void ReadFromText(string text)
 			{
-			reader = new StringReader (text);
-			ReadAux (false, out _);
+			reader = new StringReader(text);
+			ReadAux(false, out _);
 			}
 
 		public void ReadFromPath(string yamlPath)
@@ -27,8 +27,8 @@ namespace Meryel.UnityCodeAssist.Editor.Input
 				{
 				case UnityEditor.SerializationMode.ForceText:
 						{
-						reader = new StreamReader (yamlPath);
-						ReadAux (false, out _);
+						reader = new StreamReader(yamlPath);
+						ReadAux(false, out _);
 						}
 					break;
 
@@ -38,35 +38,35 @@ namespace Meryel.UnityCodeAssist.Editor.Input
 						// but in the future, we may need to switch to reading binary files for big files
 						// like this https://github.com/Unity-Technologies/UnityDataTools
 						// or this https://github.com/SeriousCache/UABE
-						var converted = GetOrCreateConvertedFile (yamlPath);
-						if (!File.Exists (converted))
+						var converted = GetOrCreateConvertedFile(yamlPath);
+						if (!File.Exists(converted))
 							{
-							Serilog.Log.Warning ("Temp file {TempFile} couldn't found for converted yaml input file. Auto Input Manager will not work!", converted);
+							Serilog.Log.Warning("Temp file {TempFile} couldn't found for converted yaml input file. Auto Input Manager will not work!", converted);
 							return;
 							}
-						var rawLines = File.ReadLines (converted);
-						var yamlText = Text2Yaml.Convert (rawLines);
-						reader = new StringReader (yamlText);
-						ReadAux (false, out _);
+						var rawLines = File.ReadLines(converted);
+						var yamlText = Text2Yaml.Convert(rawLines);
+						reader = new StringReader(yamlText);
+						ReadAux(false, out _);
 						}
 					break;
 
 				case UnityEditor.SerializationMode.Mixed:
 						{
-						reader = new StreamReader (yamlPath);
-						ReadAux (true, out var hasSemanticError);
+						reader = new StreamReader(yamlPath);
+						ReadAux(true, out var hasSemanticError);
 						if (hasSemanticError)
 							{
-							var converted = GetOrCreateConvertedFile (yamlPath);
-							if (!File.Exists (converted))
+							var converted = GetOrCreateConvertedFile(yamlPath);
+							if (!File.Exists(converted))
 								{
-								Serilog.Log.Warning ("Temp file {TempFile} couldn't found for converted yaml input file. Auto Input Manager will not work!", converted);
+								Serilog.Log.Warning("Temp file {TempFile} couldn't found for converted yaml input file. Auto Input Manager will not work!", converted);
 								return;
 								}
-							var rawLines = File.ReadLines (converted);
-							var yamlText = Text2Yaml.Convert (rawLines);
-							reader = new StringReader (yamlText);
-							ReadAux (false, out _);
+							var rawLines = File.ReadLines(converted);
+							var yamlText = Text2Yaml.Convert(rawLines);
+							reader = new StringReader(yamlText);
+							ReadAux(false, out _);
 							}
 						}
 					break;
@@ -79,45 +79,45 @@ namespace Meryel.UnityCodeAssist.Editor.Input
 
 			if (reader == null)
 				{
-				Serilog.Log.Warning ($"{nameof (UnityInputManager)}.{nameof (reader)} is null");
+				Serilog.Log.Warning($"{nameof(UnityInputManager)}.{nameof(reader)} is null");
 				return;
 				}
 
 			//var reader = new StreamReader(yamlPath);
-			var deserializer = new YamlDotNet.Serialization.DeserializerBuilder ()
-				.WithTagMapping ("tag:unity3d.com,2011:13", typeof (Class13Mapper))
-				.IgnoreUnmatchedProperties ()
-				.Build ();
+			var deserializer = new YamlDotNet.Serialization.DeserializerBuilder()
+				.WithTagMapping("tag:unity3d.com,2011:13", typeof(Class13Mapper))
+				.IgnoreUnmatchedProperties()
+				.Build();
 
 			//serializer.Settings.RegisterTagMapping("tag:unity3d.com,2011:13", typeof(Class13));
 			//serializer.Settings.ComparerForKeySorting = null;
 			Class13Mapper? result;
 			try
 				{
-				result = deserializer.Deserialize<Class13Mapper> (reader);
+				result = deserializer.Deserialize<Class13Mapper>(reader);
 				}
 			catch (YamlDotNet.Core.SemanticErrorException semanticErrorException)
 				{
-				Serilog.Log.Debug (semanticErrorException, "Couldn't parse InputManager.asset yaml file");
+				Serilog.Log.Debug(semanticErrorException, "Couldn't parse InputManager.asset yaml file");
 				if (!canHaveSemanticError)
-					Serilog.Log.Error (semanticErrorException, "Couldn't parse InputManager.asset yaml file unexpectedly");
+					Serilog.Log.Error(semanticErrorException, "Couldn't parse InputManager.asset yaml file unexpectedly");
 
 				hasSemanticError = true;
 				return;
 				}
 			finally
 				{
-				reader.Close ();
+				reader.Close();
 				}
 
 			var inputManagerMapper = result?.InputManager;
 			if (inputManagerMapper == null)
 				{
-				Serilog.Log.Warning ($"{nameof (inputManagerMapper)} is null");
+				Serilog.Log.Warning($"{nameof(inputManagerMapper)} is null");
 				return;
 				}
 
-			inputManager = new InputManager (inputManagerMapper);
+			inputManager = new InputManager(inputManagerMapper);
 			}
 
 		public void SendData()
@@ -125,15 +125,15 @@ namespace Meryel.UnityCodeAssist.Editor.Input
 			if (inputManager == null)
 				return;
 
-			var axisNames = inputManager.Axes.Select (a => a.Name!).Where (n => !string.IsNullOrEmpty (n)).Distinct ().ToArray ();
-			var axisInfos = axisNames.Select (a => inputManager.Axes.GetInfo (a)).ToArray ();
-			if (!CreateBindingsMap (out var buttonKeys, out var buttonAxis))
+			var axisNames = inputManager.Axes.Select(a => a.Name!).Where(n => !string.IsNullOrEmpty(n)).Distinct().ToArray();
+			var axisInfos = axisNames.Select(a => inputManager.Axes.GetInfo(a)).ToArray();
+			if (!CreateBindingsMap(out var buttonKeys, out var buttonAxis))
 				return;
 
 			string [] joystickNames;
 			try
 				{
-				joystickNames = UnityEngine.Input.GetJoystickNames ();
+				joystickNames = UnityEngine.Input.GetJoystickNames();
 				}
 			catch (InvalidOperationException)
 				{
@@ -141,7 +141,7 @@ namespace Meryel.UnityCodeAssist.Editor.Input
 				joystickNames = new string [0];
 				}
 
-			NetMQInitializer.Publisher?.SendInputManager (axisNames, axisInfos, buttonKeys, buttonAxis, joystickNames);
+			NetMQInitializer.Publisher?.SendInputManager(axisNames, axisInfos, buttonKeys, buttonAxis, joystickNames);
 
 			/*
             NetMQInitializer.Publisher?.SendInputManager(
@@ -155,7 +155,7 @@ namespace Meryel.UnityCodeAssist.Editor.Input
             */
 			}
 
-		private bool CreateBindingsMap([System.Diagnostics.CodeAnalysis.NotNullWhen (true)] out string []? inputKeys, [System.Diagnostics.CodeAnalysis.NotNullWhen (true)] out string []? inputAxis)
+		private bool CreateBindingsMap([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] out string []? inputKeys, [System.Diagnostics.CodeAnalysis.NotNullWhen(true)] out string []? inputAxis)
 			{
 			if (inputManager == null)
 				{
@@ -164,33 +164,33 @@ namespace Meryel.UnityCodeAssist.Editor.Input
 				return false;
 				}
 
-			var dict = new Dictionary<string, string?> ();
+			var dict = new Dictionary<string, string?>();
 
 			foreach (var axis in inputManager.Axes)
 				{
-				if (axis.altNegativeButton != null && !string.IsNullOrEmpty (axis.altNegativeButton))
+				if (axis.altNegativeButton != null && !string.IsNullOrEmpty(axis.altNegativeButton))
 					dict [axis.altNegativeButton] = axis.Name;
 				}
 			foreach (var axis in inputManager.Axes)
 				{
-				if (axis.negativeButton != null && !string.IsNullOrEmpty (axis.negativeButton))
+				if (axis.negativeButton != null && !string.IsNullOrEmpty(axis.negativeButton))
 					dict [axis.negativeButton] = axis.Name;
 				}
 			foreach (var axis in inputManager.Axes)
 				{
-				if (axis.altPositiveButton != null && !string.IsNullOrEmpty (axis.altPositiveButton))
+				if (axis.altPositiveButton != null && !string.IsNullOrEmpty(axis.altPositiveButton))
 					dict [axis.altPositiveButton] = axis.Name;
 				}
 			foreach (var axis in inputManager.Axes)
 				{
-				if (axis.positiveButton != null && !string.IsNullOrEmpty (axis.positiveButton))
+				if (axis.positiveButton != null && !string.IsNullOrEmpty(axis.positiveButton))
 					dict [axis.positiveButton] = axis.Name;
 				}
 
 			var keys = new string [dict.Count];
 			var values = new string [dict.Count];
-			dict.Keys.CopyTo (keys, 0);
-			dict.Values.CopyTo (values, 0);
+			dict.Keys.CopyTo(keys, 0);
+			dict.Values.CopyTo(values, 0);
 
 			inputKeys = keys;
 			inputAxis = values;
@@ -199,18 +199,18 @@ namespace Meryel.UnityCodeAssist.Editor.Input
 
 		private static string GetOrCreateConvertedFile(string filePath)
 			{
-			var hash = GetMD5Hash (filePath);
-			var convertedPath = Path.Combine (Path.GetTempPath (), $"UCA_IM_{hash}.txt");
+			var hash = GetMD5Hash(filePath);
+			var convertedPath = Path.Combine(Path.GetTempPath(), $"UCA_IM_{hash}.txt");
 
-			if (!File.Exists (convertedPath))
+			if (!File.Exists(convertedPath))
 				{
-				Serilog.Log.Debug ("Converting binary to text format of {File} to {Target}", filePath, convertedPath);
-				var converter = new Binary2TextExec ();
-				converter.Exec (filePath, convertedPath);
+				Serilog.Log.Debug("Converting binary to text format of {File} to {Target}", filePath, convertedPath);
+				var converter = new Binary2TextExec();
+				converter.Exec(filePath, convertedPath);
 				}
 			else
 				{
-				Serilog.Log.Debug ("Converted file already exists at {Target}", convertedPath);
+				Serilog.Log.Debug("Converted file already exists at {Target}", convertedPath);
 				}
 
 			return convertedPath;
@@ -223,8 +223,8 @@ namespace Meryel.UnityCodeAssist.Editor.Input
 		/// <returns></returns>
 		public static string GetMD5Hash(string filePath)
 			{
-			using var md5 = new MD5CryptoServiceProvider ();
-			return GetHash (filePath, md5);
+			using var md5 = new MD5CryptoServiceProvider();
+			return GetHash(filePath, md5);
 			}
 
 		/// <summary>
@@ -234,23 +234,23 @@ namespace Meryel.UnityCodeAssist.Editor.Input
 		/// <returns></returns>
 		public static string GetMD5Hash(Stream s)
 			{
-			using var md5 = new MD5CryptoServiceProvider ();
-			return GetHash (s, md5);
+			using var md5 = new MD5CryptoServiceProvider();
+			return GetHash(s, md5);
 			}
 
 		private static string GetHash(string filePath, HashAlgorithm hasher)
 			{
-			using var fs = new FileStream (filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-			return GetHash (fs, hasher);
+			using var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+			return GetHash(fs, hasher);
 			}
 
 		private static string GetHash(Stream s, HashAlgorithm hasher)
 			{
-			var hash = hasher.ComputeHash (s);
-			var hashStr = Convert.ToBase64String (hash);
+			var hash = hasher.ComputeHash(s);
+			var hashStr = Convert.ToBase64String(hash);
 
 			//return hashStr.TrimEnd('=');
-			var hashStrAlphaNumeric = System.Text.RegularExpressions.Regex.Replace (hashStr, "[^A-Za-z0-9]", "");
+			var hashStrAlphaNumeric = System.Text.RegularExpressions.Regex.Replace(hashStr, "[^A-Za-z0-9]", "");
 			return hashStrAlphaNumeric;
 			}
 		}
@@ -336,11 +336,11 @@ namespace Meryel.UnityCodeAssist.Editor.Input
 
 		public string? altPositiveButton => map.altPositiveButton;
 
-		public float gravity => float.Parse (map.gravity);//**--format
+		public float gravity => float.Parse(map.gravity);//**--format
 
-		public float dead => float.Parse (map.dead);//**--format
+		public float dead => float.Parse(map.dead);//**--format
 
-		public float sensitivity => float.Parse (map.sensitivity);//**--format
+		public float sensitivity => float.Parse(map.sensitivity);//**--format
 
 		public bool snap => map.snap != 0;
 
@@ -375,16 +375,16 @@ namespace Meryel.UnityCodeAssist.Editor.Input
 		public InputManager(InputManagerMapper map)
 			{
 			this.map = map;
-			this.axes = new List<InputAxis> ();
+			this.axes = new List<InputAxis>();
 
 			if (map.m_Axes == null)
 				{
-				Serilog.Log.Warning ($"map.m_Axes is null");
+				Serilog.Log.Warning($"map.m_Axes is null");
 				return;
 				}
 
 			foreach (var a in map.m_Axes)
-				this.axes.Add (new InputAxis (a));
+				this.axes.Add(new InputAxis(a));
 			}
 
 		public int ObjectHideFlags
