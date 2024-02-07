@@ -215,10 +215,12 @@ public class SaveManager:MonoBehaviour
 		{
 		string json = JsonUtility.ToJson(gameData);
 
+		string encrypted = EncryptionDecryption(json);
+
 		using (StreamWriter writer = new StreamWriter(jsonPathProject))
 			{
-			writer.Write(json);
-			Debug.Log("Line 215 Saved Game to Json file at :" + jsonPathProject);
+			writer.Write(encrypted);
+			Debug.Log("Line 223 Saved Game to Json file at :" + jsonPathProject);
 			};
 		}
 
@@ -228,7 +230,9 @@ public class SaveManager:MonoBehaviour
 			{
 			string json = reader.ReadToEnd();
 
-			AllGameData data = JsonUtility.FromJson<AllGameData>(json);
+			string decrypted = EncryptionDecryption(json);
+
+			AllGameData data = JsonUtility.FromJson<AllGameData>(decrypted);
 			return data;
 			};
 		}
@@ -272,4 +276,39 @@ public class SaveManager:MonoBehaviour
 	#endregion || --- Volume Section --- ||
 
 	#endregion || --- Settings Section --- ||
+
+	#region || --- Encryption Section --- ||
+
+	public string EncryptionDecryption(string jsonString)
+		{
+
+		string keyword = "1234567";
+
+		string result = "";
+
+		for (int i = 0; i < jsonString.Length; i++)
+			{
+			result += (char) (jsonString [i] ^ keyword [i % keyword.Length]);
+			}
+		return result;
+
+		// XOR = "is there a difference"
+
+		// --- Encrypt --- //
+		// Mike - 01101101 01101001 01101011 01100101
+		// M -			01101101
+		// Key -		00000001
+		//
+		// Encrypted -	01101100
+
+		// --- Decrypt --- //
+		// Encrypted -	01101100
+		// Key -		00000001
+		//
+		// M -			01101101
+		// Mike - 01101101 01101001 01101011 01100101
+		}
+
+
+	#endregion || --- Encryption Section --- ||
 	}
