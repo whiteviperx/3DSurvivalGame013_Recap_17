@@ -24,21 +24,24 @@ public class SaveManager:MonoBehaviour
 		DontDestroyOnLoad(gameObject);
 		}
 
-	// Json Project Save Path
-	private string jsonPathProject;
+	// --- Json Project Save Path Use for Testing --- //
+	string jsonPathProject;
 
-	// Json External/Real Save Path
-	private string jsonPathPersistant;
+	// --- External/Real Save Path Use for Real Game --- //
+	string jsonPathPersistent;
 
-	// Binary Save Path
-	private string binaryPath;
+	// --- Binary Save Path --- //
+	string binaryPath;
 
 	public bool isSavingToJson;
 
 	private void Start()
 		{
+		// --- Testing Save Path--- //
 		jsonPathProject = Application.dataPath + Path.AltDirectorySeparatorChar + "SaveGame.json";
-		jsonPathPersistant = Application.persistentDataPath + Path.AltDirectorySeparatorChar + "SaveGame.json";
+		// --- Real Save Path --- //
+		jsonPathPersistent = Application.persistentDataPath + Path.AltDirectorySeparatorChar + "SaveGame.json";
+		// --- Binary Save Path --- //
 		binaryPath = Application.persistentDataPath + "/save_game.bin";
 		}
 
@@ -48,19 +51,22 @@ public class SaveManager:MonoBehaviour
 
 	public void SaveGame()
 		{
-		var data = gameObject.AddComponent<AllGameData>();
+		AllGameData data = new AllGameData();
+		
+		data.playerData = GetPlayerData();
 
+		// saveAllGameData(data);
 		SavingTypeSwitch(data);
 		}
 
 	private PlayerData GetPlayerData()
 		{
-		var playerStats = new float [3];
+		float [] playerStats = new float [3];
 		playerStats [0] = PlayerState.Instance.currentHealth;
 		playerStats [1] = PlayerState.Instance.currentFood;
 		playerStats [2] = PlayerState.Instance.currentWaterPercent;
 
-		var playerPosAndRot = new float [6];
+		float [] playerPosAndRot = new float [6];
 		playerPosAndRot [0] = PlayerState.Instance.playerBody.transform.position.x;
 		playerPosAndRot [1] = PlayerState.Instance.playerBody.transform.position.y;
 		playerPosAndRot [2] = PlayerState.Instance.playerBody.transform.position.z;
@@ -150,7 +156,7 @@ public class SaveManager:MonoBehaviour
 
 		LoadGame();
 
-		Debug.Log("Game Loaded line 153");
+		Debug.Log("Game Loaded line 159");
 		}
 
 	#endregion || --- Loading Section --- ||
@@ -180,7 +186,7 @@ public class SaveManager:MonoBehaviour
 
 	public AllGameData LoadGameDataFromBinaryFile()
 		{
-		// string path = Application.persistentDataPath + "/save_game.bin";
+		string path = Application.persistentDataPath + "/save_game.bin";
 
 		if (File.Exists(binaryPath))
 			{
@@ -204,7 +210,7 @@ public class SaveManager:MonoBehaviour
 
 	#region || --- Json Section --- ||
 
-	// Save Game Data To Binary File //
+	// --- Save Game Data To Json File --- //
 	public void SaveGameDataToJsonFile(AllGameData gameData)
 		{
 		string json = JsonUtility.ToJson(gameData);
