@@ -707,6 +707,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d08d5667304d1b14a9133728471fc5fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  button: {fileID: 63364929}
+  buttonText: {fileID: 1972733628}
   slotNumber: 2
 --- !u!1 &64520386
 GameObject:
@@ -2202,6 +2204,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d08d5667304d1b14a9133728471fc5fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  button: {fileID: 956206078}
+  buttonText: {fileID: 1174035166}
   slotNumber: 1
 --- !u!1 &1004382720
 GameObject:
@@ -5079,6 +5083,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d08d5667304d1b14a9133728471fc5fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  button: {fileID: 1823687383}
+  buttonText: {fileID: 1682254948}
   slotNumber: 3
 --- !u!1 &1923245916
 GameObject:
@@ -5593,10 +5599,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   backBTN: {fileID: 1668742090}
   masterSlider: {fileID: 1492476268}
-  musicSlider: {fileID: 2086914967}
-  effectsSlider: {fileID: 1574375353}
   masterValue: {fileID: 1681679012}
+  musicSlider: {fileID: 2086914967}
   musicValue: {fileID: 91152928}
+  effectsSlider: {fileID: 1574375353}
   effectsValue: {fileID: 107694128}
 --- !u!1 &2086914965
 GameObject:

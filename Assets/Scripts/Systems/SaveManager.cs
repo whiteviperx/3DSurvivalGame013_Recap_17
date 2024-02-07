@@ -1,18 +1,16 @@
+using System;
 using System.Collections;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-
-// using UnityEditor.Experimental.GraphView;
 
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class SaveManager:MonoBehaviour
 	{
-	#region || --- ????? Section --- ||
-
 	public static SaveManager Instance { get; set; }
 
+	#region || --- ????? Section --- ||
 	private void Awake()
 		{
 		if (Instance != null && Instance != this)
@@ -35,7 +33,6 @@ public class SaveManager:MonoBehaviour
 
 	// --- Binary Save Path --- //
 	private string binaryPath;
-
 	private string fileName = "SaveGame";
 
 	public bool isSavingToJson;
@@ -51,9 +48,7 @@ public class SaveManager:MonoBehaviour
 		// --- Binary Save Path --- //
 		binaryPath = Application.persistentDataPath + Path.AltDirectorySeparatorChar;
 		}
-
 	#endregion || --- ????? Section --- ||
-
 	#region || --- General Section --- ||
 
 	#region || --- Saving Section --- ||
@@ -65,7 +60,6 @@ public class SaveManager:MonoBehaviour
 			playerData = GetPlayerData()
 			};
 
-		// saveAllGameData(data);
 		SavingTypeSwitch(data, slotNumber);
 		}
 
@@ -192,7 +186,7 @@ public class SaveManager:MonoBehaviour
 		stream.Close();
 
 		// --- Print "Data saved to location" --- //
-		Debug.Log("Line 195 Data saved to" + binaryPath + fileName + slotNumber + ".bin");
+		Debug.Log("Line 190 Data saved to" + binaryPath + fileName + slotNumber + ".bin");
 		}
 
 	public AllGameData LoadGameDataFromBinaryFile(int slotNumber)
@@ -207,7 +201,7 @@ public class SaveManager:MonoBehaviour
 			AllGameData data = formatter.Deserialize(stream) as AllGameData;
 			stream.Close();
 
-			Debug.Log("Line 210 Data Loaded from" + binaryPath + fileName + slotNumber + ".bin");
+			Debug.Log("Line 205 Data Loaded from" + binaryPath + fileName + slotNumber + ".bin");
 
 			return data;
 			}
@@ -222,19 +216,32 @@ public class SaveManager:MonoBehaviour
 	#region || --- Json Section --- ||
 
 	// --- Save Game Data To Json File --- //
+	public void SaveGameDataToJsonFile(AllGameData gameData)
+		{
+		string json = JsonUtility.ToJson(gameData);
+
+		string encrypted = EncryptionDecryption(json);
+
+		using (StreamWriter writer = new StreamWriter(jsonPathProject))
+			{
+			writer.Write(encrypted);
+			Debug.Log("Line 229 Saved Game to Json file at :" + jsonPathProject);
+			};
+		}
+
 	public void SaveGameDataToJsonFile(AllGameData gameData, int slotNumber)
 		{
 		//string json = JsonUtility.ToJson(gameData + fileName + slotNumber + ".bin");
-		string json = JsonUtility.ToJson(gameData + fileName + slotNumber);
+		string json = JsonUtility.ToJson(gameData + fileName + slotNumber + ".json");
 
 		//string encrypted = EncryptionDecryption(json + fileName + slotNumber + ".bin");
-		string encrypted = EncryptionDecryption(json + fileName + slotNumber);
+		string encrypted = EncryptionDecryption(json + fileName + slotNumber + ".json");
 
 		using (StreamWriter writer = new(jsonPathProject + fileName + slotNumber + ".json"))
 			{
 			//writer.Write(encrypted + fileName + slotNumber + ".bin");
-			writer.Write(encrypted + fileName + slotNumber);
-			Debug.Log("Line 237 Saved Game to Json file at :" + jsonPathProject + fileName + slotNumber + ".json");
+			writer.Write(encrypted + fileName + slotNumber + ".json");
+			Debug.Log("Line 245 Saved Game to Json file at :" + jsonPathProject + fileName + slotNumber + ".json");
 			}
 ;
 		}
@@ -281,7 +288,7 @@ public class SaveManager:MonoBehaviour
 		PlayerPrefs.SetString("Volume", JsonUtility.ToJson(volumeSettings));
 		PlayerPrefs.Save();
 
-		Debug.Log("Line 258 Saved to Player Prefs");
+		Debug.Log("Line 292 Saved to Player Prefs");
 		}
 
 	public VolumeSettings LoadVolumeSettings()
@@ -302,25 +309,11 @@ public class SaveManager:MonoBehaviour
 		string result = "";
 
 		for (int i = 0; i < jsonString.Length; i++)
+			{
 			result += (char) (jsonString [i] ^ keyword [i % keyword.Length]);
-
+			}
 		return result;
 
-		// XOR = "is there a difference"
-
-		// --- Encrypt --- //
-		// Mike - 01101101 01101001 01101011 01100101
-		// M -			01101101
-		// Key -		00000001
-		//
-		// Encrypted -	01101100
-
-		// --- Decrypt --- //
-		// Encrypted -	01101100
-		// Key -		00000001
-		//
-		// M -			01101101
-		// Mike - 01101101 01101001 01101011 01100101
 		}
 
 	#endregion || --- Encryption Section --- ||
@@ -344,11 +337,11 @@ public class SaveManager:MonoBehaviour
 			{
 			if (System.IO.File.Exists(binaryPath + fileName + slotNumber + ".bin"))
 				{
-				return true;
+				return false;
 				}
 			else
 				{
-				return false;
+				return true;
 				}
 			}
 		}

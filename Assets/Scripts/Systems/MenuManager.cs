@@ -8,7 +8,7 @@ public class MenuManager:MonoBehaviour
 
 	public bool isMenuOpen;
 
-	private void Awake()
+	void Awake()
 		{
 		if (Instance != null && Instance != this)
 			{
@@ -20,7 +20,7 @@ public class MenuManager:MonoBehaviour
 			}
 		}
 
-	private void Update()
+	void Update()
 		{
 		if (Input.GetKeyDown(KeyCode.M) && !isMenuOpen)
 			{

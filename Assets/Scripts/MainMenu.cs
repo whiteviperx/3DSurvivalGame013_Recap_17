@@ -6,7 +6,10 @@ public class MainMenu:MonoBehaviour
 	{
 	public Button LoadGameBTN;
 
-	public void NewGame() => SceneManager.LoadScene("GameScene");
+	public void NewGame()
+		{
+		SceneManager.LoadScene("GameScene");
+		}
 
 	public void ExitGame()
 		{

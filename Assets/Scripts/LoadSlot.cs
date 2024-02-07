@@ -1,13 +1,12 @@
 using TMPro;
-
 using UnityEngine;
 using UnityEngine.UI;
 
 public class LoadSlot:MonoBehaviour
 	{
-	private Button button;
+	public Button button;
 
-	private TextMeshProUGUI buttonText;
+	public TextMeshProUGUI buttonText;
 
 	public int slotNumber;
 

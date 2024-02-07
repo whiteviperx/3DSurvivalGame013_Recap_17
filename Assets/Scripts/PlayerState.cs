@@ -9,10 +9,12 @@ public class PlayerState:MonoBehaviour
 	// --- Player Health --- //
 	public float currentHealth;
 
-	public float maxHealth, maxFood, maxWaterPercent;
+	public float maxHealth;
 
 	// --- Player Food --- //
 	public float currentFood;
+
+	public float maxFood;
 
 	// --- Player Travel for Food --- //
 	private float distanceTraveled = 0;
@@ -23,6 +25,8 @@ public class PlayerState:MonoBehaviour
 
 	// --- Player Water --- //
 	public float currentWaterPercent;
+
+	public float maxWaterPercent;
 
 	public bool isWaterActive;
 
@@ -70,9 +74,18 @@ public class PlayerState:MonoBehaviour
 		}
 
 	// --- Set new value if buffed --- //
-	public void SetHealth(float newHealth) => currentHealth = newHealth;
+	public void SetHealth(float newHealth)
+		{
+		currentHealth = newHealth;
+		}
 
-	public void SetFood(float newFood) => currentFood = newFood;
+	public void SetFood(float newFood)
+		{
+		currentFood = newFood;
+		}
 
-	public void SetWater(float newWater) => currentWaterPercent = newWater;
+	public void SetWater(float newWater)
+		{
+		currentWaterPercent = newWater;
+		}
 	}
