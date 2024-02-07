@@ -150,7 +150,7 @@ public class SaveManager:MonoBehaviour
 
 		LoadGame();
 
-		print("Game Loaded line 144");
+		Debug.Log("Game Loaded line 153");
 		}
 
 	#endregion || --- Loading Section --- ||
@@ -175,7 +175,7 @@ public class SaveManager:MonoBehaviour
 		stream.Close();
 
 		// --- Print "Data saved to location" --- //
-		print("Data saved to" + binaryPath);
+		Debug.Log("Line 178 Data saved to" + binaryPath);
 		}
 
 	public AllGameData LoadGameDataFromBinaryFile()
@@ -190,7 +190,7 @@ public class SaveManager:MonoBehaviour
 			AllGameData data = formatter.Deserialize(stream) as AllGameData;
 			stream.Close();
 
-			print("Data Loaded from" + binaryPath);
+			Debug.Log("Line 193 Data Loaded from" + binaryPath);
 
 			return data;
 			}
@@ -212,7 +212,7 @@ public class SaveManager:MonoBehaviour
 		using (StreamWriter writer = new StreamWriter(jsonPathProject))
 			{
 			writer.Write(json);
-			print("Saved Game to Json file at :" + jsonPathProject);
+			Debug.Log("Line 215 Saved Game to Json file at :" + jsonPathProject);
 			};
 		}
 
@@ -255,7 +255,7 @@ public class SaveManager:MonoBehaviour
 		PlayerPrefs.SetString("Volume", JsonUtility.ToJson(volumeSettings));
 		PlayerPrefs.Save();
 
-		print("Saved to Player Prefs");
+		Debug.Log("Line 258 Saved to Player Prefs");
 		}
 
 	public VolumeSettings LoadVolumeSettings()

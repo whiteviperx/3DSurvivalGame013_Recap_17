@@ -57,7 +57,7 @@ public class SettingsManager:MonoBehaviour
 		musicSlider.value = volumeSettings.music;
 		effectsSlider.value = volumeSettings.effects;
 
-		print("Volume Settings are Loaded");
+		Debug.Log("Volume Settings are Loaded");
 		}
 
 	private void Awake()

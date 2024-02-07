@@ -8,17 +8,20 @@ public class MainMenu:MonoBehaviour
 
 	private void Start()
 		{
-		LoadGameBTN.onClick.AddListener(() => { SaveManager.Instance.StartLoadedGame(); });
+		LoadGameBTN.onClick.AddListener(() =>
+		{
+			SaveManager.Instance.StartLoadedGame();
+		});
 		}
 
 	public void NewGame()
 		{
-			SceneManager.LoadScene("GameScene");
+		SceneManager.LoadScene("GameScene");
 		}
 
 	public void ExitGame()
 		{
-			Debug.Log("Quitting Game");
-			Application.Quit();
+		Debug.Log("Quitting Game");
+		Application.Quit();
 		}
 	}
