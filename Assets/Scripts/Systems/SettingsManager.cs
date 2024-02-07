@@ -13,21 +13,14 @@ public class SettingsManager:MonoBehaviour
 
 	public Button backBTN;
 
-	public Slider masterSlider;
+	public Slider masterSlider, musicSlider, effectsSlider;
 
-	public GameObject masterValue;
-
-	public Slider musicSlider;
-
-	public GameObject musicValue;
-
-	public Slider effectsSlider;
-
-	public GameObject effectsValue;
+	public GameObject masterValue, musicValue, effectsValue;
 
 	private void Start()
 		{
-		backBTN.onClick.AddListener(() =>
+		backBTN.onClick
+			.AddListener(() =>
 		{
 			SaveManager.Instance.SaveVolumeSettings(musicSlider.value, effectsSlider.value, masterSlider.value);
 		});
