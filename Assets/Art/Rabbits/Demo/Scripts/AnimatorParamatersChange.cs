@@ -11,7 +11,7 @@ namespace FiveRabbitsDemo
 		// Use this for initialization
 		private void Start()
 			{
-			m_animator = GetComponent<Animator> ();
+			m_animator = GetComponent<Animator>();
 			}
 
 		// --- Update is called once per frame --- //
@@ -21,18 +21,18 @@ namespace FiveRabbitsDemo
 
 		private void OnGUI()
 			{
-			GUI.BeginGroup (new Rect (0, 0, 150, 1000));
+			GUI.BeginGroup(new Rect(0, 0, 150, 1000));
 
 			for (int i = 0; i < m_buttonNames.Length; i++)
 				{
-				if (GUILayout.Button (m_buttonNames [i], GUILayout.Width (150)))
+				if (GUILayout.Button(m_buttonNames [i], GUILayout.Width(150)))
 					{
-					m_animator.SetInteger ("AnimIndex", i);
-					m_animator.SetTrigger ("Next");
+					m_animator.SetInteger("AnimIndex", i);
+					m_animator.SetTrigger("Next");
 					}
 				}
 
-			GUI.EndGroup ();
+			GUI.EndGroup();
 			}
 		}
 	}

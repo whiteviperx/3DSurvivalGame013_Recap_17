@@ -1,31 +1,26 @@
 // Ignore Spelling: Choppable
 
-using System;
-using System.Collections;
-
 using UnityEngine;
 
-[RequireComponent (typeof (BoxCollider))]
+[RequireComponent(typeof(BoxCollider))]
 public class ChoppableTree:MonoBehaviour
 	{
-	public bool playerInRange;
-	public bool canBeChopped;
+	public bool playerInRange, canBeChopped;
 
-	public float treeMaxHealth;
-	public float treeHealth;
+	public float treeMaxHealth, treeHealth, foodSpentChoppingWood = 20;
 
 	public Animator animator;
 
 	public void Start()
 		{
 		treeHealth = treeMaxHealth;
-		animator = transform.parent.transform.parent.GetComponent<Animator> ();
+		animator = transform.parent.transform.parent.GetComponent<Animator>();
 		}
 
 	// --- Is player in range of object? --- //
 	public void OnTriggerEnter(Collider other)
 		{
-		if (other.CompareTag ("Player"))
+		if (other.CompareTag("Player"))
 			{
 			playerInRange = true;
 			}
@@ -33,7 +28,7 @@ public class ChoppableTree:MonoBehaviour
 
 	public void OnTriggerExit(Collider other)
 		{
-		if (other.CompareTag ("Player"))
+		if (other.CompareTag("Player"))
 			{
 			playerInRange = false;
 			}
@@ -41,40 +36,28 @@ public class ChoppableTree:MonoBehaviour
 
 	public void GetHit()
 		{
-		StartCoroutine (hit ());
-		}
-
-	public IEnumerator hit()
-		{
-		yield return new WaitForSeconds (0.6f);
-
-		animator.SetTrigger ("shake");
+		animator.SetTrigger("shake");
 
 		treeHealth -= 1;
 
-		if (treeHealth <= 0)
-			{
+		PlayerState.Instance.currentFood -= foodSpentChoppingWood;
 
-			TreeIsDead ();
-
-			}
-
+		if (treeHealth <= 0) TreeIsDead();
 		}
 
 	private void TreeIsDead()
 		{
+		var treePosition = transform.position;
 
-		Vector3 treePosition = transform.position;
-
-		Destroy (transform.parent.transform.parent.gameObject);
+		Destroy(transform.parent.transform.parent.gameObject);
 		canBeChopped = false;
 		SelectionManager.Instance.selectedTree = null;
-		SelectionManager.Instance.chopHolder.gameObject.SetActive (false);
+		SelectionManager.Instance.chopHolder.gameObject.SetActive(false);
 
 		// --- Change the (0, 0, 0) to change the rotation of logs --- //
 
-		//GameObject brokenTree = Instantiate (Resources.Load<GameObject> ("ChoppedTree"), new Vector3 (treePosition.x, treePosition.y + 1, treePosition.z), Quaternion.Euler (0, 0, 0));
-		GameObject brokenTree = Instantiate (Resources.Load<GameObject> ("ChoppedTree"), new Vector3 (treePosition.x, treePosition.y, treePosition.z), Quaternion.Euler (0, 0, 0));
+		// GameObject brokenTree = Instantiate (Resources.Load<GameObject> ("ChoppedTree"), new Vector3 (treePosition.x, treePosition.y + 1, treePosition.z), Quaternion.Euler (0, 0, 0));
+		var brokenTree = Instantiate(Resources.Load<GameObject>("ChoppedTree"), new Vector3(treePosition.x, treePosition.y, treePosition.z), Quaternion.Euler(0, 0, 0));
 		}
 
 	private void Update()
