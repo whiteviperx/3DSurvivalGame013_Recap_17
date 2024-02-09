@@ -15,7 +15,7 @@ public class InventorySystem:MonoBehaviour
 	public GameObject inventoryScreenUI;
 
 	// --- Slot list that contains the slots themselves --- //
-	public List<GameObject> slotList = new();
+	public List<GameObject> slotList = new List<GameObject>();
 
 	// --- Here we actually store the names of the actual items --- //
 	public List<string> itemList = new();
@@ -35,10 +35,10 @@ public class InventorySystem:MonoBehaviour
 	// --- Pickup Popup --- //
 	[Header("Pickup Alert")]
 	public GameObject pickupAlert;
-
 	public Text pickupName;
-
 	public Image pickupImage;
+
+	public List<string> itemsPickedup;
 
 	// --- Item Info Panel --- //
 	[Header("Item Info Panel")]
@@ -109,6 +109,11 @@ public class InventorySystem:MonoBehaviour
 	// --- Adding items to inventory when we pick up an item --- //
 	public void AddToInventory(string itemName)
 		{
+		//if (SaveManager.Instance.isLoading == false)
+		//	{
+		//	SoundManager.Instance.PlaySound(SoundManager.Instance.pickupItemSound);
+		//	}
+
 		whatSlotToEquip = FindNextEmptySlot();
 
 		itemToAdd = Instantiate(Resources.Load<GameObject>(itemName), whatSlotToEquip.transform.position, whatSlotToEquip.transform.rotation);

@@ -1,24 +1,14 @@
-using UnityEditor.Rendering;
-
 using UnityEngine;
 
 public class MenuManager:MonoBehaviour
 	{
 	public static MenuManager Instance { get; set; }
 
-	public GameObject menuCanvas;
-
-	public GameObject uiCanvas;
-
-	public GameObject saveMenu;
-
-	public GameObject settingsMenu;
-
-	public GameObject menu;
+	public GameObject menuCanvas, uiCanvas, saveMenu, settingsMenu, menu;
 
 	public bool isMenuOpen;
 
-	private void Awake()
+	void Awake()
 		{
 		if (Instance != null && Instance != this)
 			{
@@ -30,7 +20,7 @@ public class MenuManager:MonoBehaviour
 			}
 		}
 
-	private void Update()
+	void Update()
 		{
 		if (Input.GetKeyDown(KeyCode.M) && !isMenuOpen)
 			{
@@ -66,12 +56,4 @@ public class MenuManager:MonoBehaviour
 			SelectionManager.Instance.GetComponent<SelectionManager>().enabled = true;
 			}
 		}
-
-	public void TempSaveGame()
-		{
-		SaveManager.Instance.SaveGame();
-		}
-
-
-
 	}
