@@ -1,3 +1,5 @@
+// I have been using this script to name children of parent. Just put script in script folder and it can be used by right clicking on the parent and filling out info. Very simple.
+
 using UnityEditor;
 
 using UnityEngine;

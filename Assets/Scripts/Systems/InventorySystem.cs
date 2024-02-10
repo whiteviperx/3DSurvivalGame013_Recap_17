@@ -5,14 +5,13 @@ using UnityEngine.UI;
 
 public class InventorySystem:MonoBehaviour
 	{
-	// --- Singleton --- //
-	public static InventorySystem Instance
-		{
-		get; set;
-		}
+	[Header("Item Info Panel")]
+	public GameObject ItemInfoUI;
+	public static InventorySystem Instance{get; set;}
 
-	// --- Inventory Screen UI --- //
 	public GameObject inventoryScreenUI;
+	private GameObject itemToAdd;
+	private GameObject whatSlotToEquip;
 
 	// --- Slot list that contains the slots themselves --- //
 	public List<GameObject> slotList = new List<GameObject>();
@@ -20,17 +19,11 @@ public class InventorySystem:MonoBehaviour
 	// --- Here we actually store the names of the actual items --- //
 	public List<string> itemList = new();
 
-	// --- Items to add --- //
-	private GameObject itemToAdd;
-
-	// --- What slot to equip --- //
-	private GameObject whatSlotToEquip;
-
 	// --- Is inventory screen open or closed --- //
 	public bool isOpen;
 
 	// --- Checks to see if inventory is full --- //
-	public bool isFull;
+	//public bool isFull;
 
 	// --- Pickup Popup --- //
 	[Header("Pickup Alert")]
@@ -40,19 +33,22 @@ public class InventorySystem:MonoBehaviour
 
 	public List<string> itemsPickedup;
 
-	// --- Item Info Panel --- //
-	[Header("Item Info Panel")]
-	public GameObject ItemInfoUI;
-
 	private void Awake()
 		{
-		Instance = this;
+		if (Instance != null && Instance != this)
+			{
+			Destroy(gameObject);
+			}
+		else
+			{
+			Instance = this;
+			}
 		}
 
 	private void Start()
 		{
 		isOpen = false;
-		isFull = false;
+		//isFull = false;
 
 		// --- Adding the slots to the inventory list (Calling it) --- //
 		PopulateSlotList();

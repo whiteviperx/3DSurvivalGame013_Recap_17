@@ -157,8 +157,27 @@ public class SaveManager:MonoBehaviour
 		// --- Player Data --- //
 		SetPlayerData(LoadingTypeSwitch(slotNumber).playerData);
 
-		// --- Enviroment Data --- //
-		// setEnviroment();
+		// --- Environment Data --- //
+		SetEnvironmentData(LoadingTypeSwitch(slotNumber).environmentData);
+
+		isLoading = false;
+		}
+
+	private void SetEnvironmentData(EnvironmentData environmentData)
+		{
+		foreach (Transform itemType in EnvironmentManager.Instance.allItems.transform)
+			{
+			foreach (Transform item in itemType.transform)
+				{
+				if (environmentData.pickedupItems.Contains(item.name))
+					{
+					Destroy(item.gameObject);
+					}
+				}
+			}
+
+		InventorySystem.Instance.itemsPickedup = environmentData.pickedupItems;
+
 		}
 
 	private void SetPlayerData(PlayerData playerData)
@@ -199,7 +218,6 @@ public class SaveManager:MonoBehaviour
 
 			itemToAdd.transform.SetParent(availableSlot.transform, false);
 			}
-		isLoading = false;
 		}
 
 	public void StartLoadedGame(int slotNumber)
@@ -281,7 +299,7 @@ public class SaveManager:MonoBehaviour
 		using (StreamWriter writer = new StreamWriter(jsonPathProject + fileName + slotNumber + ".json"))
 			{
 			writer.Write(encrypted);
-			Debug.Log("Line 282 Saved Game to Json file at :" + jsonPathProject + fileName + slotNumber + ".json");
+			Debug.Log("Line 284 Saved Game to Json file at :" + jsonPathProject + fileName + slotNumber + ".json");
 			};
 		}
 
