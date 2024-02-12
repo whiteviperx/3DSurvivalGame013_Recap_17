@@ -1,7 +1,7 @@
 using UnityEngine;
 
-public class EnvironmentManager : MonoBehaviour
-{
+public class EnvironmentManager:MonoBehaviour
+	{
 	public static EnvironmentManager Instance { get; set; }
 
 	public GameObject allItems;
@@ -19,16 +19,4 @@ public class EnvironmentManager : MonoBehaviour
 		}
 
 
-
-	// Start is called once before the first execution of Update after the MonoBehaviour is created
-	void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-}
+	}

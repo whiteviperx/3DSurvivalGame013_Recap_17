@@ -32,8 +32,8 @@ public class ExtendedFlycam : MonoBehaviour
 
 	void Start ()
 	{
-		Screen.lockCursor = true;
-	}
+		Cursor.lockState = CursorLockMode.Locked;
+		}
 
 	void Update ()
 	{
@@ -46,27 +46,28 @@ public class ExtendedFlycam : MonoBehaviour
 
 		if (Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift))
 		{
-			transform.position += transform.forward * (normalMoveSpeed * fastMoveFactor) * Input.GetAxis("Vertical") * Time.deltaTime;
-			transform.position += transform.right * (normalMoveSpeed * fastMoveFactor) * Input.GetAxis("Horizontal") * Time.deltaTime;
+			transform.position += (normalMoveSpeed * fastMoveFactor) * Input.GetAxis("Vertical") * Time.deltaTime * transform.forward;
+			transform.position += (normalMoveSpeed * fastMoveFactor) * Input.GetAxis("Horizontal") * Time.deltaTime * transform.right;
 		}
 		else if (Input.GetKey (KeyCode.LeftControl) || Input.GetKey (KeyCode.RightControl))
 		{
-			transform.position += transform.forward * (normalMoveSpeed * slowMoveFactor) * Input.GetAxis("Vertical") * Time.deltaTime;
-			transform.position += transform.right * (normalMoveSpeed * slowMoveFactor) * Input.GetAxis("Horizontal") * Time.deltaTime;
+			transform.position += (normalMoveSpeed * slowMoveFactor) * Input.GetAxis("Vertical") * Time.deltaTime * transform.forward;
+			transform.position += (normalMoveSpeed * slowMoveFactor) * Input.GetAxis("Horizontal") * Time.deltaTime * transform.right;
 		}
 		else
 		{
-			transform.position += transform.forward * normalMoveSpeed * Input.GetAxis("Vertical") * Time.deltaTime;
-			transform.position += transform.right * normalMoveSpeed * Input.GetAxis("Horizontal") * Time.deltaTime;
+			transform.position += Input.GetAxis("Vertical") * normalMoveSpeed * Time.deltaTime * transform.forward;
+			transform.position += Input.GetAxis("Horizontal") * normalMoveSpeed * Time.deltaTime * transform.right;
 		}
 
 
-		if (Input.GetKey (KeyCode.Q)) {transform.position += transform.up * climbSpeed * Time.deltaTime;}
-		if (Input.GetKey (KeyCode.E)) {transform.position -= transform.up * climbSpeed * Time.deltaTime;}
+		if (Input.GetKey(KeyCode.Q)) { transform.position += climbSpeed * Time.deltaTime * transform.up; }
+		if (Input.GetKey(KeyCode.E)) { transform.position -= climbSpeed * Time.deltaTime * transform.up; }
 
 		if (Input.GetKeyDown (KeyCode.End))
 		{
-			Screen.lockCursor = (Screen.lockCursor == false) ? true : false;
-		}
+			Cursor.lockState = CursorLockMode.None;
+			Cursor.visible = true;
+			}
 	}
 }

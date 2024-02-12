@@ -61,19 +61,42 @@ public class SelectionManager:MonoBehaviour
 
 			ChoppableTree choppableTree = selectionTransform.GetComponent<ChoppableTree>();
 
+			NPC npc = selectionTransform.GetComponent<NPC>();
+
+			if (npc && npc.playerInRange)
+				{
+				interaction_text.text = "Talk";
+				interaction_Info_UI.SetActive(true);
+
+				if (Input.GetMouseButtonDown(0) && npc.isTalkingWithPlayer == false)
+					{
+					npc.StartConversation();
+					}
+				if (DialogSystem.Instance.dialogUIActive)
+					{
+					interaction_Info_UI.SetActive(false);
+					centerDotImage.gameObject.SetActive(false);
+					}
+				}
+			else
+				{
+				interaction_text.text = "";
+				interaction_Info_UI.SetActive(false);
+				}
+
 			if (choppableTree && choppableTree.playerInRange)
 				{
 				choppableTree.canBeChopped = true;
 				selectedTree = choppableTree.gameObject;
-				chopHolder.gameObject.SetActive(true);
+				chopHolder.SetActive(true);
 				}
 			else
 				{
 				if (selectedTree != null)
 					{
-					selectedTree.gameObject.GetComponent<ChoppableTree>().canBeChopped = false;
+					selectedTree.GetComponent<ChoppableTree>().canBeChopped = false;
 					selectedTree = null;
-					chopHolder.gameObject.SetActive(false);
+					chopHolder.SetActive(false);
 					}
 				}
 
@@ -108,7 +131,8 @@ public class SelectionManager:MonoBehaviour
 			else // --- If there is a hit, but without an interactable Script --- //
 				{
 				onTarget = false;
-				interaction_Info_UI.SetActive(false);
+
+				//interaction_Info_UI.SetActive(false);
 				handIcon.gameObject.SetActive(false);
 				centerDotImage.gameObject.SetActive(true);
 

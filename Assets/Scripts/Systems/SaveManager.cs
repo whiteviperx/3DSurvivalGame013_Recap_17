@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -31,16 +30,20 @@ public class SaveManager:MonoBehaviour
 	private string jsonPathProject;
 
 	// --- External/Real Save Path Use for Real Game --- //
+#pragma warning disable IDE0052 // Remove unread private members
 	private string jsonPathPersistent;
+#pragma warning restore IDE0052 // Remove unread private members
 
 	// --- Binary Save Path --- //
 	private string binaryPath;
 
-	private string fileName = "SaveGame";
+	private readonly string fileName = "SaveGame";
 
 	public bool isSavingToJson;
 
 	public bool isLoading;
+
+	public Canvas loadingScreen;
 
 	private void Start()
 		{
@@ -62,11 +65,12 @@ public class SaveManager:MonoBehaviour
 
 	public void SaveGame(int slotNumber)
 		{
-		AllGameData data = new();
+		AllGameData data = new()
+			{
+			playerData = GetPlayerData(),
 
-		data.playerData = GetPlayerData();
-
-		data.environmentData = GetEnvironmentData();
+			environmentData = GetEnvironmentData()
+			};
 
 		SavingTypeSwitch(data, slotNumber);
 		}
@@ -103,7 +107,7 @@ public class SaveManager:MonoBehaviour
 
 	private string [] GetQuickSlotsContent()
 		{
-		List<string> temp = new List<string>();
+		List<string> temp = new();
 
 		foreach (GameObject slot in EquipSystem.Instance.quickSlotsList)
 			{
@@ -161,6 +165,8 @@ public class SaveManager:MonoBehaviour
 		SetEnvironmentData(LoadingTypeSwitch(slotNumber).environmentData);
 
 		isLoading = false;
+
+		//DisableLoadingScreen();
 		}
 
 	private void SetEnvironmentData(EnvironmentData environmentData)
@@ -177,7 +183,6 @@ public class SaveManager:MonoBehaviour
 			}
 
 		InventorySystem.Instance.itemsPickedup = environmentData.pickedupItems;
-
 		}
 
 	private void SetPlayerData(PlayerData playerData)
@@ -222,6 +227,8 @@ public class SaveManager:MonoBehaviour
 
 	public void StartLoadedGame(int slotNumber)
 		{
+		//ActivateLoadingScreen();
+
 		isLoading = true;
 
 		SceneManager.LoadScene("GameScene");
@@ -250,7 +257,6 @@ public class SaveManager:MonoBehaviour
 		BinaryFormatter formatter = new();
 
 		// --- Path to save to --- //
-		string path = binaryPath;
 
 		// FileStream stream = new FileStream(path, FileMode.Create, FileAccess.Write);
 		FileStream stream = new(binaryPath + fileName + slotNumber + ".bin", FileMode.Create);
@@ -296,10 +302,10 @@ public class SaveManager:MonoBehaviour
 
 		string encrypted = EncryptionDecryption(json);
 
-		using (StreamWriter writer = new StreamWriter(jsonPathProject + fileName + slotNumber + ".json"))
+		using (StreamWriter writer = new(jsonPathProject + fileName + slotNumber + ".json"))
 			{
 			writer.Write(encrypted);
-			Debug.Log("Line 284 Saved Game to Json file at :" + jsonPathProject + fileName + slotNumber + ".json");
+			Debug.Log("Line 308 Saved Game to Json file at :" + jsonPathProject + fileName + slotNumber + ".json");
 			};
 		}
 
@@ -372,6 +378,30 @@ public class SaveManager:MonoBehaviour
 		}
 
 	#endregion || --- Encryption Section --- ||
+
+	#region || --- Loading Screen Section --- ||
+
+	//public void ActivateLoadingScreen()
+	//	{
+	//	loadingScreen.gameObject.SetActive(true);
+
+	//	Cursor.lockState = CursorLockMode.Locked;
+	//	Cursor.visible = false;
+
+	//	// Loading screen music??
+
+	//	// Loading Animation???
+
+	//	// Show daily tips???
+
+	//	}
+
+	//public void DisableLoadingScreen()
+	//	{
+	//	loadingScreen.gameObject.SetActive(false);
+	//	}
+
+	#endregion || --- Loading Screen Section --- ||
 
 	#region || --- Utility Section --- ||
 

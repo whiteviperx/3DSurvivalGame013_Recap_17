@@ -1,7 +1,10 @@
 using System.Collections;
+
 using TMPro;
+
 using UnityEngine;
 using UnityEngine.UI;
+
 using static SaveManager;
 
 public class SettingsManager:MonoBehaviour
@@ -14,10 +17,10 @@ public class SettingsManager:MonoBehaviour
 
 	public GameObject masterValue, musicValue, effectsValue;
 
-	void Start()
+	private void Start()
 		{
 		backBTN.onClick
-		    .AddListener(() =>
+			.AddListener(() =>
 		{
 			SaveManager.Instance.SaveVolumeSettings(musicSlider.value, effectsSlider.value, masterSlider.value);
 		});
@@ -25,7 +28,7 @@ public class SettingsManager:MonoBehaviour
 		StartCoroutine(LoadAndApplySettings());
 		}
 
-	IEnumerator LoadAndApplySettings()
+	private IEnumerator LoadAndApplySettings()
 		{
 		LoadAndSetVolume();
 
@@ -39,7 +42,7 @@ public class SettingsManager:MonoBehaviour
 		yield return new WaitForSeconds(0.1f);
 		}
 
-	void LoadAndSetVolume()
+	private void LoadAndSetVolume()
 		{
 		VolumeSettings volumeSettings = SaveManager.Instance.LoadVolumeSettings();
 
@@ -50,7 +53,7 @@ public class SettingsManager:MonoBehaviour
 		Debug.Log("Volume Settings are Loaded");
 		}
 
-	void Awake()
+	private void Awake()
 		{
 		if (Instance != null && Instance != this)
 			{
@@ -62,7 +65,7 @@ public class SettingsManager:MonoBehaviour
 			}
 		}
 
-	void Update()
+	private void Update()
 		{
 		masterValue.GetComponent<TextMeshProUGUI>().text = "" + masterSlider.value + "";
 		musicValue.GetComponent<TextMeshProUGUI>().text = "" + musicSlider.value + "";
