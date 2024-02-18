@@ -41,11 +41,11 @@ public class QuestInfo:ScriptableObject
 	public string rewardItem2;
 
 	[Header("Requirements")]
-	public string firstRequirmentItem;
+	public string firstRequirementItem;
 
 	public int firstRequirementAmount;
 
-	public string secondRequirmentItem;
+	public string secondRequirementItem;
 
 	public int secondRequirementAmount;
 	}

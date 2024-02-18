@@ -15,31 +15,31 @@ MonoBehaviour:
   initialDialog:
   - 'Hey,
 
-    I didn''t expect to meet anyone here.
+    I didn''t expect to meet anyone out here.
 
-    I''m Rachel, I live in
-    the nearby village.'
-  - 'I''m suppose to help my father get rabbit hides,
+    I''m Rachel, I live
+    in the nearby village.'
+  - 'I''m supposed to help my father get rabbit hides.
 
-    He is a famous leather-worker
-    in our village.'
-  - 'He will never say this, but I know he wanted to have a son.
+    He is a famous leather
+    worker in our village.'
+  - 'He will never say this, I know he wanted to have a son.
 
-    One that could
-    help him with the family business and take it over some day.
+    One that that could
+    help with the family business and take it over someday.
 
-    Sometimes I
-    just feel like a disappointment..'
-  - 'I came here to prove that I can help.
+    Sometimes I just
+    feel like a disappointment...'
+  - 'I came here to help prove that I can help.
 
 
-    But, I can''t kill these rabbits!.
+    But, I can''t kill these rabbits!
 
     They
     are so fluffy and cute.
 
     I am useless.'
-  - 'Wait! Maybe you can help me?
+  - 'Waait! Maybe you can help me?
 
 
     Don''t worry, I will pay you.'
@@ -61,9 +61,9 @@ MonoBehaviour:
   comebackCompleted: Those poor things, As promised, here is you reward.
   finalWords: I hope this will make my father proud.
   coinReward: 25
-  rewardItem1: Stone
-  rewardItem2: Stone
-  firstRequirmentItem: Stick
-  firstRequirementAmount: 3
-  secondRequirmentItem: 
+  rewardItem1: Sticks
+  rewardItem2: Sticks
+  firstRequirementItem: 
+  firstRequirementAmount: 0
+  secondRequirementItem: 
   secondRequirementAmount: 0

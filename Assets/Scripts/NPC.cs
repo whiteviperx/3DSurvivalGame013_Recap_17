@@ -73,7 +73,7 @@ public class NPC:MonoBehaviour
 			// If we return while the quest is still in progress
 			if (currentActiveQuest.accepted && currentActiveQuest.isCompleted == false)
 				{
-				if (AreQuestRequirmentsCompleted())
+				if (AreQuestRequirementsCompleted())
 					{
 					SubmitRequiredItems();
 
@@ -147,7 +147,7 @@ public class NPC:MonoBehaviour
 
 	private void SubmitRequiredItems()
 		{
-		string firstRequiredItem = currentActiveQuest.info.firstRequirmentItem;
+		string firstRequiredItem = currentActiveQuest.info.firstRequirementItem;
 		int firstRequiredAmount = currentActiveQuest.info.firstRequirementAmount;
 
 		if (firstRequiredItem != "")
@@ -155,7 +155,7 @@ public class NPC:MonoBehaviour
 			InventorySystem.Instance.RemoveItem(firstRequiredItem, firstRequiredAmount);
 			}
 
-		string secondtRequiredItem = currentActiveQuest.info.secondRequirmentItem;
+		string secondtRequiredItem = currentActiveQuest.info.secondRequirementItem;
 		int secondRequiredAmount = currentActiveQuest.info.secondRequirementAmount;
 
 		if (firstRequiredItem != "")
@@ -164,13 +164,13 @@ public class NPC:MonoBehaviour
 			}
 		}
 
-	private bool AreQuestRequirmentsCompleted()
+	private bool AreQuestRequirementsCompleted()
 		{
-		print("Checking Requirments");
+		print("Checking Requirements");
 
 		// First Item Requirment
 
-		string firstRequiredItem = currentActiveQuest.info.firstRequirmentItem;
+		string firstRequiredItem = currentActiveQuest.info.firstRequirementItem;
 		int firstRequiredAmount = currentActiveQuest.info.firstRequirementAmount;
 
 		var firstItemCounter = 0;
@@ -185,7 +185,7 @@ public class NPC:MonoBehaviour
 
 		// Second Item Requirment -- If we dont have a second item, just set it to 0
 
-		string secondRequiredItem = currentActiveQuest.info.secondRequirmentItem;
+		string secondRequiredItem = currentActiveQuest.info.secondRequirementItem;
 		int secondRequiredAmount = currentActiveQuest.info.secondRequirementAmount;
 
 		var secondItemCounter = 0;
