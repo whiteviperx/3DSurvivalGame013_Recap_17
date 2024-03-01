@@ -13,15 +13,15 @@ public class NPC:MonoBehaviour
 
 	public bool isTalkingWithPlayer;
 
-	private TextMeshProUGUI npcDialogText;
+	TextMeshProUGUI npcDialogText;
 
-	private Button optionButton1;
+	Button optionButton1;
 
-	private TextMeshProUGUI optionButton1Text;
+	TextMeshProUGUI optionButton1Text;
 
-	private Button optionButton2;
+	Button optionButton2;
 
-	private TextMeshProUGUI optionButton2Text;
+	TextMeshProUGUI optionButton2Text;
 
 	public List<Quest> quests;
 
@@ -168,7 +168,7 @@ public class NPC:MonoBehaviour
 		{
 		print("Checking Requirements");
 
-		// First Item Requirment
+		// First Item Requirement
 
 		string firstRequiredItem = currentActiveQuest.info.firstRequirementItem;
 		int firstRequiredAmount = currentActiveQuest.info.firstRequirementAmount;
@@ -183,7 +183,7 @@ public class NPC:MonoBehaviour
 				}
 			}
 
-		// Second Item Requirment -- If we dont have a second item, just set it to 0
+		// Second Item Requirement -- If we dont have a second item, just set it to 0
 
 		string secondRequiredItem = currentActiveQuest.info.secondRequirementItem;
 		int secondRequiredAmount = currentActiveQuest.info.secondRequirementAmount;
@@ -224,6 +224,8 @@ public class NPC:MonoBehaviour
 		optionButton2.gameObject.SetActive(false);
 		}
 
+
+	// Part 28 22min this maybe wrong?
 	private void CheckIfDialogDone()
 		{
 		if (currentDialog == currentActiveQuest.info.initialDialog.Count - 1) // If its the last dialog

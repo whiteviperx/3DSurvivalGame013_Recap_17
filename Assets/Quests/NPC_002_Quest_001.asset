@@ -61,9 +61,9 @@ MonoBehaviour:
   comebackCompleted: Those poor things, As promised, here is you reward.
   finalWords: I hope this will make my father proud.
   coinReward: 25
-  rewardItem1: Sticks
-  rewardItem2: Sticks
-  firstRequirementItem: 
-  firstRequirementAmount: 0
+  rewardItem1: Stone
+  rewardItem2: Stone
+  firstRequirementItem: Stick
+  firstRequirementAmount: 3
   secondRequirementItem: 
   secondRequirementAmount: 0
