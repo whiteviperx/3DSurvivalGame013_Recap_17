@@ -3,6 +3,10 @@ using UnityEngine;
 [System.Serializable]
 public class Quest
 	{
+	public string questName;
+
+	public string questGiver;
+
 	[Header("Bools")]
 	public bool accepted;
 
@@ -17,5 +21,5 @@ public class Quest
 	[Header("Quest Info")]
 	public QuestInfo info;
 
-	internal bool initialDialogCompleted;
+	//internal bool initialDialogCompleted;
 	}

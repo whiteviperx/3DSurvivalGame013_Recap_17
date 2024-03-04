@@ -120,7 +120,7 @@ public class NPC:MonoBehaviour
 				}
 
 			// If there is another quest available
-			if (currentActiveQuest.initialDialogCompleted == false)
+			if (currentActiveQuest.intialDialogCompleted == false)
 				{
 				StartQuestInitialDialog();
 				}
@@ -232,7 +232,7 @@ public class NPC:MonoBehaviour
 			{
 			npcDialogText.text = currentActiveQuest.info.initialDialog [currentDialog];
 
-			currentActiveQuest.initialDialogCompleted = true;
+			currentActiveQuest.intialDialogCompleted = true;
 
 			SetAcceptAndDeclineOptions();
 			}
@@ -252,6 +252,10 @@ public class NPC:MonoBehaviour
 
 	private void AcceptedQuest()
 		{
+		QuestManager.Instance.AddActiveQuest(currentActiveQuest);
+
+
+
 		currentActiveQuest.accepted = true;
 		currentActiveQuest.declined = false;
 
@@ -287,6 +291,11 @@ public class NPC:MonoBehaviour
 
 	private void ReceiveRewardAndCompleteQuest()
 		{
+
+		QuestManager.Instance.MarkQuestCompleted(currentActiveQuest);
+
+
+
 		currentActiveQuest.isCompleted = true;
 
 		var coinsRecieved = currentActiveQuest.info.coinReward;

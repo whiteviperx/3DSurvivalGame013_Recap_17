@@ -1,50 +1,51 @@
-﻿//using System.Collections;
-//using System.Collections.Generic;
-//using TMPro;
-//using UnityEngine;
-//using UnityEngine.UI;
+using TMPro;
 
-//public class QuestRow : MonoBehaviour
-//{
-//    public TextMeshProUGUI questName;
-//    public TextMeshProUGUI questGiver;
+using UnityEngine;
+using UnityEngine.UI;
 
-//    public Button trackingButton;
+public class QuestRow:MonoBehaviour
+	{
+	public TextMeshProUGUI questName;
 
-//    public bool isActive;
-//    public bool isTracking;
+	public TextMeshProUGUI questGiver;
 
-//    public Text coinAmount;
+	public Button trackingButton;
 
-//    public Image firstReward;
-//    public Text firstRewardAmount;
+	public bool isActive;
 
-//    public Image secondReward;
-//    public Text secondRewardAmount;
+	public bool isTracking;
 
-//    public Quest thisQuest;
+	public TextMeshProUGUI coinAmount;
 
-//    private void Start()
-//    {
-//        trackingButton.onClick.AddListener(()=> {
+	public Image firstReward;
 
-//            if (isActive)
-//            {
-//                if (isTracking)
-//                {
-//                    isTracking = false;
-//                    trackingButton.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = "Not Tracking";
-//                    QuestManager.Instance.UnTrackQuest(thisQuest);
-//                }
-//                else
-//                {
-//                    isTracking = true;
-//                    trackingButton.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = "Tracking";
-//                    QuestManager.Instance.TrackQuest(thisQuest);
-//                } 
-//            }
+	public TextMeshProUGUI firstRewardAmount;
 
-//        });
-//    }
+	public Image secondReward;
 
-//}
+	public TextMeshProUGUI secondRewardAmount;
+
+	public Quest thisQuest;
+
+	//private void Start()
+	//	{
+	//	trackingButton.onClick.AddListener(() =>
+	//	{
+	//		if (isActive)
+	//			{
+	//			if (isTracking)
+	//				{
+	//				isTracking = false;
+	//				trackingButton.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = "Not Tracking";
+	//				QuestManager.Instance.UnTrackQuest(thisQuest);
+	//				}
+	//			else
+	//				{
+	//				isTracking = true;
+	//				trackingButton.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = "Tracking";
+	//				QuestManager.Instance.TrackQuest(thisQuest);
+	//				}
+	//			}
+	//	});
+	//	}
+	}
