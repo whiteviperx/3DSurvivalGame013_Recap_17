@@ -214,6 +214,9 @@ public class CraftingSystem:MonoBehaviour
 			Debug.Log("C is pressed");
 
 			craftingScreenUI.SetActive(true);
+
+			craftingScreenUI.GetComponentInParent<Canvas>().sortingOrder = MenuManager.Instance.SetAsFront();
+
 			Cursor.lockState = CursorLockMode.None;
 			Cursor.visible = true;
 

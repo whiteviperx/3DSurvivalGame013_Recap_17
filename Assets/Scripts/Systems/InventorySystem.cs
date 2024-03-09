@@ -7,10 +7,13 @@ public class InventorySystem:MonoBehaviour
 	{
 	[Header("Item Info Panel")]
 	public GameObject ItemInfoUI;
-	public static InventorySystem Instance{get; set;}
+
+	public static InventorySystem Instance { get; set; }
 
 	public GameObject inventoryScreenUI;
+
 	private GameObject itemToAdd;
+
 	private GameObject whatSlotToEquip;
 
 	// --- Slot list that contains the slots themselves --- //
@@ -28,7 +31,9 @@ public class InventorySystem:MonoBehaviour
 	// --- Pickup Popup --- //
 	[Header("Pickup Alert")]
 	public GameObject pickupAlert;
+
 	public Text pickupName;
+
 	public Image pickupImage;
 
 	public List<string> itemsPickedup;
@@ -48,6 +53,7 @@ public class InventorySystem:MonoBehaviour
 	private void Start()
 		{
 		isOpen = false;
+
 		//isFull = false;
 
 		// --- Adding the slots to the inventory list (Calling it) --- //
@@ -77,6 +83,9 @@ public class InventorySystem:MonoBehaviour
 			Debug.Log("i is pressed");
 
 			inventoryScreenUI.SetActive(true);
+
+			inventoryScreenUI.GetComponentInParent<Canvas>().sortingOrder = MenuManager.Instance.SetAsFront();
+
 			Cursor.lockState = CursorLockMode.None;
 			Cursor.visible = true;
 
@@ -105,11 +114,6 @@ public class InventorySystem:MonoBehaviour
 	// --- Adding items to inventory when we pick up an item --- //
 	public void AddToInventory(string itemName)
 		{
-		//if (SaveManager.Instance.isLoading == false)
-		//	{
-		//	SoundManager.Instance.PlaySound(SoundManager.Instance.pickupItemSound);
-		//	}
-
 		whatSlotToEquip = FindNextEmptySlot();
 
 		itemToAdd = Instantiate(Resources.Load<GameObject>(itemName), whatSlotToEquip.transform.position, whatSlotToEquip.transform.rotation);
@@ -117,12 +121,24 @@ public class InventorySystem:MonoBehaviour
 		itemToAdd.transform.SetParent(whatSlotToEquip.transform);
 
 		itemList.Add(itemName);
-		Debug.Log("added to inventory System Debug Log");
 
+		Debug.Log("added to inventory from inentorysystem.cs");
+
+		SoundManager.Instance.PlaySound(SoundManager.Instance.pickupItemSound);
 		TriggerPickupPopUp(itemName, itemToAdd.GetComponent<Image>().sprite);
+
+		// -- For debugging we dont want want to use the save manager -- //
+
+		//  if (SaveManager.Instance.isLoading == false)
+		//	{
+		//		SoundManager.Instance.PlaySound(SoundManager.Instance.pickupItemSound);
+		//		TriggerPickupPopUp(itemName, itemToAdd.GetComponent<Image>().sprite);
+		//	}
 
 		ReCalculateList();
 		CraftingSystem.Instance.RefreshNeededItems();
+
+		QuestManager.Instance.RefreshTrackerList();
 		}
 
 	// --- Trigger the popup when an item is picked up --- //
@@ -181,6 +197,7 @@ public class InventorySystem:MonoBehaviour
 
 		ReCalculateList();
 		CraftingSystem.Instance.RefreshNeededItems();
+		QuestManager.Instance.RefreshTrackerList();
 		}
 
 	// --- Recalculate remaining items in inventory --- //
@@ -201,5 +218,18 @@ public class InventorySystem:MonoBehaviour
 				itemList.Add(result);
 				}
 			}
+		}
+
+	public int CheckItemAmount(string name)
+		{
+		int itemCounter = 0;
+		foreach (string item in itemList)
+			{
+			if (item == name)
+				{
+				itemCounter++;
+				}
+			}
+		return itemCounter;
 		}
 	}

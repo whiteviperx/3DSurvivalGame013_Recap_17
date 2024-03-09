@@ -27,25 +27,25 @@ public class QuestRow:MonoBehaviour
 
 	public Quest thisQuest;
 
-	//private void Start()
-	//	{
-	//	trackingButton.onClick.AddListener(() =>
-	//	{
-	//		if (isActive)
-	//			{
-	//			if (isTracking)
-	//				{
-	//				isTracking = false;
-	//				trackingButton.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = "Not Tracking";
-	//				QuestManager.Instance.UnTrackQuest(thisQuest);
-	//				}
-	//			else
-	//				{
-	//				isTracking = true;
-	//				trackingButton.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = "Tracking";
-	//				QuestManager.Instance.TrackQuest(thisQuest);
-	//				}
-	//			}
-	//	});
-	//	}
+	private void Start()
+		{
+		trackingButton.onClick.AddListener(() =>
+		{
+			if (isActive)
+				{
+				if (isTracking)
+					{
+					isTracking = false;
+					trackingButton.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = "Not Tracking";
+					QuestManager.Instance.UnTrackQuest(thisQuest);
+					}
+				else
+					{
+					isTracking = true;
+					trackingButton.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = "Tracking";
+					QuestManager.Instance.TrackQuest(thisQuest);
+					}
+				}
+		});
+		}
 	}
