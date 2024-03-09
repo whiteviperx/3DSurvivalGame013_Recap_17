@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class QuestManager:MonoBehaviour
 	{
@@ -93,7 +95,7 @@ public class QuestManager:MonoBehaviour
 			{
 			questMenu.SetActive(true);
 
-			questMenu.transform.Find("Canvas").GetComponent<Canvas>().sortingOrder = MenuManager.Instance.SetAsFront();
+			questMenu.transform.Find("QuestTracker").GetComponent<Canvas>().sortingOrder = MenuManager.Instance.SetAsFront();
 
 			Cursor.lockState = CursorLockMode.None;
 			Cursor.visible = true;
@@ -151,11 +153,27 @@ public class QuestManager:MonoBehaviour
 
 			qRow.coinAmount.text = $"{activeQuest.info.coinReward}";
 
-			// qRow.firstReward.sprite = "";
-			qRow.firstRewardAmount.text = "";
+			if (activeQuest.info.rewardItem1 != "")
+				{
+				qRow.firstReward.sprite = GetSpriteForItem(activeQuest.info.rewardItem1); ;
+				qRow.firstRewardAmount.text = "";
+				}
+			else
+				{
+				qRow.firstReward.gameObject.SetActive(false);
+				qRow.firstRewardAmount.text = "";
+				}
 
-			// qRow.secondReward.sprite = "";
-			qRow.secondRewardAmount.text = "";
+			if (activeQuest.info.rewardItem2 != "")
+				{
+				qRow.secondReward.sprite = GetSpriteForItem(activeQuest.info.rewardItem2); ;
+				qRow.secondRewardAmount.text = "";
+				}
+			else
+				{
+				qRow.secondReward.gameObject.SetActive(false);
+				qRow.secondRewardAmount.text = "";
+				}
 			}
 
 		foreach (Quest completedQuest in allCompletedQuests)
@@ -173,11 +191,33 @@ public class QuestManager:MonoBehaviour
 
 			qRow.coinAmount.text = $"{completedQuest.info.coinReward}";
 
-			// qRow.firstReward.sprite = "";
-			qRow.firstRewardAmount.text = "";
+			if (completedQuest.info.rewardItem1 != "")
+				{
+				qRow.firstReward.sprite = GetSpriteForItem(completedQuest.info.rewardItem1); ;
+				qRow.firstRewardAmount.text = "";
+				}
+			else
+				{
+				qRow.firstReward.gameObject.SetActive(false);
+				qRow.firstRewardAmount.text = "";
+				}
 
-			// qRow.secondReward.sprite = "";
-			qRow.secondRewardAmount.text = "";
+			if (completedQuest.info.rewardItem2 != "")
+				{
+				qRow.secondReward.sprite = GetSpriteForItem(completedQuest.info.rewardItem2); ;
+				qRow.secondRewardAmount.text = "";
+				}
+			else
+				{
+				qRow.secondReward.gameObject.SetActive(false);
+				qRow.secondRewardAmount.text = "";
+				}
 			}
+		}
+
+	private Sprite GetSpriteForItem(string item)
+		{
+		var itemToGet = Resources.Load<GameObject>(item);
+		return itemToGet.GetComponent<Image>().sprite;
 		}
 	}
