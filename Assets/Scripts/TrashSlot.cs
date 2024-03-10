@@ -8,7 +8,7 @@ public class TrashSlot:MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoint
 	{
 	public GameObject trashAlertUI;
 
-	private Text textToModify;
+	private TMPro.TMP_Text textToModify;
 
 	public Sprite trash_closed;
 
@@ -43,7 +43,7 @@ public class TrashSlot:MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoint
 		{
 		imageComponent = transform.Find("background").GetComponent<Image>();
 
-		textToModify = trashAlertUI.transform.Find("Text").GetComponent<Text>();
+		textToModify = trashAlertUI.transform.Find("Text").GetComponent<TMPro.TMP_Text>();
 
 		YesBTN = trashAlertUI.transform.Find("Yes").GetComponent<Button>();
 		YesBTN.onClick.AddListener(delegate

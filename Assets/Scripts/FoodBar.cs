@@ -5,7 +5,7 @@ public class FoodBar:MonoBehaviour
 	{
 	private Slider slider;
 
-	public Text FoodCounter;
+	public TMPro.TMP_Text FoodCounter;
 
 	public GameObject playerState;
 

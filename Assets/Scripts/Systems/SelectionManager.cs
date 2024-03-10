@@ -18,7 +18,7 @@ public class SelectionManager:MonoBehaviour
 	// --- Info text UI below white circle --- //
 	public GameObject interaction_Info_UI;
 
-	private Text interaction_text;
+	private TMPro.TMP_Text interaction_text;
 
 	// --- Changing from dot to hand --- //
 	public Image centerDotImage;
@@ -34,7 +34,7 @@ public class SelectionManager:MonoBehaviour
 	private void Start()
 		{
 		onTarget = false;
-		interaction_text = interaction_Info_UI.GetComponent<Text>();
+		interaction_text = interaction_Info_UI.GetComponent<TMPro.TMP_Text>();
 		}
 
 	private void Awake()

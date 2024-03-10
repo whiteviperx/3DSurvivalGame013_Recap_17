@@ -32,7 +32,7 @@ public class InventorySystem:MonoBehaviour
 	[Header("Pickup Alert")]
 	public GameObject pickupAlert;
 
-	public Text pickupName;
+	public TMPro.TMP_Text pickupName;
 
 	public Image pickupImage;
 

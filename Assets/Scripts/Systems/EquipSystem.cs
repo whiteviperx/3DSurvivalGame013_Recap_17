@@ -94,10 +94,10 @@ public class EquipSystem:MonoBehaviour
 				foreach (Transform child in numbersHolder.transform)
 					{
 					// --- Adjust color as needed --- //
-					child.transform.Find("Text").GetComponent<Text>().color = Color.gray;
+					child.transform.Find("Text").GetComponent<TMPro.TMP_Text>().color = Color.gray;
 					}
 
-				Text toBeChanged = numbersHolder.transform.transform.Find("number" + number).transform.Find("Text").GetComponent<Text>();
+				TMPro.TMP_Text toBeChanged = numbersHolder.transform.transform.Find("number" + number).transform.Find("Text").GetComponent<TMPro.TMP_Text>();
 				toBeChanged.color = Color.white;
 				}
 			else // --- We are trying to select the same slot --- //
@@ -121,7 +121,7 @@ public class EquipSystem:MonoBehaviour
 				foreach (Transform child in numbersHolder.transform)
 					{
 					// --- Adjust color as needed --- //
-					child.transform.Find("Text").GetComponent<Text>().color = Color.gray;
+					child.transform.Find("Text").GetComponent<TMPro.TMP_Text>().color = Color.gray;
 					}
 				}
 			}

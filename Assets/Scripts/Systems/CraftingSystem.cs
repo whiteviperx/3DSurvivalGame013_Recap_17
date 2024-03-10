@@ -27,7 +27,7 @@ public class CraftingSystem:MonoBehaviour
 	// craftWindowBTN, craftDoorBTN;
 
 	// --- Requirement Text --- //
-	private Text AxeReq1, AxeReq2, PlankReq1, WallReq1, FoundationReq1;
+	private TMPro.TMP_Text AxeReq1, AxeReq2, PlankReq1, WallReq1, FoundationReq1;
 
 	public bool isOpen;
 
@@ -92,29 +92,29 @@ public class CraftingSystem:MonoBehaviour
 
 		//  --- PickAxe --- //
 
-		AxeReq1 = toolsScreenUI.transform.Find("Axe").transform.Find("req1").GetComponent<Text>();
-		AxeReq2 = toolsScreenUI.transform.Find("Axe").transform.Find("req2").GetComponent<Text>();
+		AxeReq1 = toolsScreenUI.transform.Find("Axe").transform.Find("req1").GetComponent<TMPro.TMP_Text>();
+		AxeReq2 = toolsScreenUI.transform.Find("Axe").transform.Find("req2").GetComponent<TMPro.TMP_Text>();
 
 		craftAxeBTN = toolsScreenUI.transform.Find("Axe").transform.Find("CraftButton").GetComponent<Button>();
 		craftAxeBTN.onClick.AddListener(delegate { CraftAnyItem(AxeBLP); });
 
 		//  --- Plank --- //
 
-		PlankReq1 = refineScreenUI.transform.Find("Plank").transform.Find("req1").GetComponent<Text>();
+		PlankReq1 = refineScreenUI.transform.Find("Plank").transform.Find("req1").GetComponent<TMPro.TMP_Text>();
 
 		craftPlankBTN = refineScreenUI.transform.Find("Plank").transform.Find("CraftButton").GetComponent<Button>();
 		craftPlankBTN.onClick.AddListener(delegate { CraftAnyItem(PlankBLP); });
 
 		//  --- Wall --- //
 
-		WallReq1 = constructionScreenUI.transform.Find("Wall").transform.Find("req1").GetComponent<Text>();
+		WallReq1 = constructionScreenUI.transform.Find("Wall").transform.Find("req1").GetComponent<TMPro.TMP_Text>();
 
 		craftWallBTN = constructionScreenUI.transform.Find("Wall").transform.Find("CraftButton").GetComponent<Button>();
 		craftWallBTN.onClick.AddListener(delegate { CraftAnyItem(WallBLP); });
 
 		//  --- Foundation --- //
 
-		FoundationReq1 = constructionScreenUI.transform.Find("Foundation").transform.Find("req1").GetComponent<Text>();
+		FoundationReq1 = constructionScreenUI.transform.Find("Foundation").transform.Find("req1").GetComponent<TMPro.TMP_Text>();
 
 		craftFoundationBTN = constructionScreenUI.transform.Find("Foundation").transform.Find("CraftButton").GetComponent<Button>();
 		craftFoundationBTN.onClick.AddListener(delegate { CraftAnyItem(FoundationBLP); });

@@ -12,11 +12,11 @@ public class InventoryItem:MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 	// --- Item Info UI --- //
 	private GameObject itemInfoUI;
 
-	private Text itemInfoUI_ItemName;
+	private TMPro.TMP_Text itemInfoUI_ItemName;
 
-	private Text itemInfoUI_ItemDescription;
+	private TMPro.TMP_Text itemInfoUI_ItemDescription;
 
-	private Text itemInfoUI_ItemFunctionality;
+	private TMPro.TMP_Text itemInfoUI_ItemFunctionality;
 
 	public string thisName, thisDescription, thisFunctionality;
 
@@ -46,9 +46,9 @@ public class InventoryItem:MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 	private void Start()
 		{
 		itemInfoUI = InventorySystem.Instance.ItemInfoUI;
-		itemInfoUI_ItemName = itemInfoUI.transform.Find("itemName").GetComponent<Text>();
-		itemInfoUI_ItemDescription = itemInfoUI.transform.Find("itemDescription").GetComponent<Text>();
-		itemInfoUI_ItemFunctionality = itemInfoUI.transform.Find("itemFunctionality").GetComponent<Text>();
+		itemInfoUI_ItemName = itemInfoUI.transform.Find("itemName").GetComponent<TMPro.TMP_Text>();
+		itemInfoUI_ItemDescription = itemInfoUI.transform.Find("itemDescription").GetComponent<TMPro.TMP_Text>();
+		itemInfoUI_ItemFunctionality = itemInfoUI.transform.Find("itemFunctionality").GetComponent<TMPro.TMP_Text>();
 		}
 
 	private void Update()

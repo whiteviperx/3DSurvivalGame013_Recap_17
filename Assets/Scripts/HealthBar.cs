@@ -5,7 +5,7 @@ public class HealthBar:MonoBehaviour
 	{
 	private Slider slider;
 
-	public Text healthCounter;
+	public TMPro.TMP_Text healthCounter;
 
 	public GameObject playerState;
 

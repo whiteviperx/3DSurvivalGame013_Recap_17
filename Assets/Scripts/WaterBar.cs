@@ -5,7 +5,7 @@ public class WaterBar:MonoBehaviour
 	{
 	private Slider slider;
 
-	public Text WaterCounter;
+	public TMPro.TMP_Text WaterCounter;
 
 	public GameObject playerState;
 
