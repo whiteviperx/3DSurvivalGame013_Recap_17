@@ -8,13 +8,15 @@ public class SoundManager:MonoBehaviour
 	// --- Sound FX --- //
 	[Header("Item Sounds")]
 	public AudioSource dropItemSound;
-
+	//public AudioSource addToQuickSlots;
 	public AudioSource pickupItemSound;
 
 	[Header("Tool Sounds")]
 	public AudioSource toolSwingSound;
 
 	public AudioSource chopSound;
+
+	//public AudioSource treeFall;
 
 	public AudioSource craftingSound;
 
@@ -27,6 +29,10 @@ public class SoundManager:MonoBehaviour
 	// --- Music --- //
 	[Header("Music")]
 	public AudioSource startingZoneBGMusic;
+
+	// -- Voiceovers -- //
+	public AudioSource voiceovers;
+
 
 	private void Awake()
 		{
@@ -47,4 +53,20 @@ public class SoundManager:MonoBehaviour
 			soundToPlay.Play();
 			}
 		}
+
+	public void PlayVoiceOvers(AudioClip clip)
+	{
+		voiceovers.clip = clip;
+		if (!voiceovers.isPlaying)
+		{
+			voiceovers.Play ();
+		}
+		else
+		{
+			voiceovers.Stop();
+			voiceovers.Play();
+		}
+	}
+
+
 	}

@@ -1,0 +1,85 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64ae12c3c9ed58947b26d9ff8750d787, type: 3}
+  m_Name: NPC_002_Quest_001
+  m_EditorClassIdentifier: 
+  initialDialog:
+  - 'Hey,
+
+    I didn''t expect to meet anyone out here.
+
+    I''m Rachel, I live
+    in the nearby village.'
+  - 'I''m supposed to help my father get rabbit hides.
+
+    He is a famous leather
+    worker in our village.'
+  - 'He will never say this, I know he wanted to have a son.
+
+    One that that could
+    help with the family business and take it over someday.
+
+    Sometimes I just
+    feel like a disappointment...'
+  - 'I came here to help prove that I can help.
+
+
+    But, I can''t kill these rabbits!
+
+    They
+    are so fluffy and cute.
+
+    I am useless.'
+  - 'Wait! Maybe you can help me?
+
+
+    Don''t worry, I will pay you.'
+  initialDialogClips:
+  - {fileID: 8300000, guid: a7b1616ba710efd49b4096e8be0f3b95, type: 3}
+  - {fileID: 8300000, guid: 31917b317fdc0cd4cb6313921051fa0c, type: 3}
+  - {fileID: 8300000, guid: 6b7b2d3840f5a084fa5b1e0d2a54ff9f, type: 3}
+  - {fileID: 8300000, guid: 540b4b6eb499d884ab6ff08484f576f4, type: 3}
+  - {fileID: 8300000, guid: a58441fb756e55745aa1b0119eb376e9, type: 3}
+  acceptOption: 'Sure, I will help you.
+
+    I can use some money.'
+  acceptOptionClip: {fileID: 8300000, guid: f4fd7f5a6454d5a41839581c8a696b54, type: 3}
+  acceptAnswer: 'That''s awesome!
+
+    If you can bring me 7 rabbit hides, it will
+    be more than enough.'
+  acceptAnswerClip: {fileID: 8300000, guid: 3a60e2fc6ef798340a11336cab948644, type: 3}
+  declineOption: I'm sorry, but I can't kill them as well.
+  declineOptionClip: {fileID: 8300000, guid: 6310cf629f0fac044a85363c86399986, type: 3}
+  declineAnswer: 'Oh well, it was worth a try.
+
+    If you change your mind, please
+    come back.'
+  declineAnswerClip: {fileID: 8300000, guid: 63c0b47cfaaa90c47bc547ffcbaf7dcd, type: 3}
+  comebackAfterDecline: So, did you change your mind?
+  comebackAfterDeclineClip: {fileID: 8300000, guid: 8dddf5f0c00e6b74e986104090b82717, type: 3}
+  comebackInProgress: It is still not enough, make sure to check the tall grass as
+    well.
+  comebackInProgressClip: {fileID: 8300000, guid: ec252815961706246ae38f46aef7ced5, type: 3}
+  comebackCompleted: Those poor things, As promised, here is you reward.
+  comebackCompletedClip: {fileID: 8300000, guid: bc841e1b9283dfc48ac3676829b50da0, type: 3}
+  finalWords: I hope this will make my father proud.
+  finalWordsClip: {fileID: 8300000, guid: 634a8ee43a4cd874ab1990ae30ae9d14, type: 3}
+  coinReward: 25
+  rewardItem1: Stone
+  rewardItem2: Stone
+  firstRequirementItem: RabbitHide
+  firstRequirementAmount: 7
+  secondRequirementItem: 
+  secondRequirementAmount: 0
+  hasCheckpoints: 0
+  checkpoints: []
