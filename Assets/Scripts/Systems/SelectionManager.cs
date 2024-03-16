@@ -1,8 +1,13 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+
+using NUnit.Framework;
 
 using UnityEngine;
 using UnityEngine.UI;
+
+using static Lootable;
 
 public class SelectionManager:MonoBehaviour
 {
@@ -81,30 +86,6 @@ public class SelectionManager:MonoBehaviour
 					centerDotImage.gameObject.SetActive(false);
 				}
 			}
-			else
-			{
-				interaction_text.text = "";
-				interaction_Info_UI.SetActive(false);
-			}
-
-			Animal animal = selectionTransform.GetComponent<Animal>();
-
-			if(animal && animal.playerInRange)
-			{
-				interaction_text.text = animal.animalName;
-				interaction_Info_UI.SetActive(true);
-
-				if(Input.GetMouseButtonDown(0) && EquipSystem.Instance.IsHoldingWeapon())
-				{
-					StartCoroutine(DealDamageTo(animal, 0.3f, EquipSystem.Instance.GetWeaponDamage()));
-				}
-			}
-			else
-			{
-				interaction_text.text = "";
-				interaction_Info_UI.SetActive(false);
-			}
-
 			if(choppableTree && choppableTree.playerInRange)
 			{
 				choppableTree.canBeChopped = true;
@@ -133,41 +114,86 @@ public class SelectionManager:MonoBehaviour
 				interaction_text.text = interactable.GetItemName();
 				interaction_Info_UI.SetActive(true);
 
-				// --- Compare tags to only interact and show hand with pickable items --- //
-				if(interactable.CompareTag("Pickable"))
+				handIcon.gameObject.SetActive(false);
+				centerDotImage.gameObject.SetActive(true);
+
+				handIsVisible = false;
+			}
+
+			Animal animal = selectionTransform.GetComponent<Animal>();
+
+			if(animal && animal.playerInRange)
+			{
+				if(animal.isDead)
 				{
+					interaction_text.text = "Loot";
+					interaction_Info_UI.SetActive(true);
+
 					centerDotImage.gameObject.SetActive(false);
 					handIcon.gameObject.SetActive(true);
 
 					handIsVisible = true;
+
+					if(Input.GetMouseButtonDown(0))
+					{
+						Lootable lootable = animal.GetComponent<Lootable>();
+						Loot(lootable);
+					}
 				}
 				else
 				{
-					handIcon.gameObject.SetActive(false);
-					centerDotImage.gameObject.SetActive(true);
+					interaction_text.text = animal.animalName;
+					interaction_Info_UI.SetActive(true);
 
-					handIsVisible = false;
+					centerDotImage.gameObject.SetActive(true);
+					handIcon.gameObject.SetActive(false);
+
+					if(Input.GetMouseButtonDown(0) && EquipSystem.Instance.IsHoldingWeapon())
+					{
+						StartCoroutine(DealDamageTo(animal, 0.3f, EquipSystem.Instance.GetWeaponDamage()));
+					}
 				}
 			}
-			else // --- If there is a hit, but without an interactable Script --- //
+
+			if(!interactable && !animal)
 			{
 				onTarget = false;
 				handIsVisible = false;
 
-				// interaction_Info_UI.SetActive(false);
-				// handIcon.gameObject.SetActive(false);
-				// centerDotImage.gameObject.SetActive(true);
+				centerDotImage.gameObject.SetActive(true);
+				handIcon.gameObject.SetActive(false);
+			}
+
+			if(!npc && !interactable && !animal && !choppableTree)
+			{
+				interaction_text.text = "";
+				interaction_Info_UI.SetActive(false);
 			}
 		}
-		else // --- If there is no hit at all --- //
+	}
+
+	private void Loot(Lootable lootable)
+	{
+		if(lootable.wasLootCalculated == false)
 		{
-			onTarget = false;
-			interaction_Info_UI.SetActive(false);
+			List<LootReceived> receivedLoot = new();
 
-			handIcon.gameObject.SetActive(false);
-			centerDotImage.gameObject.SetActive(true);
+			foreach(LootPossibility loot in lootable.possibleLoot)
+			{
+				var lootAmount = UnityEngine.Random.Range(loot.amountMin, loot.amountMax + 1);
+				if(lootAmount != 0)
+				{
+					LootReceived lt = new()
+					{
+						item = loot.item,
+						amount = lootAmount
+					};
 
-			handIsVisible = false;
+					receivedLoot.Add(lt);
+				}
+			}
+			lootable.finalLoot = receivedLoot;
+			lootable.wasLootCalculated = true;
 		}
 	}
 
