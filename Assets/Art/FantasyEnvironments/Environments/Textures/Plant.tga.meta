@@ -51,7 +51,7 @@ TextureImporter:
   textureFormatSet: 0
   platformSettings:
   - buildTarget: DefaultTexturePlatform
-    maxTextureSize: 512
+    maxTextureSize: 2048
     textureFormat: -1
     textureCompression: 1
     compressionQuality: 50
@@ -59,7 +59,7 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
   - buildTarget: Standalone
-    maxTextureSize: 512
+    maxTextureSize: 2048
     textureFormat: -1
     textureCompression: 1
     compressionQuality: 50
@@ -78,6 +78,6 @@ AssetOrigin:
   serializedVersion: 1
   productId: 103573
   packageName: Fantasy landscape
-  packageVersion: 1.1
-  assetPath: Assets/FantasyEnvironments/Environments/Textures/Plant.tga
-  uploadId: 366541
+  packageVersion: 2.0
+  assetPath: Assets/Art/FantasyEnvironments/Environments/Textures/Plant.tga
+  uploadId: 647578

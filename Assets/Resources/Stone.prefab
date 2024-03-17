@@ -114,7 +114,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 659bcc4c0bb08be4f8f72fc33d9f8bd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isTrashable: 0
+  isTrashable: 1
   thisName: Stone
   thisDescription: A simple stone. Probably rolled down from a nearby mountain.
   thisFunctionality: Used for crafting
@@ -122,3 +122,8 @@ MonoBehaviour:
   healthEffect: 0
   foodEffect: 0
   waterEffect: 0
+  isEquippable: 0
+  isInsideQuickSlot: 0
+  isSelected: 0
+  isUsable: 0
+  itemPendingToBeUsed: {fileID: 0}

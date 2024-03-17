@@ -1,8 +1,9 @@
 fileFormatVersion: 2
 guid: 47356d574ebc3a545bfaef26eb02a2ea
-timeCreated: 1504523403
-licenseType: Store
+labels:
+- Terrain
 NativeFormatImporter:
+  externalObjects: {}
   mainObjectFileID: 100100000
   userData: 
   assetBundleName: 
@@ -11,6 +12,6 @@ AssetOrigin:
   serializedVersion: 1
   productId: 103573
   packageName: Fantasy landscape
-  packageVersion: 1.1
-  assetPath: Assets/FantasyEnvironments/Environments/Ambient-Occlusion-Trees/Prefabs/Birch_tree1.prefab
-  uploadId: 366541
+  packageVersion: 2.0
+  assetPath: Assets/Art/FantasyEnvironments/Environments/Ambient-Occlusion-Trees/Prefabs/Birch_tree1.prefab
+  uploadId: 647578

@@ -1,9 +1,7 @@
 fileFormatVersion: 2
-guid: dea84a3662be77b4bad1db42d2b32262
-timeCreated: 1510764975
-licenseType: Store
-NativeFormatImporter:
-  mainObjectFileID: 100100000
+guid: 33610b12665a8ba4ba227a51bf5ff3c2
+PrefabImporter:
+  externalObjects: {}
   userData: 
   assetBundleName: 
   assetBundleVariant: 
@@ -11,6 +9,6 @@ AssetOrigin:
   serializedVersion: 1
   productId: 103573
   packageName: Fantasy landscape
-  packageVersion: 1.1
-  assetPath: Assets/FantasyEnvironments/Environments/Prefabs/Mushroom1.prefab
-  uploadId: 366541
+  packageVersion: 2.0
+  assetPath: Assets/Art/FantasyEnvironments/Environments/Prefabs/Mushroom1.prefab
+  uploadId: 647578

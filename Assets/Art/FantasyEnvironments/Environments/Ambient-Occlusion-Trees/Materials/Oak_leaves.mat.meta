@@ -1,8 +1,9 @@
 fileFormatVersion: 2
-guid: 2910e09faf380f442a4eda0427b3179b
+guid: f0fc4479c6cf20c41a330110c6260929
+timeCreated: 1498909217
+licenseType: Store
 NativeFormatImporter:
-  externalObjects: {}
-  mainObjectFileID: 0
+  mainObjectFileID: 2100000
   userData: 
   assetBundleName: 
   assetBundleVariant: 
@@ -10,6 +11,6 @@ AssetOrigin:
   serializedVersion: 1
   productId: 103573
   packageName: Fantasy landscape
-  packageVersion: 1.1
-  assetPath: Assets/FantasyEnvironments/Environments/Ambient-Occlusion-Trees/Materials/Oak_leaves.mat
-  uploadId: 366541
+  packageVersion: 2.0
+  assetPath: Assets/Art/FantasyEnvironments/Environments/Ambient-Occlusion-Trees/Materials/Oak_leaves.mat
+  uploadId: 647578

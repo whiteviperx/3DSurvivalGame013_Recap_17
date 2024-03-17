@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: c630eafd8df6ac44a9e398da0cc05ac8
 ModelImporter:
-  serializedVersion: 26
+  serializedVersion: 19300
   internalIDToNameTable:
   - first:
       1: 100000
@@ -26,14 +26,14 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: 15 - Default
-    second: {fileID: 2100000, guid: e950a7aefb5a59c41a0d63a81d21c366, type: 2}
+    second: {fileID: 2100000, guid: 20b507e5fd20b2b479f55c0bb448cfb2, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: 'Material #3'
+      name: Material #3
     second: {fileID: 2100000, guid: 413a94560e540a34b8e573686225293f, type: 2}
   materials:
-    importMaterials: 1
+    materialImportMode: 1
     materialName: 0
     materialSearch: 1
     materialLocation: 1
@@ -97,7 +97,6 @@ ModelImporter:
     normalSmoothingSource: 0
   referencedClips: []
   importAnimation: 0
-  copyAvatar: 0
   humanDescription:
     serializedVersion: 3
     human: []
@@ -115,8 +114,10 @@ ModelImporter:
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 0
   humanoidOversampling: 1
+  avatarSetup: 0
   additionalBone: 0
   userData: 
   assetBundleName: 
@@ -125,6 +126,6 @@ AssetOrigin:
   serializedVersion: 1
   productId: 103573
   packageName: Fantasy landscape
-  packageVersion: 1.1
-  assetPath: Assets/FantasyEnvironments/Environments/Ambient-Occlusion-Trees/FBX/Deciduous_tree1.fbx
-  uploadId: 366541
+  packageVersion: 2.0
+  assetPath: Assets/Art/FantasyEnvironments/Environments/Ambient-Occlusion-Trees/FBX/Deciduous_tree1.fbx
+  uploadId: 647578

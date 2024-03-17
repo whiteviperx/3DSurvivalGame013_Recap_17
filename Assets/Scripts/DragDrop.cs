@@ -6,27 +6,31 @@ public class DragDrop:MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHa
 	private RectTransform rectTransform;
 
 	private CanvasGroup canvasGroup;
+
 	// public Transform inventory;
 
 	public static GameObject itemBeingDragged;
+
 	private Vector3 startPosition;
+
 	private Transform startParent;
 
 	private void Awake()
 		{
-		rectTransform = GetComponent<RectTransform> ();
-		canvasGroup = GetComponent<CanvasGroup> ();
+		rectTransform = GetComponent<RectTransform>();
+		canvasGroup = GetComponent<CanvasGroup>();
 		}
 
 	public void OnBeginDrag(PointerEventData eventData)
 		{
-		Debug.Log ("OnBeginDrag");
+		Debug.Log("OnBeginDrag");
 		canvasGroup.alpha = .6f;
+
 		// --- So the ray cast will ignore the item itself --- //
 		canvasGroup.blocksRaycasts = false;
 		startPosition = transform.position;
 		startParent = transform.parent;
-		transform.SetParent (transform.root);
+		transform.SetParent(transform.root);
 		itemBeingDragged = gameObject;
 		}
 
@@ -44,10 +48,10 @@ public class DragDrop:MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHa
 		if (transform.parent == startParent || transform.parent == transform.root)
 			{
 			transform.position = startPosition;
-			transform.SetParent (startParent);
+			transform.SetParent(startParent);
 			}
 
-		Debug.Log ("OnEndDrag");
+		Debug.Log("OnEndDrag");
 		canvasGroup.alpha = 1f;
 		canvasGroup.blocksRaycasts = true;
 		}
